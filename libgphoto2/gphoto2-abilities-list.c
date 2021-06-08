@@ -163,9 +163,14 @@ gp_abilities_list_load_dir (CameraAbilitiesList *list, const char *dir,
 	if (1) { /* a new block in which we can define a temporary variable */
 		foreach_data_t foreach_data = { NULL, GP_OK };
 		foreach_data.list = flist;
+		LTDL_SET_PRELOADED_SYMBOLS();
 		lt_dlinit ();
+#ifdef __EMSCRIPTEN__
+		ret = foreach_func("libptp2", &foreach_data);
+#else
 		lt_dladdsearchdir (dir);
 		ret = lt_dlforeachfile (dir, foreach_func, &foreach_data);
+#endif
 		lt_dlexit ();
 		if (ret != 0) {
 			gp_list_free (flist);

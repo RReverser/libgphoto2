@@ -26,7 +26,7 @@ bin_SCRIPTS = gphoto2-port-config
 
 # The . stands for the current dir, i.e. the iolibs to build.
 # Make sure the iolibs are built before running tests on them.
-SUBDIRS = po libgphoto2_port . tests doc
+SUBDIRS = po libgphoto2_port . doc
 
 include gphoto-m4/Makefile-files
 
@@ -40,6 +40,13 @@ all-local:
 distclean-local:
 	@:
 
+# For Emscripten we use preloading, which would require building iolibs
+# before descending to the `test` directory, which would require a bit of
+# refactoring of the build system here. For now it's easier to disable test
+# builds on Emscripten.
+if !HAVE_EMSCRIPTEN
+SUBDIRS += tests
+endif
 
 ########################################################################
 # All iolibs are defined as EXTRA_LTLIBRARIES. This requires that

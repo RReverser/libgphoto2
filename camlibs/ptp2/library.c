@@ -35,6 +35,11 @@
 #include <langinfo.h>
 #endif
 
+/* Define _LTX_ names - required to prevent clashes when using libtool preloading. */
+#define camera_id libptp2_LTX_camera_id
+#define camera_abilities libptp2_LTX_camera_abilities
+#define camera_init libptp2_LTX_camera_init
+
 #include <gphoto2/gphoto2-library.h>
 #include <gphoto2/gphoto2-port-log.h>
 #include <gphoto2/gphoto2-setting.h>

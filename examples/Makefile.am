@@ -40,3 +40,8 @@ LDADD = $(top_builddir)/libgphoto2/libgphoto2.la \
 	$(LIBLTDL) \
 	$(LIBEXIF_LIBS) \
 	$(INTLLIBS)
+
+if HAVE_EMSCRIPTEN
+LDADD += -dlpreopen $(top_builddir)/libgphoto2_port/usb1.la \
+	-dlpreopen $(top_builddir)/camlibs/ptp2.la
+endif

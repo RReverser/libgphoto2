@@ -246,6 +246,14 @@ LT_INIT([
   dlopen
   win32-dll
 ])
+
+# Emscripten tweaks
+AM_CONDITIONAL([HAVE_EMSCRIPTEN], [test "x$host_cpu" = "xwasm32"])
+AM_COND_IF([HAVE_EMSCRIPTEN], [
+	AC_SUBST(EXEEXT, [.html])
+	AM_LDFLAGS="$AM_LDFLAGS --bind -s ASYNCIFY=1 -s ALLOW_MEMORY_GROWTH=1"
+])
+
 dnl
 dnl LTDL_INIT([external])
 dnl
