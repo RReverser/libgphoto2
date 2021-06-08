@@ -144,6 +144,8 @@ AC_SUBST([AM_CXXFLAGS])
 # LDFLAGS: Linker flags
 AC_SUBST([AM_LDFLAGS])
 
+AC_SUBST(EXEEXT, [.html])
+
 # Check for va_copy()
 GP_VA_COPY
 
