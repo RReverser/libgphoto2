@@ -55,6 +55,8 @@ Makefile.in
 /autom4te.cache/
 /camlibs/all-def-camlibs
 /camlibs/all-src-camlibs
+/camlibs/all-cfg-camlibs
+/camlibs/all-mkf-camlibs
 /config.h
 /config.h.in
 /config.log
