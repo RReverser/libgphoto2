@@ -30,6 +30,11 @@
 *.i*86
 *.x86_64
 *.hex
+*.wasm
+*.js
+/examples/*.html
+/tests/*.html
+/packaging/generic/print-camera-list.html
 
 # Debug files
 *.dSYM/
