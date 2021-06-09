@@ -38,17 +38,17 @@ dnl   * libtool.info chapter "Updating library version information"
 dnl ---------------------------------------------------------------------------
 dnl Versioning:
 dnl  - AGE (Micro):      Increment if any interfaces have been added; set to 0
-dnl		         if any interfaces have been removed. Removal has 
+dnl		         if any interfaces have been removed. Removal has
 dnl                      precedence over adding, so set to 0 if both happened.
 dnl                      It denotes upward compatibility.
-dnl  - REVISION (Minor): Increment any time the source changes; set to 
+dnl  - REVISION (Minor): Increment any time the source changes; set to
 dnl			 0 if you incremented CURRENT.
 dnl  - CURRENT (Major):  Increment if the interface has changes. AGE is always
 dnl                      *changed* at the same time.
 dnl
 dnl  To summarize. Any interface *change* increment CURRENT. If that interface
-dnl  change does not break upward compatibility (ie it is an addition), 
-dnl  increment AGE, Otherwise AGE is reset to 0. If CURRENT has changed, 
+dnl  change does not break upward compatibility (ie it is an addition),
+dnl  increment AGE, Otherwise AGE is reset to 0. If CURRENT has changed,
 dnl  REVISION is set to 0, otherwise REVISION is incremented.
 dnl ---------------------------------------------------------------------------
 dnl A:R:C=1:1:3  libgphoto2-2.2
@@ -144,7 +144,11 @@ AC_SUBST([AM_CXXFLAGS])
 # LDFLAGS: Linker flags
 AC_SUBST([AM_LDFLAGS])
 
-AC_SUBST(EXEEXT, [.html])
+case $host in
+	wasm32*)
+		AC_SUBST(EXEEXT, [.html])
+	;;
+esac
 
 # Check for va_copy()
 GP_VA_COPY
@@ -159,7 +163,7 @@ dnl AC_DISABLE_SHARED
 dnl AC_LIBLTDL_CONVENIENCE([libltdl])
 dnl AC_WITH_LTDL
 dnl AC_LIB_LTDL
-AC_DISABLE_STATIC 
+AC_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
@@ -386,7 +390,7 @@ AC_NEED_BYTEORDER_H([libgphoto2/gphoto2-endian.h])
 dnl ---------------------------------------------------------------------------
 dnl Old libtool stuff left here for reference purposes. For now.
 dnl dnl ---------------------------------------------------------------------------
-dnl dnl Check for libtool: lt_dlforeachfile has been introduced in 
+dnl dnl Check for libtool: lt_dlforeachfile has been introduced in
 dnl dnl		       libtool-1.4. However, there are still systems out
 dnl dnl		       there running libtool-1.3. For those, we will need
 dnl dnl		       dlopen. Note that on some systems (e.g. FreeBSD)
@@ -422,7 +426,7 @@ dnl dnl Solaris hack for grep and tr
 dnl [
 dnl if test -n "`echo $host_os | grep '[sS]olaris'`"; then
 dnl   TR=/usr/xpg4/bin/tr
-dnl   GREP=/usr/xpg4/bin/grep  
+dnl   GREP=/usr/xpg4/bin/grep
 dnl else
 dnl   TR=tr
 dnl   GREP=grep
@@ -580,7 +584,7 @@ AC_SUBST([pkgconfigdir])
 dnl ---------------------------------------------------------------------------
 dnl libexif: The CameraFilesystem can use libexif for extracting thumbnails
 dnl	     out of EXIF data. Similarly, it can extract the mtime of
-dnl	     a file. 
+dnl	     a file.
 dnl	     libexif is available from
 dnl	     http://www.sourceforge.net/projects/libexif
 dnl ---------------------------------------------------------------------------
