@@ -211,7 +211,7 @@ GP_VA_COPY
 dnl ---------------------------------------------------------------------------
 dnl libexif: The virtual usb camera driver can use libexif for extracting thumbnails
 dnl	     out of EXIF data. Similarly, it can extract the mtime of
-dnl	     a file. 
+dnl	     a file.
 dnl	     libexif is available from
 dnl	     http://www.sourceforge.net/projects/libexif
 dnl ---------------------------------------------------------------------------
@@ -359,7 +359,10 @@ dnl ---------------------------------------------------------------------------
 dnl libpthread is dynamically linked by libusb, which is dynamically loaded
 dnl but newer Linux systems need it on startup, not later. So link libgphoto2_port
 dnl against libpthread
-AC_CHECK_LIB([pthread], [pthread_create])
+AC_CHECK_LIB([pthread], [pthread_create], [
+	CFLAGS="$CFLAGS -pthread"
+	CXXFLAGS="$CXXFLAGS -pthread"
+])
 
 dnl ---------------------------------------------------------------------------
 dnl libusb1
