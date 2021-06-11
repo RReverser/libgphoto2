@@ -144,12 +144,6 @@ AC_SUBST([AM_CXXFLAGS])
 # LDFLAGS: Linker flags
 AC_SUBST([AM_LDFLAGS])
 
-case $host in
-	wasm32*)
-		AC_SUBST(EXEEXT, [.html])
-	;;
-esac
-
 # Check for va_copy()
 GP_VA_COPY
 
@@ -167,6 +161,13 @@ AC_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
+
+# Emscripten tweaks
+AM_CONDITIONAL([HAVE_EMSCRIPTEN], [test "x$host_cpu" = "xwasm32"])
+AM_COND_IF([HAVE_EMSCRIPTEN], [
+	AC_SUBST(EXEEXT, [.html])
+	AM_LDFLAGS="$AM_LDFLAGS --bind -s ASYNCIFY=1"
+])
 
 dnl We are using our own libltdl checks instead of AC_WITH_LTDL
 dnl because we do not want to ship our own copy of libltdl any more.
