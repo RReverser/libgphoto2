@@ -41,5 +41,6 @@ LDADD = $(top_builddir)/libgphoto2/libgphoto2.la \
 	$(INTLLIBS)
 
 if HAVE_EMSCRIPTEN
-AM_LDFLAGS += -dlpreopen $(top_builddir)/libgphoto2_port/usb1.la
+LDADD += -dlpreopen $(top_builddir)/libgphoto2_port/usb1.la \
+	-dlpreopen $(top_builddir)/camlibs/ptp2.la
 endif

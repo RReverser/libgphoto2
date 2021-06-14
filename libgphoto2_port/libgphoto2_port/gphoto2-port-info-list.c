@@ -283,10 +283,10 @@ gp_port_info_list_load (GPPortInfoList *list)
 	GP_LOG_D ("Using ltdl to load io-drivers from '%s'...", iolibs);
 	LTDL_SET_PRELOADED_SYMBOLS();
 	lt_dlinit ();
-	lt_dladdsearchdir (iolibs);
 #ifdef __EMSCRIPTEN__
-	foreach_func("libusb1", list);
+	result = foreach_func("libusb1", list);
 #else
+	lt_dladdsearchdir (iolibs);
 	result = lt_dlforeachfile (iolibs, foreach_func, list);
 #endif
 	lt_dlexit ();

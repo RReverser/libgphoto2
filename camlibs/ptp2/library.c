@@ -35,6 +35,10 @@
 #include <langinfo.h>
 #endif
 
+#define camera_id libptp2_LTX_camera_id
+#define camera_abilities libptp2_LTX_camera_abilities
+#define camera_init libptp2_LTX_camera_init
+
 #include <gphoto2/gphoto2-library.h>
 #include <gphoto2/gphoto2-port-log.h>
 #include <gphoto2/gphoto2-setting.h>
@@ -4769,9 +4773,9 @@ camera_sony_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pat
 		/* For some as yet unknown reason the ZV-1, the RX100M7 and the A7 R4 need around 3 seconds startup time
 		 * to be able to capture. I looked for various trigger events or property changes on the ZV-1
 		 * but nothing worked except waiting.
-		 * This might not be required when having manual focusing according to https://github.com/gphoto/gphoto2/issues/349 
+		 * This might not be required when having manual focusing according to https://github.com/gphoto/gphoto2/issues/349
 		 */
-		
+
 		while (time_since (params->starttime) < 2500) {
 			/* drain the queue first */
 			if (ptp_get_one_event(params, &event)) {
@@ -5226,7 +5230,7 @@ camera_fuji_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pat
 		/* clear path, so we get defined results even without object info */
 		path->name[0]   = '\0';
 		path->folder[0] = '\0';
-	
+
 		C_PTP (ptp_getobjecthandles (params, PTP_HANDLER_SPECIAL, 0x000000, 0x000000, &handles));
 
 		/* if (handles.n == params->handles.n)
