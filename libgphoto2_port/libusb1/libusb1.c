@@ -22,6 +22,10 @@
  */
 #define _DARWIN_C_SOURCE
 #include "config.h"
+
+#define gp_port_library_type libusb1_LTX_gp_port_library_type
+#define gp_port_library_list libusb1_LTX_gp_port_library_list
+#define gp_port_library_operations libusb1_LTX_gp_port_library_operations
 #include <gphoto2/gphoto2-port-library.h>
 
 #include <stdlib.h>
@@ -35,10 +39,6 @@
 #include <gphoto2/gphoto2-port.h>
 #include <gphoto2/gphoto2-port-result.h>
 #include <gphoto2/gphoto2-port-log.h>
-
-#define gp_port_library_type libusb1_LTX_gp_port_library_type
-#define gp_port_library_list libusb1_LTX_gp_port_library_list
-#define gp_port_library_operations libusb1_LTX_gp_port_library_operations
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
