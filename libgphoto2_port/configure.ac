@@ -83,6 +83,13 @@ AC_LIBTOOL_WIN32_DLL
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
 
+# Emscripten tweaks
+AM_CONDITIONAL([HAVE_EMSCRIPTEN], [test "x$host_cpu" = "xwasm32"])
+AM_COND_IF([HAVE_EMSCRIPTEN], [
+	AC_SUBST(EXEEXT, [.html])
+	AM_LDFLAGS="$AM_LDFLAGS --bind -s ASYNCIFY=1 -s ALLOW_MEMORY_GROWTH=1"
+])
+
 dnl We are using our own libltdl checks instead of AC_WITH_LTDL
 dnl because we do not want to ship our own copy of libltdl any more.
 dnl Not shipping libltdl makes it possible to ditch our own autogen.sh

@@ -12,3 +12,8 @@ print_camera_list_LDADD = \
 	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
 	$(LIBLTDL) \
 	$(LIBEXIF_LIBS)
+
+if HAVE_EMSCRIPTEN
+print_camera_list_LDADD += -dlpreopen $(top_builddir)/libgphoto2_port/usb1.la \
+	-dlpreopen $(top_builddir)/camlibs/ptp2.la
+endif

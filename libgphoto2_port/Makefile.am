@@ -25,8 +25,15 @@ udevscript_PROGRAMS =
 bin_SCRIPTS = gphoto2-port-config
 
 # The . stands for the current dir, i.e. the iolibs to build.
-SUBDIRS = po libgphoto2_port test . doc gphoto-m4
+SUBDIRS = po libgphoto2_port . doc gphoto-m4
 
+# For Emscripten we use preloading, which would require building iolibs
+# before descending to the `test` directory, which would require a bit of
+# refactoring of the build system here. For now it's easier to disable test
+# builds on Emscripten.
+if !HAVE_EMSCRIPTEN
+SUBDIRS += test
+endif
 
 ########################################################################
 # All iolibs are defined as EXTRA_LTLIBRARIES. This requires that
@@ -56,7 +63,6 @@ include libusb1/Makefile-files
 include usbdiskdirect/Makefile-files
 include usbscsi/Makefile-files
 include vusb/Makefile-files
-
 
 ########################################################################
 # Miscellaneous stuff

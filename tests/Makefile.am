@@ -37,45 +37,21 @@ AM_CPPFLAGS += -I$(top_srcdir) -I$(top_builddir)  -I$(top_srcdir)/libgphoto2_por
 TESTS              += test-endian
 check_PROGRAMS     += test-endian
 test_endian_SOURCES = test-endian.c
-test_endian_LDADD   = \
-	$(top_builddir)/libgphoto2/libgphoto2.la \
-	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
-	$(LIBLTDL) \
-	$(LIBEXIF_LIBS) \
-	$(INTLLIBS)
 
 
 # Print the libgphoto2 version information for this libgphoto2 build
 noinst_PROGRAMS                 += print-libgphoto2-version
 print_libgphoto2_version_SOURCES = print-libgphoto2-version.c
-print_libgphoto2_version_LDADD   =
-print_libgphoto2_version_LDADD  += $(top_builddir)/libgphoto2/libgphoto2.la
-print_libgphoto2_version_LDADD  += $(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la
-print_libgphoto2_version_LDADD  += $(LIBLTDL)
-print_libgphoto2_version_LDADD  += $(LIBEXIF_LIBS)
-print_libgphoto2_version_LDADD  += $(INTLLIBS)
 
 
 # Test basic libgphoto2 functionality
 noinst_PROGRAMS     += test-gphoto2
 test_gphoto2_SOURCES = test-gphoto2.c
-test_gphoto2_LDADD   = \
-	$(top_builddir)/libgphoto2/libgphoto2.la \
-	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
-	$(LIBLTDL) \
-	$(LIBEXIF_LIBS) \
-	$(INTLLIBS)
 
 
 # Test gp_filesystem_* functions
 noinst_PROGRAMS    += test-filesys
 test_filesys_SOURCES = test-filesys.c
-test_filesys_LDADD   = \
-	$(top_builddir)/libgphoto2/libgphoto2.la \
-	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
-	$(LIBLTDL) \
-	$(LIBEXIF_LIBS) \
-	$(INTLLIBS)
 
 
 # Print a list of all cameras supported by this build of libgphoto2
@@ -83,12 +59,6 @@ TESTS          += test-camera-list
 INSTALL_TESTS  += test-camera-list
 check_PROGRAMS         += test-camera-list
 test_camera_list_SOURCES = test-camera-list.c
-test_camera_list_LDADD   = \
-	$(top_builddir)/libgphoto2/libgphoto2.la \
-	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
-	$(LIBLTDL) \
-	$(LIBEXIF_LIBS) \
-	$(INTLLIBS)
 
 
 ########################################################################
@@ -112,12 +82,6 @@ test_pedantic_c_CPPFLAGS = \
 test_pedantic_c_CFLAGS = \
 	$(AM_CFLAGS) $(PEDANTIC_CFLAGS) $(CFLAGS) \
 	-U_GPHOTO2_INTERNAL_CODE
-test_pedantic_c_LDADD = \
-	$(top_builddir)/libgphoto2/libgphoto2.la \
-	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
-	$(LIBLTDL) \
-	$(LIBEXIF_LIBS) \
-	$(INTLLIBS)
 
 
 if HAVE_CXX
@@ -133,12 +97,6 @@ test_pedantic_cxx_CPPFLAGS = \
 test_pedantic_cxx_CXXFLAGS = \
 	$(AM_CXXFLAGS) $(PEDANTIC_CXXFLAGS) $(CXXFLAGS) \
 	-U_GPHOTO2_INTERNAL_CODE
-test_pedantic_cxx_LDADD = \
-	$(top_builddir)/libgphoto2/libgphoto2.la \
-	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
-	$(LIBLTDL) \
-	$(LIBEXIF_LIBS) \
-	$(INTLLIBS)
 
 
 ########################################################################
@@ -235,6 +193,16 @@ test_pedantic_cxx17_LDADD    =
 test_pedantic_cxx17_LDFLAGS  =
 endif
 
+LDADD = $(top_builddir)/libgphoto2/libgphoto2.la \
+	$(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la \
+	$(LIBLTDL) \
+	$(LIBEXIF_LIBS) \
+	$(INTLLIBS)
+
+if HAVE_EMSCRIPTEN
+LDADD += -dlpreopen $(top_builddir)/libgphoto2_port/usb1.la \
+	-dlpreopen $(top_builddir)/camlibs/ptp2.la
+endif
 
 ########################################################################
 # Implement the checks for the installed library
