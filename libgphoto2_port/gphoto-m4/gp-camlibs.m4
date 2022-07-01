@@ -1,3 +1,9 @@
+# gp-camlibs.m4 - define camlibs and camlib infrastructure     -*- Autoconf -*-
+# serial 14
+dnl | Increment the above serial number every time you edit this file.
+dnl | When it finds multiple m4 files with the same name,
+dnl | aclocal will use the one with the highest serial.
+dnl
 dnl ####################################################################
 dnl
 dnl GP_CAMLIB & Co.
@@ -157,7 +163,7 @@ AC_MSG_WARN([
   #   * or even better, just build the standard set of camlibs.         #
   #=====================================================================#
 ])
-GP_SLEEP([5])
+GP_SLEEP_IF_TTY([5])
 ])
 dnl
 dnl
@@ -242,7 +248,7 @@ AS_VAR_IF([gp_sh_with_camlibs], [canon], [dnl
     # driver to prevent unnecessary support requests.              #
     #==============================================================#
 ])
-	GP_SLEEP([5])
+	GP_SLEEP_IF_TTY([5])
 ])dnl
 
 dnl set -x
@@ -302,7 +308,7 @@ do
     # 'standard' instead.                                         #
     #=============================================================#
 ])
-	GP_SLEEP([5])
+	GP_SLEEP_IF_TTY([5])
 	gp_camlib="standard"
 	;;
     esac
@@ -432,7 +438,7 @@ AS_IF([test "x$gp_camlib_set_skipping" = "x"], [dnl
     # you insist on building these camlibs.                   #
     #=========================================================#
 ])
-    GP_SLEEP([5])
+    GP_SLEEP_IF_TTY([5])
 ])
 
 GP_SET_SPACE_VAR([camlib-set], [gp_camlib_set])

@@ -4,9 +4,9 @@ AC_PREREQ([2.69])
 dnl NOTE: Be version style _higher_ than the last release.
 dnl       So lastversion.X.trunk for instance. Bump X if necessary.
 
-dnl ******* THE NEXT RELEASE VERSION MUST BE 2.5.29 at least or higher!
+dnl ******* THE NEXT RELEASE VERSION MUST BE 2.5.30 at least or higher!
 AC_INIT([libgphoto2 photo camera library],
-        [2.5.28.1],
+        [2.5.29.1],
         [gphoto-devel@lists.sourceforge.net],
         [libgphoto2])
 
@@ -89,9 +89,10 @@ dnl              libgphoto2-2.3.1.2.trunk (new gp_camera_get_storageinfo() funct
 dnl A:R:C=0:0:6  libgphoto2-2.5.0	(fixed CameraList API, ... )
 dnl A:R:C=1:0:7  libgphoto2-2.5.24	(added GP_EVENT_FILE_CHANGED ... )
 dnl A:R:C=2:0:8  libgphoto2-2.5.28	(added gp_filesystem_set_info_dirty ... )
-AC_SUBST([LIBGPHOTO2_AGE],      [2])
+dnl A:R:C=3:0:9  libgphoto2-2.5.XXX	(added gp_init_localedir ... )
+AC_SUBST([LIBGPHOTO2_AGE],      [3])
 AC_SUBST([LIBGPHOTO2_REVISION], [0])
-AC_SUBST([LIBGPHOTO2_CURRENT],  [8])
+AC_SUBST([LIBGPHOTO2_CURRENT],  [9])
 AC_SUBST([LIBGPHOTO2_CURRENT_MIN],
          [`expr $LIBGPHOTO2_CURRENT - $LIBGPHOTO2_AGE`])
 AC_SUBST([LIBGPHOTO2_VERSION_INFO],
@@ -123,8 +124,7 @@ AM_CONDITIONAL([HAVE_CXX], [test "x$CXX" != "x" && test "x$CXX" != "xno"])
 
 
 dnl Not strictly necessary, but helps pulling translations.
-AC_ARG_VAR([RSYNC], [rsync file copying command])
-AC_PATH_PROG([RSYNC], [rsync], [no])
+GP_CHECK_PROG([RSYNC], [rsync], [file copying command])
 AM_CONDITIONAL([HAVE_RSYNC], [test "x$RSYNC" != xno])
 
 
@@ -177,7 +177,7 @@ GP_CONDITIONAL_COMPILE_FLAGS([CFLAGS], [-Werror=unknown-warning-option])
 
 GP_CONDITIONAL_COMPILE_FLAGS([CFLAGS], [-Wall])
 GP_CONDITIONAL_COMPILE_FLAGS([CFLAGS], [-Wextra])
-GP_CONDITIONAL_COMPILE_FLAGS([CFLAGS], [-Weverything])
+GP_CONDITIONAL_COMPILE_FLAGS([CFLAGS], [-Wmost])
 
 dnl We used to have these two defined for GCC instead of the whole -Wextra
 dnl GP_CONDITIONAL_COMPILE_FLAGS([CFLAGS], [-Wmissing-declarations])
@@ -291,7 +291,7 @@ GP_GETTEXT_SETUP([GETTEXT_PACKAGE_LIBGPHOTO2],
                  [${PACKAGE}-${LIBGPHOTO2_CURRENT_MIN}],
                  [po])
 AM_PO_SUBDIRS()
-AM_GNU_GETTEXT_VERSION([0.18.3])
+AM_GNU_GETTEXT_VERSION([0.19.1])
 AM_GNU_GETTEXT([external])
 AM_ICONV()
 
@@ -372,12 +372,6 @@ GP_CHECK_LIBRARY([LIBCURL],[libcurl],[>= 7.1],
 		[https://www.curl.org]
 )
 GP_CONFIG_MSG([CURL support for Lumix Wifi],[${have_LIBCURL}])
-
-AM_CONDITIONAL([HAVE_LIBCURL],
-               [test -n "$have_LIBCURL" && test "X$have_LIBCURL" != "Xno"])
-AM_CONDITIONAL([HAVE_LIBXML2],
-               [test -n "$have_LIBXML2" && test "X$have_LIBXML2" != "Xno"])
-
 
 dnl ---------------------------------------------------------------------------
 dnl check for libgd

@@ -26,6 +26,7 @@
 #include "config.h"
 #include <gphoto2/gphoto2-abilities-list.h>
 
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -58,17 +59,65 @@ static int gp_abilities_list_sort      (CameraAbilitiesList *);
  * \brief Set the current character codeset libgphoto2 is operating in.
  *
  * Set the codeset for all messages returned by libgphoto2.
+ *
  * \param codeset New codeset for the messages. For instance "utf-8".
  * \return old codeset as returned from bind_textdomain_codeset().
- *
- * You would then call gp_abilities_list_load() in order to
- * populate it.
  */
 const char*
 gp_message_codeset (const char *codeset)
 {
 	gp_port_message_codeset (codeset);
 	return bind_textdomain_codeset (GETTEXT_PACKAGE_LIBGPHOTO2, codeset);
+}
+
+/**
+ * \brief Initialize the localedir directory for the libgphoto2 gettext domain
+ *
+ * Override the localedir directory libgphoto2 uses for its message
+ * translations.
+ *
+ * You only need to call this if you have a non-standard installation
+ * where the locale files are at a location which differs from the
+ * compiled in default location.
+ *
+ * If you do need to call this function, call it before calling any
+ * non-initialization function.
+ *
+ * Internally, this will make sure bindtextdomain() is called for the
+ * relevant gettext text domain(s).
+ *
+ * \param localedir Root directory of libgphoto2's localization files.
+ *                  If NULL, use the compiled in default value, which
+ *                  will be something like "/usr/share/locale".
+ * \return gphoto2 error code.
+ */
+int
+gp_init_localedir (const char *localedir)
+{
+	static int locale_initialized = 0;
+	if (locale_initialized) {
+		gp_log(GP_LOG_DEBUG, "gp_init_localedir",
+		       "ignoring late call (localedir value %s)",
+		       localedir?localedir:"NULL");
+		return GP_OK;
+	}
+	const int gpp_result = gp_port_init_localedir (localedir);
+	if (gpp_result != GP_OK) {
+		return gpp_result;
+	}
+	const char *actual_localedir = (localedir?localedir:LOCALEDIR);
+	const char *const gettext_domain = GETTEXT_PACKAGE_LIBGPHOTO2;
+	if (bindtextdomain (gettext_domain, actual_localedir) == NULL) {
+		if (errno == ENOMEM)
+			return GP_ERROR_NO_MEMORY;
+		return GP_ERROR;
+	}
+	gp_log(GP_LOG_DEBUG, "gp_init_localedir",
+	       "localedir has been set to %s%s",
+	       actual_localedir,
+	       localedir?"":" (compile-time default)");
+	locale_initialized = 1;
+	return GP_OK;
 }
 
 /**
@@ -92,7 +141,7 @@ gp_abilities_list_new (CameraAbilitiesList **list)
 	 * an other way without introducing a global initialization
 	 * function...
 	 */
-	bindtextdomain (GETTEXT_PACKAGE_LIBGPHOTO2, LOCALEDIR);
+	gp_init_localedir (NULL);
 
 	C_MEM (*list = calloc (1, sizeof (CameraAbilitiesList)));
 

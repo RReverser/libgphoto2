@@ -2,7 +2,7 @@ dnl Process this file with autoreconf to produce a configure script.
 AC_PREREQ([2.69])
 
 AC_INIT([libgphoto2 port access library],
-        [0.12.0],
+        [0.12.1],
         [gphoto-devel@lists.sourceforge.net],
         [libgphoto2_port])
 
@@ -58,9 +58,10 @@ dnl A:R:C=7:0:7 libgphoto2_port-0.7.0 libgphoto2-2.3
 dnl A:R:C=7:1:7 libgphoto2_port-0.7.1 libgphoto2-2.3.x
 dnl A:R:C=8:0:8 libgphoto2_port-0.8.0 libgphoto2-2.4.x
 dnl A:R:C=9:1:9 libgphoto2_port-0.10.0 libgphoto2-2.5.x
-AC_SUBST([LIBGPHOTO2_PORT_AGE],      [0])
+dnl A:R:C=1:0:13  libgphoto2-2.5.XXX	(added gp_port_init_localedir ... )
+AC_SUBST([LIBGPHOTO2_PORT_AGE],      [1])
 AC_SUBST([LIBGPHOTO2_PORT_REVISION], [0])
-AC_SUBST([LIBGPHOTO2_PORT_CURRENT],  [12])
+AC_SUBST([LIBGPHOTO2_PORT_CURRENT],  [13])
 AC_SUBST([LIBGPHOTO2_PORT_CURRENT_MIN],
          [`expr $LIBGPHOTO2_PORT_CURRENT - $LIBGPHOTO2_PORT_AGE`])
 AC_SUBST([LIBGPHOTO2_PORT_VERSION_INFO],
@@ -130,7 +131,7 @@ GP_GETTEXT_SETUP([GETTEXT_PACKAGE_LIBGPHOTO2_PORT],
                  [${PACKAGE}-${LIBGPHOTO2_PORT_CURRENT_MIN}],
                  [po])
 AM_PO_SUBDIRS()
-AM_GNU_GETTEXT_VERSION([0.18.3])
+AM_GNU_GETTEXT_VERSION([0.19.1])
 AM_GNU_GETTEXT([external])
 AM_ICONV()
 

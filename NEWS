@@ -1,4 +1,25 @@
-libgphoto2 2.5.28.1 development snapshot
+libgphoto2 2.5.29.1 development snapshot
+
+ptp2:
+* Canon: fixed display locking/unlocking after exit
+* generic: avoid potential crash on image addition
+* Sony: Add image information when wait_for_event
+* Added IDs:
+  * Nikon Zfc, Z9
+  * Sony DSC-WX220, Alpha-A7 IV
+  * Nikon P950
+  * Canon EOS Rebel T8i
+  * Fuji Fujifilm X-E4
+  * GoPro HERO10 Black
+
+general:
+* fix parallel builds by requiring gettext 0.19.1 for builds from git (PR #797)
+* add gp_init_localedir() function to allow for non-standard installations (PR #796)
+
+translations:
+* updated traditional chinese
+------------------------------------------------------------------------------
+libgphoto2 2.5.29 release
 
 general:
 * fixes build failures of libgphoto2 frontends and builds using the
@@ -7,9 +28,17 @@ general:
 ptp2:
 * fixed a regression in Fuji preview capture which would lead to crashes
 * made the wait-event property extractor more robust (it sometimes gets NULL ptrs), hopefully fixing Sony crashes
+* sony: fixed a crash in sony f-number
+* panasonic: added more configs adjustgm, adjustab, colortemp, afmode, mfadjust, expmode, recording
+* fixed some bugs caused by refactoring / memory leak fixes
+* added:
+  - Kodak m531
+  - HP Photosmart E331
+  - Nikon DSC 6
 
 translations:
-* updated polish, ukrainian
+* updated polish, ukrainian, russian, serbian
+* added romanian
 ------------------------------------------------------------------------------
 libgphoto2 2.5.28 release
 
@@ -180,7 +209,7 @@ ptp2:
   * Leica SL Typ 601
 
 lumix:
-* fixed initialisation, might help capture
+* fixed initialization, might help capture
 
 all:
 * ongoing stability fixes from AFL fuzzing
@@ -2100,8 +2129,8 @@ Drivers (camlibs)
        do not have a USB class id.
 
      * Now supports a "fast filesystem" mode on newer Nikon PTP cameras.
-     
-       This speeds up initialisation notably on cameras with lots (>50)
+
+       This speeds up initialization notably on cameras with lots (>50)
        of images.
 
        However, this mode does not find the special files on the camera

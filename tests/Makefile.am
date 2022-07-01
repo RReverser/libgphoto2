@@ -69,6 +69,16 @@ check_PROGRAMS         += test-camera-list
 test_camera_list_SOURCES = test-camera-list.c
 
 
+TESTS          += test-init-localedir
+check_PROGRAMS += test-init-localedir
+test_init_localedir_LDADD =
+test_init_localedir_LDADD += $(top_builddir)/libgphoto2/libgphoto2.la
+test_init_localedir_LDADD += $(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port.la
+test_init_localedir_LDADD += $(LIBLTDL)
+test_init_localedir_LDADD += $(LIBEXIF_LIBS)
+test_init_localedir_LDADD += $(INTLLIBS)
+
+
 ########################################################################
 # Test pedantic compilation for multiple language standard
 ########################################################################

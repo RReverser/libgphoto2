@@ -985,6 +985,8 @@ static struct {
 	{"Kodak:Z990",   0x040a, 0x0613, 0},
 	/* ra4veiV6@lavabit.com */
 	{"Kodak:C1530",  0x040a, 0x0617, 0},
+	/* via email to gphoto-devel */
+	{"Kodak:M531 2nd id",	0x040a, 0x0665, 0},
 
 	/* HP PTP cameras */
 #if 0
@@ -1132,6 +1134,8 @@ static struct {
 	/* Jose Velez <jvelez00@gmail.com> */
 	{"Sony:NEX-7 (PTP mode)",     0x054c, 0x057d, 0},
 
+	/* email */
+	{"Sony:HDR-PJ710V (PTP mode)",0x054c, 0x05f7, 0},
 	/* https://sourceforge.net/p/libmtp/bugs/1459/ */
 	{"Sony:HDR-PJ260VE (PTP mode)",0x054c, 0x0603, 0},
 
@@ -1228,6 +1232,9 @@ static struct {
 
 	/* David Farrier <farrier@iglou.com> */
 	{"Sony:RX100M3 (MTP)",        0x054c, 0x08e3, 0},
+
+	/* via email to gphoto-devel */
+	{"Sony:DSC-WX220 (MTP)",      0x054c, 0x08d7, 0},
 
 	/* Markus Oertel */
 	{"Sony:Alpha-A5100 (MTP)",    0x054c, 0x08e7, 0},
@@ -1343,6 +1350,10 @@ static struct {
 
 	/* https://github.com/gphoto/libgphoto2/issues/749 */
 	{"Sony:ILCE-7RM4A (PC Control)",	0x054c, 0x0d9f, PTP_CAP|PTP_CAP_PREVIEW},
+
+	/* https://github.com/gphoto/libgphoto2/pull/782 */
+	{"Sony:Alpha-A7 IV (MTP mode)",		0x054c, 0x0da6, 0},
+	{"Sony:Alpha-A7 IV (PC Control)",	0x054c, 0x0da7, PTP_CAP|PTP_CAP_PREVIEW},
 
 	/* Nikon Coolpix 2500: M. Meissner, 05 Oct 2003 */
 	{"Nikon:Coolpix 2500 (PTP mode)", 0x04b0, 0x0109, 0},
@@ -1609,6 +1620,8 @@ static struct {
 
 	/* Krystal Puga <krystalvp@gmail.com> */
 	{"Nikon:KeyMission 170", 	  0x04b0, 0x0364, PTP_CAP},
+	/* https://github.com/gphoto/libgphoto2/issues/780 */
+	{"Nikon:P950", 	  		  0x04b0, 0x036d, PTP_CAP|PTP_CAP_PREVIEW|PTP_NIKON_BROKEN_CAP},
 
 	/* Nikon D100 has a PTP mode: westin 2002.10.16 */
 	{"Nikon:DSC D100 (PTP mode)",     0x04b0, 0x0402, 0},
@@ -1750,13 +1763,15 @@ static struct {
 
 	/* Thomas Schaad */
 	{"Nikon:Z5",                      0x04b0, 0x0448, PTP_CAP|PTP_CAP_PREVIEW},
-	{"Nikon:Zfc",                     0x04b0, 0x044f, PTP_CAP|PTP_CAP_PREVIEW},
 
 	/* Fahrion <fahrion.2600@gmail.com> */
 	{"Nikon:Z7_2",                	  0x04b0, 0x044b, PTP_CAP|PTP_CAP_PREVIEW},
 
 	/* Thomas Schaad <tom@avisec.ch> */
 	{"Nikon:Z6_2",                	  0x04b0, 0x044c, PTP_CAP|PTP_CAP_PREVIEW},
+	{"Nikon:Zfc",                     0x04b0, 0x044f, PTP_CAP|PTP_CAP_PREVIEW},
+	/* Stefan Weiberg at SUSE */
+	{"Nikon:Z9",			  0x04b0, 0x0450, PTP_CAP|PTP_CAP_PREVIEW},
 
 	/* http://sourceforge.net/tracker/?func=detail&aid=3536904&group_id=8874&atid=108874 */
 	/* https://github.com/gphoto/libgphoto2/issues/569 */
@@ -2464,6 +2479,8 @@ static struct {
 	{"Canon:PowerShot SX70 HS",		0x04a9, 0x32ee, PTP_CAP|PTP_CAP_PREVIEW},
 	/* https://github.com/gphoto/libgphoto2/issues/614 */
 	{"Canon:EOS M200",			0x04a9, 0x32ef, PTP_CAP|PTP_CAP_PREVIEW},
+	/* https://github.com/gphoto/libgphoto2/issues/781 */
+	{"Canon:EOS Rebel T8i",			0x04a9, 0x32f1, PTP_CAP|PTP_CAP_PREVIEW},
 	/* from timelapse-view */
 	{"Canon:EOS R5",			0x04a9, 0x32f4, PTP_CAP|PTP_CAP_PREVIEW},
 	/* Steve Rencontre <steve@rsn-tech.co.uk> */
@@ -2615,6 +2632,8 @@ static struct {
 	{"Fuji:Fujifilm X100V",			0x04cb, 0x02e5, PTP_CAP_PREVIEW},
 	/* https://github.com/gphoto/libgphoto2/issues/505 */
 	{"Fuji:Fujifilm X-T4",			0x04cb, 0x02e6, PTP_CAP|PTP_CAP_PREVIEW},
+	/* via email */
+	{"Fuji:Fujifilm X-E4",			0x04cb, 0x02e8, 0},
 	/* via https://sourceforge.net/p/gphoto/feature-requests/491/ */
 	{"Fuji:Fujifilm GFX 100S (2nd)",	0x04cb, 0x02e9, PTP_CAP|PTP_CAP_PREVIEW},
 	/* via timelapse-view */
@@ -2750,6 +2769,8 @@ static struct {
 	/* https://sourceforge.net/p/libmtp/bugs/1858/ */
 	{"GoPro:HERO8 Black",			0x2672, 0x0049, 0},
 	{"GoPro:HERO9 Black",			0x2672, 0x004D, 0},
+	/* https://github.com/libmtp/libmtp/issues/103 */
+	{"GoPro:HERO10 Black",			0x2672, 0x0056, 0},
 #endif
 };
 
@@ -3111,7 +3132,9 @@ camera_exit (Camera *camera, GPContext *context)
 					goto exitfailed;
 			}
 			/* this switches the display back on ... */
-			C_PTP (ptp_canon_eos_setremotemode(params, 1));
+			if (ptp_operation_issupported(params, PTP_OC_CANON_EOS_SetRemoteMode)) {
+				C_PTP (ptp_canon_eos_setremotemode(params, 1));
+			}
 			break;
 		case PTP_VENDOR_NIKON:
 			if (ptp_operation_issupported(params, PTP_OC_NIKON_EndLiveView))
@@ -3256,6 +3279,9 @@ add_object_to_fs_and_path (Camera *camera, uint32_t handle, CameraFilePath *path
 		return GP_OK;
 	/* The gp_filesystem_append function only appends files */
 	CR ( gp_filesystem_append (camera->fs, path->folder, path->name, context));
+
+	/* fetch ob pointer again, as gp_filesystem_append can change the object list */
+	C_PTP (ptp_object_want (params, handle, PTPOBJECT_OBJECTINFO_LOADED, &ob));
 
 	/* we also get the fs info for free, so just set it */
 	info.file.fields = GP_FILE_INFO_TYPE |
@@ -3583,6 +3609,7 @@ enable_liveview:
 
 			if (have_prop(camera, params->deviceinfo.VendorExtensionID, PTP_DPC_NIKON_LiveViewProhibitCondition)) {
 				PTPPropertyValue	cond;
+
 				C_PTP (ptp_getdevicepropvalue (params, PTP_DPC_NIKON_LiveViewProhibitCondition, &cond, PTP_DTC_UINT32));
 
 				if (cond.u32) {
@@ -3591,7 +3618,6 @@ enable_liveview:
 					if (cond.u32 & (1<<17)){ gp_context_error (context, _("Liveview cannot start: %s"),_("Temperature too high")); return GP_ERROR; }
 					if (cond.u32 & (1<<9)) { gp_context_error (context, _("Liveview cannot start: %s"),_("TTL error")); return GP_ERROR; }
 					if (cond.u32 & (1<<22)){ gp_context_error (context, _("Liveview cannot start: %s"),_("In Mirror-up operation")); return GP_ERROR; }
-					if (cond.u32 & (1<<24)){ gp_context_error (context, _("Liveview cannot start: %s"),_("Lens is retracting")); return GP_ERROR; }
 					if (cond.u32 & (1<<5)) { gp_context_error (context, _("Liveview cannot start: %s"),_("Minimum aperture warning")); return GP_ERROR; }
 					if (cond.u32 & (1<<15)){ gp_context_error (context, _("Liveview cannot start: %s"),_("Processing of shooting operation")); return GP_ERROR; }
 					if (cond.u32 & (1<<2)) { gp_context_error (context, _("Liveview cannot start: %s"),_("Sequence error")); return GP_ERROR; }
@@ -3604,11 +3630,14 @@ enable_liveview:
 					if (cond.u32 & (1<<12)) { gp_context_error (context, _("Liveview cannot start: %s"),_("Pending unretrieved SDRAM image")); return GP_ERROR; }
 					if (cond.u32 & (1<<12)) { gp_context_error (context, _("Liveview cannot start: %s"),_("Pending unretrieved SDRAM image")); return GP_ERROR; }
 					if (cond.u32 & (1<<4)) { gp_context_error (context, _("Liveview cannot start: %s"),_("Fully pressed button")); return GP_ERROR; }
+
+					if (cond.u32 & (1<<24)){ gp_context_error (context, _("Liveview cannot start: %s"),_("Lens is retracting")); goto ignoreerror; }
 					gp_context_error (context, _("Liveview cannot start: code 0x%08x"), cond.u32);
 					return GP_ERROR;
 				}
 			}
 
+ignoreerror:
 			ret = ptp_nikon_start_liveview (params);
 			if ((ret != PTP_RC_OK) && (ret != PTP_RC_DeviceBusy))
 				C_PTP_REP_MSG (ret, _("Nikon enable liveview failed"));
@@ -3691,8 +3720,8 @@ enable_liveview:
 				usleep(50*1000);
 				continue;
 			}
-
-			ptp_free_objectinfo(&oi);
+			if (ret == PTP_RC_OK)
+				ptp_free_objectinfo(&oi);
 
 			ret = ptp_getobject_with_size(params, preview_object, &ximage, &size);
 			if (ret == PTP_RC_OK)
@@ -4344,6 +4373,7 @@ camera_canon_eos_capture (Camera *camera, CameraCaptureType type, CameraFilePath
 				res = add_object_to_fs_and_path (camera, entry.u.object.oid, path, context);
 				if (res < GP_OK)
 					break;
+				memcpy (&oi, &entry.u.object.oi, sizeof(oi));
 
 				if  (entry.u.object.oi.ObjectFormat == PTP_OFC_Association)
 					continue;
@@ -4762,6 +4792,7 @@ camera_sony_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pat
 		!strcmp(params->deviceinfo.Model, "ZV-1")		||
 		!strcmp(params->deviceinfo.Model, "DSC-RX100M7")	||
 		!strcmp(params->deviceinfo.Model, "ILCE-7RM4")		||
+		!strcmp(params->deviceinfo.Model, "ILCE-7RM4A")		||
 		!strcmp(params->deviceinfo.Model, "DSC-RX0M2")		||
 		!strcmp(params->deviceinfo.Model, "ILCE-7C")
 	)) {
@@ -6875,6 +6906,27 @@ downloadnow:
 					ptp_free_objectinfo (&oi);
 					return ret;
 				}
+
+				/* we also get the fs info for free, so just set it */
+				info.file.fields = GP_FILE_INFO_TYPE |
+						GP_FILE_INFO_WIDTH | GP_FILE_INFO_HEIGHT |
+						GP_FILE_INFO_SIZE | GP_FILE_INFO_MTIME;
+				strcpy_mime (info.file.type, params->deviceinfo.VendorExtensionID, oi.ObjectFormat);
+				info.file.width		= oi.ImagePixWidth;
+				info.file.height	= oi.ImagePixHeight;
+				info.file.size		= oi.ObjectCompressedSize;
+				info.file.mtime		= time(NULL);
+
+				info.preview.fields = GP_FILE_INFO_TYPE |
+						GP_FILE_INFO_WIDTH | GP_FILE_INFO_HEIGHT |
+						GP_FILE_INFO_SIZE;
+				strcpy_mime (info.preview.type, params->deviceinfo.VendorExtensionID, oi.ThumbFormat);
+				info.preview.width	= oi.ThumbPixWidth;
+				info.preview.height	= oi.ThumbPixHeight;
+				info.preview.size	= oi.ThumbCompressedSize;
+				GP_LOG_D ("setting fileinfo in fs");
+				gp_filesystem_set_info_noop(camera->fs, path->folder, path->name, info, context);
+
 				*eventtype = GP_EVENT_FILE_ADDED;
 				*eventdata = path;
 				/* We have now handed over the file, disclaim responsibility by unref. */
@@ -9824,11 +9876,14 @@ camera_init (Camera *camera, GPContext *context)
 	case PTP_VENDOR_SONY:
 		/* this seems to crash the HX100V and HX9V and NEX
 		 * https://github.com/gphoto/libgphoto2/issues/85
+		 * And locks up the ILCE-7M4
+		 * https://github.com/gphoto/libgphoto2/pull/782
 		 */
 		if (	ptp_operation_issupported(params, 0x9280)	&&
 			!strstr(params->deviceinfo.Model,"HX")		&&
 			!strstr(params->deviceinfo.Model,"NEX")		&&
-			!strstr(params->deviceinfo.Model,"QX")
+			!strstr(params->deviceinfo.Model,"QX")		&&
+			!strstr(params->deviceinfo.Model,"ILCE-7M4")
 		) {
 #if 0
 			C_PTP (ptp_sony_9280(params, 0x1,0,1,0,0));
