@@ -636,7 +636,35 @@ ptp_deviceinfo_write(vcamera *cam, ptpcontainer *ptp) {
 	imageformats[0] = 0x3801;
 	x += put_16bit_le_array(data+x,imageformats,1);	/* ImageFormats */
 
-	x += put_string(data+x,"GP");	/* Manufacturer */
+	/*
+	Put unicode string for tests in "Manufacturer" field.
+	For that, we can't use `put_string` the way it is now,
+	and don't want to rely on `iconv` presence - instead,
+	just hardcode the UCS-2 representation (used by PTP2)
+	of the test string directly.
+	*/
+	uint16_t manufacturer[] = {
+		// "GP (" in UCS-2
+		0x0047, 0x0050, 0x0020, 0x0028,
+		// "test"
+		0x0074, 0x0065, 0x0073, 0x0074,
+		// "; "
+		0x003b, 0x0020,
+		// "тест"
+		0x0442, 0x0435, 0x0441, 0x0442,
+		// "; "
+		0x003b, 0x0020,
+		// "测试"
+		0x6d4b, 0x8bd5,
+		// ")"
+		0x0029,
+		// null terminator
+		0x0000
+	};
+	x += put_8bit_le(data+x, sizeof(manufacturer));
+	for (i = 0; i < sizeof(manufacturer); i++)
+		x += put_16bit_le(data+x, manufacturer[i]);
+
 	x += put_string(data+x,"VC");	/* Model */
 	x += put_string(data+x,"2.5.11");/* DeviceVersion */
 	x += put_string(data+x,"0.1");	/* DeviceVersion */
