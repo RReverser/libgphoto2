@@ -372,7 +372,7 @@ int k_localization_tv_output_format_set (GPPort *device, GPContext *,
 int k_localization_date_format_set      (GPPort *device, GPContext *,
 					 KDateFormat date_format);
 int k_localization_data_put             (GPPort *device, GPContext *,
-					 unsigned char *data,
+					 const unsigned char *data,
 					 unsigned long data_size);
 
 int k_cancel (GPPort *device, GPContext *, KCommand *command);

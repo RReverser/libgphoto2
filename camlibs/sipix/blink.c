@@ -88,7 +88,7 @@ _mult_64words(short *result, short *in, short *mult) {
 static int
 decomp_dct(
 	unsigned short *outtable,
-	unsigned char *input,
+	const unsigned char *input,
 	unsigned short *table
 ) {
 	int inpos = 1, outpos = 0;
@@ -710,7 +710,7 @@ _xdecomp(arg0, arg4, arg8, argc, arg10, arg14) {
 
 
 static int
-_check_image_header(unsigned char *d, int size) {
+_check_image_header(const unsigned char *d, int size) {
 	int width, height;
 
 	if (d[0] != 0)

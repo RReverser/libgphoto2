@@ -10,7 +10,7 @@
 
 static void	fetchstr(int, int, int);
 static void	dhuf(int);
-static void	YCbCr2RGB(int *YY, int Cb, int Cr, int w, int h);
+static void	YCbCr2RGB(const int *YY, int Cb, int Cr, int w, int h);
 
 static int _nCcdFactor = 1;
 
@@ -117,7 +117,7 @@ void largan_ccd2dib(char *pData, char *pDib, long dwDibRowBytes, int nCcdFactor)
 }
 
 /* --------------------------------------------------------------------------- */
-static void YCbCr2RGB(int *YY, int Cb, int Cr, int w, int h)
+static void YCbCr2RGB(const int *YY, int Cb, int Cr, int w, int h)
 {
     int     i;
     double  B,G,R;

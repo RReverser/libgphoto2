@@ -48,7 +48,7 @@
 
 /* dsc2_checksum - establish checksum for size bytes in buffer */
 
-static uint8_t dsc2_checksum(char *buffer, int size) {
+static uint8_t dsc2_checksum(const char *buffer, int size) {
 
         int     checksum = 0;
         int     i;

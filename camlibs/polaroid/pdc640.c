@@ -522,7 +522,7 @@ pdc640_processtn (int width, int height, unsigned char **data, int size) {
 }
 
 static int
-pdc640_getbit (unsigned char *data, int *ofs, int size, int *bit) {
+pdc640_getbit (const unsigned char *data, int *ofs, int size, int *bit) {
 	static char c;
 	int b;
 

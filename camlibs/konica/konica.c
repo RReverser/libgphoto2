@@ -1159,7 +1159,7 @@ k_localization_date_format_set (GPPort *p, GPContext *c,
 
 int
 k_localization_data_put (GPPort *p, GPContext *c,
-			 unsigned char *data, unsigned long data_size)
+			 const unsigned char *data, unsigned long data_size)
 {
         /************************************************/
         /* Command for various localization issues.     */

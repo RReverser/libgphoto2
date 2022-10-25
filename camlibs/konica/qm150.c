@@ -128,7 +128,7 @@
  * Check the integrity of datas
  */
 static unsigned char
-k_calculate_checksum (unsigned char *buf, unsigned long int len)
+k_calculate_checksum (const unsigned char *buf, unsigned long int len)
 {
 	unsigned int i;
 	unsigned char result=0;

@@ -43,7 +43,7 @@
 /*
  * Checks wether the camera responds busy
  */
-static int mdc800_usb_isBusy (unsigned char* ch)
+static int mdc800_usb_isBusy (const unsigned char* ch)
 {
 	int i;
 	for (i=0;i<8;i++)
@@ -56,7 +56,7 @@ static int mdc800_usb_isBusy (unsigned char* ch)
 /*
  * Checks wether the Camera is ready
  */
-static int mdc800_usb_isReady (unsigned char *ch)
+static int mdc800_usb_isReady (const unsigned char *ch)
 {
 	int i;
 	for (i=0;i<8;i++)

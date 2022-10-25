@@ -36,7 +36,7 @@ static const int16_t st2205_corr_table[16] = {
 };
 
 static int
-st2205_decode_block(CameraPrivateLibrary *pl, unsigned char *src,
+st2205_decode_block(CameraPrivateLibrary *pl, const unsigned char *src,
 	int src_length, int **dest, int dest_x, int dest_y)
 {
 	const st2205_lookup_row *luma_table, *chroma_table;
@@ -166,7 +166,7 @@ st2205_decode_image(CameraPrivateLibrary *pl, unsigned char *src, int **dest)
 }
 
 static uint8_t st2205_find_closest_match(const st2205_lookup_row *table,
-	  int16_t *row, int *smallest_diff_ret)
+	  const int16_t *row, int *smallest_diff_ret)
 {
 	int i, j;
 	uint8_t closest_match = 0;
@@ -373,7 +373,7 @@ st2205_code_image(CameraPrivateLibrary *pl, int **src,
 }
 
 int
-st2205_rgb565_to_rgb24(CameraPrivateLibrary *pl, unsigned char *src,
+st2205_rgb565_to_rgb24(CameraPrivateLibrary *pl, const unsigned char *src,
 	int **dest)
 {
 	int x,y;

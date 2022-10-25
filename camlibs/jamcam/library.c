@@ -57,7 +57,7 @@ static int jamcam_set_int_at_pos( unsigned char *buf, int pos, int value ) {
 	return value;
 }
 
-static unsigned int jamcam_get_int_at_pos( unsigned char *buf, int pos ) {
+static unsigned int jamcam_get_int_at_pos( const unsigned char *buf, int pos ) {
 	int ret = 0;
 
 	ret += buf[pos + 0];

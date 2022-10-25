@@ -188,7 +188,7 @@ spca50x_capture (CameraPrivateLibrary * lib)
 }
 
 int
-create_jpeg_from_data (uint8_t * dst, uint8_t * src, unsigned int qIndex, int w,
+create_jpeg_from_data (uint8_t * dst, const uint8_t * src, unsigned int qIndex, int w,
 		       int h, uint8_t format, int o_size, int *size,
 		       int omit_huffman_table, int omit_escape)
 {

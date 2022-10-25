@@ -57,13 +57,13 @@ compute_luts (int sharpen_percent, int *pos_lut, int *neg_lut )
 /** 'rgb_filter()' - Sharpen RGB pixels.  **/
 
 static void rgb_filter (int    width,	/* I - Width of line in pixels */
-		 int    *pos_lut,
+		 const int    *pos_lut,
 		 int    *neg_lut,
  	         unsigned char *src,	/* I - Source line */
 	         unsigned char *dst,	/* O - Destination line */
-		long int *neg0,	/* I - Top negative coefficient line */
-		long int *neg1,	/* I - Middle negative coefficient line */
-		long int *neg2)	/* I - Bottom negative coefficient line */
+		const long int *neg0,	/* I - Top negative coefficient line */
+		const long int *neg1,	/* I - Middle negative coefficient line */
+		const long int *neg2)	/* I - Bottom negative coefficient line */
 {
   long int pixel;		/* New pixel value */
 

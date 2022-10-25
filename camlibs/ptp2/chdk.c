@@ -1141,7 +1141,7 @@ chdk_camera_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pat
 }
 
 #ifdef HAVE_LIBJPEG
-static void yuv_live_to_jpeg(unsigned char *p_yuv,
+static void yuv_live_to_jpeg(const unsigned char *p_yuv,
 			     unsigned int buf_width, unsigned int width, unsigned int height,
 			     int fb_type, CameraFile *file
 ) {

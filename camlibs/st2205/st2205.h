@@ -179,7 +179,7 @@ st2205_code_image(CameraPrivateLibrary *pl, int **src,
 	unsigned char *dest, uint8_t shuffle_pattern, int allow_uv_corr);
 
 int
-st2205_rgb565_to_rgb24(CameraPrivateLibrary *pl, unsigned char *src,
+st2205_rgb565_to_rgb24(CameraPrivateLibrary *pl, const unsigned char *src,
 	int **dest);
 
 int

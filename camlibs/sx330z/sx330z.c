@@ -47,7 +47,7 @@ sx330z_fill_req(uint8_t *buf, struct traveler_req *req)
 
 /*convert to correct endianness */
 static int
-sx330z_fill_ack(uint8_t *buf, struct traveler_ack *ack)
+sx330z_fill_ack(const uint8_t *buf, struct traveler_ack *ack)
 {
  ack->always3 = le32toh(*(int32_t*)buf);   buf += 4;
  ack->timestamp = le32toh(*(int32_t*)buf); buf += 4;

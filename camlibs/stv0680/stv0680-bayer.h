@@ -22,7 +22,7 @@
 #define CAMLIBS_STV0680_BAYER_H
 
 void bayer_unshuffle_preview(unsigned int w, unsigned int h, unsigned int scale,
-			     unsigned char *raw, unsigned char *output);
+			     const unsigned char *raw, unsigned char *output);
 void light_enhance(unsigned int vw, unsigned int vh, unsigned int coarse, unsigned int fine,
 		   unsigned char avg_pix_val, unsigned char *output);
 

@@ -173,7 +173,7 @@ static const char *size[]    = {"VGA (640x480)", "XGA (1024x768", NULL};
  * (3rd one) and the last one (checksum).
  */
 static int
-calc_checksum (unsigned char *cmd, unsigned int len)
+calc_checksum (const unsigned char *cmd, unsigned int len)
 {
 	unsigned int i;
 	unsigned char checksum;
@@ -198,7 +198,7 @@ pdc700_send (Camera *camera, unsigned char *cmd, unsigned int cmd_len)
 }
 
 static int
-pdc700_read (Camera *camera, unsigned char *cmd,
+pdc700_read (Camera *camera, const unsigned char *cmd,
 	     unsigned char *b, unsigned int *b_len,
 	     PDCStatus *status, unsigned char *sequence_number,
 	     GPContext *context)
@@ -758,7 +758,7 @@ camera_abilities (CameraAbilitiesList *list)
 }
 
 static void
-pdc700_expand (unsigned char *src, unsigned char *dst)
+pdc700_expand (const unsigned char *src, unsigned char *dst)
 {
 	int Y, Y2, U, V;
 	int x, y;

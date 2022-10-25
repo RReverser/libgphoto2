@@ -25,7 +25,7 @@
 #include "stv0680-bayer.h"
 
 /* Enhanced by Kurt Garloff to do scaling and debayering at the same time. */
-void bayer_unshuffle_preview(unsigned int w, unsigned int h, unsigned int scale, unsigned char *raw, unsigned char *output)
+void bayer_unshuffle_preview(unsigned int w, unsigned int h, unsigned int scale, const unsigned char *raw, unsigned char *output)
 {
 
     int x, y, nx, ny;
