@@ -19,17 +19,16 @@ errordumper(GPLogLevel level, const char *domain, const char *str, void *data) {
 	fprintf(stderr, "%s\n", str);
 }
 
-static struct queue_entry {
-	CameraFilePath	path;
-	int offset;
-} *queue = NULL;
-static int nrofqueue=0;
-static int nrdownloads=0;
-
-static const char *buffer;
+typedef struct queue {
+	int len;
+	struct queue_entry {
+		CameraFilePath	path;
+		int offset;
+	}* entries;
+} queue_t;
 
 static int
-wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
+wait_event_and_download (Camera *camera, int waittime, GPContext *context, queue_t *q) {
 	CameraEventType	evtype;
 	CameraFilePath	*path;
 	void		*data;
@@ -38,7 +37,7 @@ wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
 
         gettimeofday (&start, NULL);
 	data = NULL;
-	if (nrofqueue)
+	if (q->len)
 		waittime = 10; /* just drain the event queue */
 
 	while (1) {
@@ -75,23 +74,16 @@ wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
 			break;
 		case GP_EVENT_FILE_ADDED:
 			fprintf (stderr, "File %s / %s added to queue.\n", path->folder, path->name);
-			if (nrofqueue) {
-				struct queue_entry *q;
-				q = realloc(queue, sizeof(struct queue_entry)*(nrofqueue+1));
-				if (!q) return GP_ERROR_NO_MEMORY;
-				queue = q;
-			} else {
-				queue = malloc (sizeof(struct queue_entry));
-				if (!queue) return GP_ERROR_NO_MEMORY;
-			}
-			memcpy (&queue[nrofqueue].path, path, sizeof(CameraFilePath));
-			queue[nrofqueue].offset = 0;
-			nrofqueue++;
+			q->entries = realloc(q->entries, sizeof(struct queue_entry)*(q->len+1));
+			if (!q->entries) return GP_ERROR_NO_MEMORY;
+			memcpy (&q->entries[q->len].path, path, sizeof(CameraFilePath));
+			q->entries[q->len].offset = 0;
+			q->len++;
 			free(data);
 			break;
 		}
 	}
-	if (nrofqueue) {
+	if (q->len) {
 		unsigned long	size;
 		int		fd;
 		struct stat	stbuf;
@@ -100,10 +92,10 @@ wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
 		retval = gp_file_new(&file);
 
 		fprintf(stderr,"camera getfile of %s / %s\n",
-			queue[0].path.folder,
-			queue[0].path.name
+			q->entries[0].path.folder,
+			q->entries[0].path.name
 		);
-		retval = gp_camera_file_get(camera, queue[0].path.folder, queue[0].path.name,
+		retval = gp_camera_file_get(camera, q->entries[0].path.folder, q->entries[0].path.name,
 			GP_FILE_TYPE_NORMAL, file, context);
 		if (retval != GP_OK) {
 			fprintf (stderr,"gp_camera_file_get failed: %d\n", retval);
@@ -112,6 +104,7 @@ wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
 		}
 
 		/* buffer is returned as pointer, not as a copy */
+		const char *buffer;
 		retval = gp_file_get_data_and_size (file, &buffer, &size);
 
 		if (retval != GP_OK) {
@@ -119,12 +112,12 @@ wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
 			gp_file_free (file);
 			return retval;
 		}
-		if (-1 == stat(queue[0].path.name, &stbuf))
-			fd = creat(queue[0].path.name, 0644);
+		if (-1 == stat(q->entries[0].path.name, &stbuf))
+			fd = creat(q->entries[0].path.name, 0644);
 		else
-			fd = open(queue[0].path.name, O_RDWR | O_BINARY, 0644);
+			fd = open(q->entries[0].path.name, O_RDWR | O_BINARY, 0644);
 		if (fd == -1) {
-			perror(queue[0].path.name);
+			perror(q->entries[0].path.name);
 			return GP_ERROR;
 		}
 		if (-1 == lseek(fd, 0, SEEK_SET))
@@ -135,10 +128,9 @@ wait_event_and_download (Camera *camera, int waittime, GPContext *context) {
 
 		gp_file_free (file); /* Note: this invalidates buffer. */
 
-		fprintf(stderr,"ending download %d, deleting file.\n", nrdownloads);
-		retval = gp_camera_file_delete(camera, queue[0].path.folder, queue[0].path.name, context);
-		memmove(&queue[0],&queue[1],sizeof(queue[0])*(nrofqueue-1));
-		nrofqueue--;
+		retval = gp_camera_file_delete(camera, q->entries[0].path.folder, q->entries[0].path.name, context);
+		memmove(&q->entries[0],&q->entries[1],sizeof(struct queue_entry)*(q->len-1));
+		q->len--;
 	}
 	return GP_OK;
 }
@@ -159,6 +151,7 @@ main(int argc, char **argv) {
 		printf("gp_camera_init: %d\n", retval);
 		exit (1);
 	}
+	queue_t q = { 0, NULL };
 	while (1) {
 		if ((time(NULL) & 1) == 1)  {
 			fprintf(stderr,"triggering capture %d\n", ++nrcapture);
@@ -170,7 +163,7 @@ main(int argc, char **argv) {
 			fprintf (stderr, "done triggering\n");
 		}
 		/*fprintf(stderr,"waiting for events\n");*/
-		retval = wait_event_and_download(camera, 100, context);
+		retval = wait_event_and_download(camera, 100, context, &q);
 		if (retval != GP_OK)
 			break;
 		/*fprintf(stderr,"end waiting for events\n");*/
