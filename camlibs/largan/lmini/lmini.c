@@ -47,7 +47,7 @@ static const char BMPheader[54]={
 /*
  * baud rate enumerations
  */
-static struct largan_baud_rate {
+static const struct largan_baud_rate {
 	int baud;
 	char value;	/* value to be sent in the protocol */
 } bauds [] = {

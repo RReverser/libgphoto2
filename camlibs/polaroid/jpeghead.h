@@ -88,7 +88,7 @@
     "\xFF\xC0\x00\x11" \
     "\x08\x00\xf8\x02\x80\x03" "\x01\x11\x00" "\x02\x11\x00" "\x03\x21\x00"
 
-static struct {
+static const struct {
 unsigned int size;
 char *data;
 } jpegheader[] = {

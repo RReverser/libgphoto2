@@ -650,7 +650,7 @@ gp_port_get_pin (GPPort *port, GPPin pin, GPLevel *level)
 	return (GP_OK);
 }
 
-static struct {
+static const struct {
 	GPPin pin;
 	unsigned char number;
 	const char *description_short;
@@ -666,7 +666,7 @@ static struct {
 	{0, 0, NULL, NULL}
 };
 
-static struct {
+static const struct {
 	GPLevel level;
 	const char *description;
 } LevelTable[] = {

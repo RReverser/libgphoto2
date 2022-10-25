@@ -47,7 +47,7 @@ static const char JPEG_SOF_MARKER[]  = { (char)0xFF, (char)0xD9, '\0' };
 /*static const char JPEG_APP1_MARKER[] = { (char)0xFF, (char)0xE1, '\0' };*/
 /*static const char TIFF_SOI_MARKER[]  = { (char)0x49, (char)0x49, (char)0x2A, (char)0x00, (char)0x08, '\0' };*/
 
-static struct {
+static const struct {
 	const char *manuf;
 	const char *model;
 	SierraModel sierra_model;
@@ -233,7 +233,7 @@ static struct {
 	{NULL, NULL, 0,	0, 0, 0, NULL}
 };
 
-static struct {
+static const struct {
 	SierraSpeed speed;
 	int bit_rate;
 } SierraSpeeds[] = {
@@ -2149,7 +2149,7 @@ int get_jpeg_data(const char *data, int data_size, char **jpeg_data, int *jpeg_s
 	return ret_status;
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.folder_list_func = folder_list_func,
 	.get_info_func = get_info_func,
@@ -2349,4 +2349,3 @@ camera_init (Camera *camera, GPContext *context)
 	GP_DEBUG ("****************** sierra initialization OK");
 	return (GP_OK);
 }
-

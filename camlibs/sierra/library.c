@@ -929,7 +929,7 @@ sierra_init (Camera *camera, GPContext *context)
 	}
 }
 
-static struct {
+static const struct {
         SierraSpeed speed;
         int bit_rate;
 } SierraSpeeds[] = {

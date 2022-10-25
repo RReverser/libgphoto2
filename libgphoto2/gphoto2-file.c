@@ -573,7 +573,7 @@ gp_file_save (CameraFile *file, const char *filename)
  * gnome-mime, whatever.
  * See also the GP_MIME_* definitions.
  */
-static const char *mime_table[] = {
+static const char *const mime_table[] = {
     "bmp",  GP_MIME_BMP,
     "jpg",  GP_MIME_JPEG,
     "tif",  GP_MIME_TIFF,

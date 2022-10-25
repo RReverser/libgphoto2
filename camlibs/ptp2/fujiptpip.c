@@ -319,7 +319,7 @@ ptp_fujiptpip_senddata (PTPParams* params, PTPContainer* ptp,
 
 #define fujiptpip_getdata_payload		8
 
-static unsigned char hardcoded_deviceinfo[] = {
+static const unsigned char hardcoded_deviceinfo[] = {
 100, 0,			/* standard version */
 PTP_VENDOR_FUJI, 0,	/* vendor extension id */
 0, 0, 100, 0,		/* vendor ext version */

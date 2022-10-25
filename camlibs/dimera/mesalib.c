@@ -939,8 +939,8 @@ uint16_t *
 mesa_get_image( GPPort *port, int image )
 {
 	static uint8_t			buffer[640*480L];
-	static struct mesa_image_info	info;
-	static struct mesa_image_arg	ia;
+	static const struct mesa_image_info	info;
+	static const struct mesa_image_arg	ia;
 	uint8_t				*b = buffer;
 	uint16_t			*rbuffer;
 	int				r, res;
@@ -1009,8 +1009,8 @@ mesa_get_image( GPPort *port, int image )
 uint8_t *
 mesa_get_image( GPPort *port, int image )
 {
-	static struct mesa_image_info	info;
-	static struct mesa_image_arg	ia;
+	static const struct mesa_image_info	info;
+	static const struct mesa_image_arg	ia;
 	uint8_t				*rbuffer, *b;
 	int				r, res, retry;
 	unsigned long			size;

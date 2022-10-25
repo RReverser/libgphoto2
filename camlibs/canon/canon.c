@@ -507,7 +507,7 @@ canon_int_filename2audioname (Camera __unused__ *camera, const char *filename)
 const char *
 canon_int_filename2thumbname (Camera __unused__ *camera, const char *filename)
 {
-        static char *nullstring = "";
+        static const char *const nullstring = "";
 
         /* First handle cases where we shouldn't try to get extra .THM
          * file but use the special get_thumbnail_of_xxx function.

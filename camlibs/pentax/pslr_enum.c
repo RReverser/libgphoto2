@@ -39,25 +39,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const char* pslr_color_space_str[PSLR_COLOR_SPACE_MAX] = {
+static const char* const pslr_color_space_str[PSLR_COLOR_SPACE_MAX] = {
     "sRGB",
     "AdobeRGB"
 };
 
-const char* pslr_af_mode_str[PSLR_AF_MODE_MAX] = {
+static const char* const pslr_af_mode_str[PSLR_AF_MODE_MAX] = {
     "MF",
     "AF.S",
     "AF.C",
     "AF.A"
 };
 
-const char* pslr_ae_metering_str[PSLR_AE_METERING_MAX] = {
+static const char* const pslr_ae_metering_str[PSLR_AE_METERING_MAX] = {
     "Multi",
     "Center",
     "Spot"
 };
 
-const char* pslr_flash_mode_str[PSLR_FLASH_MODE_MAX] = {
+static const char* const pslr_flash_mode_str[PSLR_FLASH_MODE_MAX] = {
     "Manual",
     "Manual-RedEye",
     "Slow",
@@ -69,7 +69,7 @@ const char* pslr_flash_mode_str[PSLR_FLASH_MODE_MAX] = {
     "Wireless"
 };
 
-const char* pslr_drive_mode_str[PSLR_DRIVE_MODE_MAX] = {
+static const char* const pslr_drive_mode_str[PSLR_DRIVE_MODE_MAX] = {
     "Single", /* Bracketing also returns Single */
     "Continuous-HI",
     "SelfTimer-12",
@@ -79,7 +79,7 @@ const char* pslr_drive_mode_str[PSLR_DRIVE_MODE_MAX] = {
     "Continuous-LO"
 };
 
-const char*  pslr_af_point_sel_str[PSLR_AF_POINT_SEL_MAX] = {
+static const char* const  pslr_af_point_sel_str[PSLR_AF_POINT_SEL_MAX] = {
     "Auto-5",
     "Select",
     "Spot",
@@ -87,7 +87,7 @@ const char*  pslr_af_point_sel_str[PSLR_AF_POINT_SEL_MAX] = {
     "Expanded"
 };
 
-const char*  pslr_af11_point_str[11] = {
+static const char* const  pslr_af11_point_str[11] = {
     "topleft",
     "topmiddle",
     "topright",
@@ -101,7 +101,7 @@ const char*  pslr_af11_point_str[11] = {
     "bottomright"
 };
 
-const char* pslr_jpeg_image_tone_str[PSLR_JPEG_IMAGE_TONE_MAX] = {
+static const char* const pslr_jpeg_image_tone_str[PSLR_JPEG_IMAGE_TONE_MAX] = {
     "Natural",
     "Bright",
     "Portrait",
@@ -117,7 +117,7 @@ const char* pslr_jpeg_image_tone_str[PSLR_JPEG_IMAGE_TONE_MAX] = {
     "Auto"
 };
 
-const char* pslr_white_balance_mode_str[PSLR_WHITE_BALANCE_MODE_MAX] = {
+static const char* const pslr_white_balance_mode_str[PSLR_WHITE_BALANCE_MODE_MAX] = {
     "Auto",
     "Daylight",
     "Shade",
@@ -138,28 +138,28 @@ const char* pslr_white_balance_mode_str[PSLR_WHITE_BALANCE_MODE_MAX] = {
     "MultiAuto"
 };
 
-const char* pslr_custom_ev_steps_str[PSLR_CUSTOM_EV_STEPS_MAX] = {
+static const char* const pslr_custom_ev_steps_str[PSLR_CUSTOM_EV_STEPS_MAX] = {
     "1/2",
     "1/3"
 };
 
-const char* pslr_custom_sensitivity_steps_str[PSLR_CUSTOM_SENSITIVITY_STEPS_MAX] = {
+static const char* const pslr_custom_sensitivity_steps_str[PSLR_CUSTOM_SENSITIVITY_STEPS_MAX] = {
     "1",
     "As"
 };
 
-const char* pslr_image_format_str[PSLR_IMAGE_FORMAT_MAX] = {
+static const char* const pslr_image_format_str[PSLR_IMAGE_FORMAT_MAX] = {
     "JPEG",
     "RAW",
     "RAW+"
 };
 
-const char* pslr_raw_format_str[PSLR_RAW_FORMAT_MAX] = {
+static const char* const pslr_raw_format_str[PSLR_RAW_FORMAT_MAX] = {
     "PEF",
     "DNG"
 };
 
-const char* pslr_scene_mode_str[PSLR_SCENE_MODE_MAX] = {
+static const char* const pslr_scene_mode_str[PSLR_SCENE_MODE_MAX] = {
     "NONE",
     "HISPEED",
     "DOF",

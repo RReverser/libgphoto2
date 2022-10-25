@@ -38,7 +38,7 @@
 
 #define GP_MODULE
 
-static struct jamcam_file jamcam_files[1024];
+static const struct jamcam_file jamcam_files[1024];
 static unsigned int jamcam_count = 0;
 static int jamcam_mmc_card_size = 0;
 
@@ -700,4 +700,3 @@ static int jamcam_query_mmc_card (Camera *camera)
 	}
 	return (GP_ERROR_TIMEOUT);
 }
-

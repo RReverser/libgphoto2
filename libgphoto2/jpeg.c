@@ -42,13 +42,13 @@
 /* Determine the number of elements in an array. */
 #define countof(array) (sizeof(array) / sizeof((array)[0]))
 
-const jpegmarker JPEG_MARKERS[] = {
+static const jpegmarker JPEG_MARKERS[] = {
     JPEG_START,             JPEG_COMMENT,           JPEG_APPO,
     JPEG_QUANTIZATION,      JPEG_HUFFMAN,           JPEG_SOFC0,
     JPEG_SSSEAHAL,          JPEG_EOI
 };
 
-const char *JPEG_MARKERNAMES[] = {
+static const char *const JPEG_MARKERNAMES[] = {
     "Start",                "Comment",              "APPO",
     "Quantization table",   "Huffman table",        "SOFC0",
     "SsSeAhAl",             "End of image"

@@ -418,7 +418,7 @@ static int put_file_func (CameraFilesystem *fs, const char *folder, const char *
     return GP_OK;
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.put_file_func = put_file_func,
@@ -496,4 +496,3 @@ int camera_init(Camera *camera, GPContext *context) {
     /* Tell the CameraFilesystem where to get lists from */
     return gp_filesystem_set_funcs (camera->fs, &fsfuncs, camera);
 }
-

@@ -29,7 +29,7 @@
 #include "libgphoto2/i18n.h"
 
 
-static struct {
+static const struct {
 	int result;
 	const char *description;
 } result_descriptions[] = {

@@ -88,7 +88,7 @@ struct _CameraPrivateLibrary {
 };
 
 
-static const char *models[] = {
+static const char *const models[] = {
         "Mustek:VDC-3500",
         "Relisys:Dimera 3500",
         "Trust:DC-3500",
@@ -714,7 +714,7 @@ We need more, and more accurate, curves here to make this work.  You'd need
 a better way than trial and error to generate a family of characteristic
 curves.
 */
-static struct { float M; float b; }
+static const struct { float M; float b; }
 exposure_tables[] = {
 	{2.6, -11},
 	{2.8, -15},
@@ -892,7 +892,7 @@ camera_set_config (Camera *camera, CameraWidget *window, GPContext *context)
 	return GP_OK;
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.get_info_func = get_info_func

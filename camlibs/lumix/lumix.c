@@ -994,7 +994,7 @@ Raw:
 	return strdup((char*)xchar);
 }
 
-static struct shuttermap {
+static const struct shuttermap {
 	char	*cameraspeed;
 	char	*speed;
 } shutterspeeds[] = {
@@ -1059,7 +1059,7 @@ static struct shuttermap {
 	{"256/256","B"},
 };
 
-static struct aperturemap {
+static const struct aperturemap {
 	char	*cameraaperture;
 	char	*aperture;
 } apertures[] = {

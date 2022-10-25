@@ -479,7 +479,7 @@ camera_abilities (CameraAbilitiesList *list)
  * are NULL.
  *
  */
-CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.folder_list_func = folder_list_func,
 	.get_info_func = get_info_func,

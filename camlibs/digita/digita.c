@@ -421,7 +421,7 @@ static int delete_file_func(CameraFilesystem *fs, const char *folder,
         return digita_file_delete(camera, folder, filename, context);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.folder_list_func = folder_list_func,
 	.get_file_func = get_file_func,
@@ -473,4 +473,3 @@ int camera_init(Camera *camera, GPContext *context)
 
 	return GP_OK;
 }
-

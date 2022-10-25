@@ -61,7 +61,7 @@ struct _CameraPrivateLibrary{
 static int flip_vertical (int width, int height, unsigned char *rgb);
 static int flip_both     (int width, int height, unsigned char *rgb);
 
-static struct {
+static const struct {
 	const char*				model;
 	int vendor,product;
 	struct _CameraPrivateLibrary	pl;
@@ -983,7 +983,7 @@ camera_exit (Camera *camera, GPContext *context)
 	return (GP_OK);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_info_func = get_info_func,
 	.get_file_func = get_file_func,

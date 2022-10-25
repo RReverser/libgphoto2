@@ -44,7 +44,7 @@ static const jpeg_quantization_table luminance = {
 #define CR(result) {int r = (result); if (r < 0) return (r);}
 #define CR_FREE(result, data) {int r = (result); if (r < 0) {free (data); return (r);}}
 
-static struct {
+static const struct {
 	const char *model;
 	unsigned char id;
 } models[] = {

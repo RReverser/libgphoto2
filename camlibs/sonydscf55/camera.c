@@ -304,7 +304,7 @@ get_camera_model(Camera *camera, SonyModel *model)
 }
 
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.get_info_func = get_info_func

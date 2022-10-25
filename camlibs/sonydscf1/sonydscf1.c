@@ -585,7 +585,7 @@ static int file_list_func (CameraFilesystem *fs, const char *folder,
         return gp_list_populate(list, "PSN%05i.jpg", F1howmany(camera->port));
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.del_file_func = delete_file_func,
@@ -609,4 +609,3 @@ int camera_init (Camera *camera, GPContext *context) {
 	/* Set up the filesystem */
 	return gp_filesystem_set_funcs (camera->fs, &fsfuncs, camera);
 }
-

@@ -184,7 +184,7 @@ print_debug_deviceinfo (PTPParams *params, PTPDeviceInfo *di)
 /* struct timeval is simply two long int values, so passing it by value is not expensive.
  * It is most likely going to be inlined anyway and therefore 'free'. Passing it by value
  * leads to a cleaner interface. */
-static struct timeval
+static const struct timeval
 time_now() {
 	struct timeval curtime;
 	gettimeofday (&curtime, NULL);
@@ -839,7 +839,7 @@ nikon_wait_busy(PTPParams *params, int waitms, int timeout) {
 }
 
 
-static struct {
+static const struct {
 	const char *model;
 	unsigned short usb_vendor;
 	unsigned short usb_product;
@@ -2790,7 +2790,7 @@ static struct {
 #endif
 };
 
-static struct {
+static const struct {
 	const char *model;
 	unsigned long device_flags;
 } ptpip_models[] = {
@@ -2803,7 +2803,7 @@ static struct {
 };
 
 #include "device-flags.h"
-static struct {
+static const struct {
 	const char *vendor;
 	unsigned short usb_vendor;
 	const char *model;
@@ -2815,7 +2815,7 @@ static struct {
 #endif
 };
 
-static struct {
+static const struct {
 	uint16_t	format_code;
 	uint16_t	vendor_code;
 	const char *txt;
@@ -8170,7 +8170,7 @@ retry:
  * that are uninteresting for us we list all
  * that are exposed by PTP anyway (and are r/o).
  */
-static unsigned short uninteresting_props [] = {
+static const unsigned short uninteresting_props [] = {
 	PTP_OPC_StorageID,
 	PTP_OPC_ObjectFormat,
 	PTP_OPC_ProtectionStatus,
@@ -8336,7 +8336,7 @@ ptp_mtp_render_metadata (
 /* To avoid roundtrips for querying prop desc if it is R/O
  * we list all that are by standard means R/O.
  */
-static unsigned short readonly_props [] = {
+static const unsigned short readonly_props [] = {
 	PTP_OPC_StorageID,
 	PTP_OPC_ObjectFormat,
 	PTP_OPC_ProtectionStatus,
@@ -9565,7 +9565,7 @@ debug_objectinfo(PTPParams *params, uint32_t oid, PTPObjectInfo *oi) {
 	GP_LOG_D ("  CaptureDate: 0x%08x", (unsigned int)oi->CaptureDate);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func		= file_list_func,
 	.folder_list_func	= folder_list_func,
 	.get_info_func		= get_info_func,

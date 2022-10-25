@@ -463,7 +463,7 @@ static int camera_about (Camera *camera, CameraText *about, GPContext *context)
 	return (GP_OK);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.get_info_func = get_info_func,
@@ -503,4 +503,3 @@ int camera_init (Camera *camera, GPContext *context)
 	camera->pl->context = NULL;
 	return (GP_OK);
 }
-

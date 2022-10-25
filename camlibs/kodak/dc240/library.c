@@ -532,7 +532,7 @@ int dc240_set_speed (Camera *camera, int speed)
     return retval;
 }
 
-static struct _type_to_camera {
+static const struct _type_to_camera {
     uint16_t status_type;
     char * name;
 } type_to_camera [] = {

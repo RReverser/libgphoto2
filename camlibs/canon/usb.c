@@ -60,7 +60,7 @@ static int serial_code = 0;
 
 /* Map camera status codes (from offset 0x50 in reply block) to
  * messages. */
-static struct canon_usb_status canon_usb_status_table[] = {
+static const struct canon_usb_status canon_usb_status_table[] = {
         {0x00000000, NULL},
         {0x02000022, "File not found"},
         {0x02000029, "File was protected"},

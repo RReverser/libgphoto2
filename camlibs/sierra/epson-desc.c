@@ -239,7 +239,7 @@ static const RegisterDescriptorType ep3000z_reg_53[] = {
  * received from the camera is stored into this data area, so it cannot be
  * a const.
  */
-static CameraRegisterType ep3000z_pic_regs[] =  {
+static const CameraRegisterType ep3000z_pic_regs[] =  {
 	/* camera prefix, register number, size of register */
 	CAM_REG_TYPE_INIT (ep3000z, 01, 4, CAM_DESC_DEFAULT, 0), /* resolution/size */
 	CAM_REG_TYPE_INIT (ep3000z, 05, 4, CAM_DESC_DEFAULT, 0), /* aperture (f-stop) */
@@ -252,7 +252,7 @@ static CameraRegisterType ep3000z_pic_regs[] =  {
 /*
  * All of the register used to modify camera settings.
  */
-static CameraRegisterType ep3000z_cam_regs[] = {
+static const CameraRegisterType ep3000z_cam_regs[] = {
 	CAM_REG_TYPE_INIT (ep3000z, 53, 4, CAM_DESC_DEFAULT, 0), /* date-time */
 	CAM_REG_TYPE_INIT (ep3000z, 02, 4, CAM_DESC_DEFAULT, 0), /* date-time */
 	CAM_REG_TYPE_INIT (ep3000z, 24, 4, CAM_DESC_DEFAULT, 0), /* Camera power save */

@@ -71,7 +71,7 @@ void sleep_sec(double sec) {
     usleep(1000000*(sec-floor(sec)));
 }
 
-ipslr_handle_t pslr;
+static ipslr_handle_t pslr;
 
 static int ipslr_set_mode(ipslr_handle_t *p, uint32_t mode);
 static int ipslr_cmd_00_09(ipslr_handle_t *p, uint32_t mode);
@@ -98,15 +98,15 @@ void hexdump(uint8_t *buf, uint32_t bufLen);
 
 static pslr_progress_callback_t progress_callback = NULL;
 
-user_file_format_t file_formats[3] = {
+extern const user_file_format_t file_formats[3] = {
     { USER_FILE_FORMAT_PEF, "PEF", "pef"},
     { USER_FILE_FORMAT_DNG, "DNG", "dng"},
     { USER_FILE_FORMAT_JPEG, "JPEG", "jpg"},
 };
 
 
-const char* valid_vendors[3] = {"PENTAX", "SAMSUNG", "RICOHIMG"};
-const char* valid_models[3] = {"DIGITAL_CAMERA", "DSC", "Digital Camera"};
+static const char* const valid_vendors[3] = {"PENTAX", "SAMSUNG", "RICOHIMG"};
+static const char* const valid_models[3] = {"DIGITAL_CAMERA", "DSC", "Digital Camera"};
 
 // x18 subcommands to change camera properties
 // X18_n: unknown effect

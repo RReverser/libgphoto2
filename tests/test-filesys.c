@@ -131,7 +131,7 @@ delete_file_func (CameraFilesystem __unused__ *fs, const char *folder,
 	return (GP_OK);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.get_info_func = get_info_func,
 	.set_info_func = set_info_func,
 	.del_file_func = delete_file_func,

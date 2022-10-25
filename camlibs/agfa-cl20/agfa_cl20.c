@@ -650,7 +650,7 @@ file_list_func (CameraFilesystem *fs, const char *folder, CameraList *list,
 	return gp_list_populate( list, "pic_%04i.jpg", count);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_info_func = get_info_func,
 	.get_file_func = get_file_func,

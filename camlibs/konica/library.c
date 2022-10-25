@@ -41,7 +41,7 @@
 #define GP_MODULE "konica"
 #define PING_TIMEOUT 60
 
-static struct {
+static const struct {
         const char *model;
         int image_id_long;
         int vendor;
@@ -1189,7 +1189,7 @@ camera_post_func (Camera *camera, GPContext *context)
 	return (GP_OK);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.get_info_func = get_info_func,
 	.set_info_func = set_info_func,
 	.file_list_func = file_list_func,

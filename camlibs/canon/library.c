@@ -2504,7 +2504,7 @@ remove_dir_func (CameraFilesystem __unused__ *fs, const char *folder,
  * Returns: gphoto2 error code
  *
  */
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.folder_list_func = folder_list_func,
 	.get_info_func = get_info_func,

@@ -66,7 +66,7 @@ typedef struct {
     const char *extension;
 } user_file_format_t;
 
-extern user_file_format_t file_formats[3];
+extern const user_file_format_t file_formats[3];
 
 user_file_format_t *get_file_format_t( user_file_format uff );
 

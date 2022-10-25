@@ -40,9 +40,6 @@
 
 #include "pslr.h"
 
-
-bool debug = true;
-
 struct _CameraPrivateLibrary {
 	ipslr_handle_t	pslr;
 	char		*lastfn;
@@ -241,7 +238,7 @@ delete_file_func (CameraFilesystem *fs, const char *folder,
 }
 
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.del_file_func = delete_file_func

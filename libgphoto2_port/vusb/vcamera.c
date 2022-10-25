@@ -256,7 +256,7 @@ static int ptp_initiatecapture_write(vcamera *cam, ptpcontainer *ptp);
 static int ptp_vusb_write(vcamera *cam, ptpcontainer *ptp);
 static int ptp_nikon_setcontrolmode_write(vcamera *cam, ptpcontainer *ptp);
 
-static struct ptp_function {
+static const struct ptp_function {
 	int	code;
 	int	(*write)(vcamera *cam, ptpcontainer *ptp);
 	int	(*write_data)(vcamera *cam, ptpcontainer *ptp, unsigned char *data, unsigned int size);
@@ -279,11 +279,11 @@ static struct ptp_function {
 	{0x9999,	ptp_vusb_write, 		NULL			},
 };
 
-static struct ptp_function ptp_functions_nikon_dslr[] = {
+static const struct ptp_function ptp_functions_nikon_dslr[] = {
 	{0x90c2,	ptp_nikon_setcontrolmode_write, NULL			},
 };
 
-static struct ptp_map_functions {
+static const struct ptp_map_functions {
 	vcameratype		type;
 	struct ptp_function	*functions;
 	unsigned int		nroffunctions;
@@ -392,7 +392,7 @@ static int ptp_exposurebias_getdesc(vcamera*,PTPDevicePropDesc*);
 static int ptp_exposurebias_getvalue(vcamera*,PTPPropertyValue*);
 static int ptp_exposurebias_setvalue(vcamera*,PTPPropertyValue*);
 
-static struct ptp_property {
+static const struct ptp_property {
 	int	code;
 	int	(*getdesc )(vcamera *cam, PTPDevicePropDesc*);
 	int	(*getvalue)(vcamera *cam, PTPPropertyValue*);
@@ -415,7 +415,7 @@ struct ptp_dirent {
 	struct ptp_dirent 	*next;
 };
 
-static struct ptp_dirent *first_dirent = NULL;
+static const struct ptp_dirent *first_dirent = NULL;
 static uint32_t	ptp_objectid = 0;
 
 static void *read_file(struct ptp_dirent *cur) {
@@ -2026,7 +2026,7 @@ struct ptp_interrupt {
 	struct ptp_interrupt	*next;
 };
 
-static struct ptp_interrupt *first_interrupt;
+static const struct ptp_interrupt *first_interrupt;
 
 static int
 ptp_inject_interrupt(vcamera*cam, int when, uint16_t code, int nparams, uint32_t param1, uint32_t transid) {

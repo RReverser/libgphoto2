@@ -328,7 +328,7 @@ storage_info_func (CameraFilesystem *fs,
 }
 
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.delete_all_func = delete_all_func,

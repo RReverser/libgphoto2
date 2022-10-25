@@ -49,7 +49,7 @@ camera_id (CameraText *id)
 	return (GP_OK);
 }
 
-static struct {
+static const struct {
 	const char       *model;
 	int               public;
 	unsigned long int revision;
@@ -308,7 +308,7 @@ camera_exit (Camera *camera, GPContext *context)
 	return (GP_OK);
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_info_func = get_info_func,
 	.get_file_func = get_file_func,

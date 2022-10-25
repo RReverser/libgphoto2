@@ -53,7 +53,7 @@
 
 #define GP_MODULE "iclick"
 
-static struct {
+static const struct {
    	char *name;
 	CameraDriverStatus status;
    	unsigned short idVendor;
@@ -321,7 +321,7 @@ camera_exit (Camera *camera, GPContext *context)
 	return GP_OK;
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func
 };

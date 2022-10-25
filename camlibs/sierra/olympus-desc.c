@@ -951,7 +951,7 @@ static const RegisterDescriptorType oly3040_reg_41[] = {
  * register value received from the camera is stored into this data area,
  * so it cannot be a const.
  */
-static CameraRegisterType oly3040_pic_regs[] =  {
+static const CameraRegisterType oly3040_pic_regs[] =  {
 	/* camera prefix, register number, size of register */
 	CAM_REG_TYPE_INIT (oly3040, 01, 4, CAM_DESC_DEFAULT, 0), /* resolution/size */
 	CAM_REG_TYPE_INIT (oly3040, 03, 4, CAM_DESC_DEFAULT, 0), /* shutter */
@@ -972,7 +972,7 @@ static CameraRegisterType oly3040_pic_regs[] =  {
  * Olympus 3000z: All of the register used to modify picture settings.
  * Note that most of these are the same as the 3040.
  */
-static CameraRegisterType oly3000z_pic_regs[] =  {
+static const CameraRegisterType oly3000z_pic_regs[] =  {
 	/* camera prefix, register number, size of register */
 	CAM_REG_TYPE_INIT (oly3040, 01, 4, CAM_DESC_DEFAULT, 0), /* resolution/size */
 	CAM_REG_TYPE_INIT (oly3040, 03, 4, CAM_DESC_DEFAULT, 0), /* shutter */
@@ -992,7 +992,7 @@ static CameraRegisterType oly3000z_pic_regs[] =  {
 /*
  * All of the register used to modify camera settings.
  */
-static CameraRegisterType oly3040_cam_regs[] = {
+static const CameraRegisterType oly3040_cam_regs[] = {
 	CAM_REG_TYPE_INIT (oly3040, 02, 4, CAM_DESC_DEFAULT, 0), /* date-time */
 	CAM_REG_TYPE_INIT (oly3040, 34, 4, CAM_DESC_SUBACTION,
 			  SIERRA_ACTION_LCD_MODE), /* lcd mode */
@@ -1017,7 +1017,7 @@ static const CameraRegisterSetType oly3040_desc[] = {
 /*
  * Olympus 750UZ: All of the register used to modify picture settings.
  */
-static CameraRegisterType oly750uz_pic_regs[] =  {
+static const CameraRegisterType oly750uz_pic_regs[] =  {
 	/* camera prefix, register number, size of register */
 	CAM_REG_TYPE_INIT (oly750uz, 01, 4, CAM_DESC_DEFAULT, 0), /* resolution/size */
 	CAM_REG_TYPE_INIT (oly750uz, 03, 4, CAM_DESC_DEFAULT, 0), /* shutter */
@@ -1047,7 +1047,7 @@ static CameraRegisterType oly750uz_pic_regs[] =  {
  *
  * All the same as 3040.
  */
-static CameraRegisterType oly750uz_cam_regs[] = {
+static const CameraRegisterType oly750uz_cam_regs[] = {
 	CAM_REG_TYPE_INIT (oly3040, 02, 4, CAM_DESC_DEFAULT, 0), /* date-time */
 	CAM_REG_TYPE_INIT (oly3040, 34, 4, CAM_DESC_SUBACTION,
 			  SIERRA_ACTION_LCD_MODE), /* lcd mode */
@@ -1061,7 +1061,7 @@ static CameraRegisterType oly750uz_cam_regs[] = {
 /*
  * Olympus SP-500UZ: All of the register used to modify picture settings.
  */
-static CameraRegisterType olysp500uz_pic_regs[] =  {
+static const CameraRegisterType olysp500uz_pic_regs[] =  {
 	/* camera prefix, register number, size of register */
 	CAM_REG_TYPE_INIT (olysp500uz, 01, 4, CAM_DESC_DEFAULT, 0), /* resolution/size */
 	CAM_REG_TYPE_INIT (olysp500uz, 03, 4, CAM_DESC_DEFAULT, 0), /* shutter */
@@ -1091,7 +1091,7 @@ static CameraRegisterType olysp500uz_pic_regs[] =  {
  *
  * All the same as 3040.
  */
-static CameraRegisterType olysp500uz_cam_regs[] = {
+static const CameraRegisterType olysp500uz_cam_regs[] = {
 	CAM_REG_TYPE_INIT (oly3040, 02, 4, CAM_DESC_DEFAULT, 0), /* date-time */
 	CAM_REG_TYPE_INIT (oly3040, 34, 4, CAM_DESC_SUBACTION,
 			  SIERRA_ACTION_LCD_MODE), /* lcd mode */

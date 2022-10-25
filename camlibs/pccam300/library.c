@@ -264,7 +264,7 @@ delete_all_func (CameraFilesystem *fs, const char *folder, void *data,
 	return GP_OK;
 }
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_info_func = get_info_func,
 	.get_file_func = get_file_func,

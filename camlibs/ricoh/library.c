@@ -39,7 +39,7 @@
 #define CR(result) {int r=(result); if (r<0) return r;}
 #define CRW(result,widget) {int r=(result); if (r<0) { gp_widget_free (widget); return r; } }
 
-static struct {
+static const struct {
 	RicohModel id;
 	const char *model;
 } models[] = {
@@ -279,7 +279,7 @@ put_file_func (CameraFilesystem *fs, const char *folder, const char *name,
 #undef N_ELEMENTS
 #define N_ELEMENTS(v) (sizeof(v)/sizeof(v[0]))
 
-static struct {
+static const struct {
 	RicohExposure exposure;
 	const char *name;
 } ricoh_exposures[] = {
@@ -295,7 +295,7 @@ static struct {
 	{RICOH_EXPOSURE_AUTO, N_("Auto")}
 };
 
-static struct {
+static const struct {
 	RicohResolution resolution;
 	const char *name;
 } ricoh_resolutions[] = {
@@ -303,7 +303,7 @@ static struct {
 	{RICOH_RESOLUTION_1280_960, N_("1280 x 960")}
 };
 
-static struct {
+static const struct {
 	RicohWhiteLevel white_level;
 	const char *name;
 } ricoh_white_levels[] = {
@@ -315,7 +315,7 @@ static struct {
 	{RICOH_WHITE_LEVEL_SEPIA,		N_("Sepia")}
 };
 
-static struct {
+static const struct {
 	RicohMacro macro;
 	const char *name;
 } ricoh_macros[] = {
@@ -323,7 +323,7 @@ static struct {
 	{RICOH_MACRO_OFF, N_("Off")}
 };
 
-static struct {
+static const struct {
 	RicohCompression compression;
 	const char *name;
 } ricoh_compressions[] = {
@@ -333,7 +333,7 @@ static struct {
 	{RICOH_COMPRESSION_MIN,  N_("Minimal")}
 };
 
-static struct {
+static const struct {
 	RicohRecMode rec_mode;
 	const char *name;
 } ricoh_rec_modes[] = {
@@ -344,7 +344,7 @@ static struct {
 	{RICOH_REC_MODE_CHARACTER_SOUND, N_("Character & Sound")}
 };
 
-static struct {
+static const struct {
 	RicohFlash flash;
 	const char *name;
 } ricoh_flashs[] = {
@@ -353,7 +353,7 @@ static struct {
 	{RICOH_FLASH_ON,   N_("On")}
 };
 
-static struct {
+static const struct {
 	RicohZoom zoom;
 	const char *name;
 } ricoh_zooms[] = {
@@ -492,7 +492,7 @@ camera_set_config (Camera *c, CameraWidget *window, GPContext *co)
 	return (GP_OK);
 }
 
-static struct {
+static const struct {
 	unsigned int speed;
 	RicohSpeed rspeed;
 } speeds[] = {
@@ -505,7 +505,7 @@ static struct {
 	{     0, 0}
 };
 
-static CameraFilesystemFuncs fsfuncs = {
+static const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.get_file_func = get_file_func,
 	.del_file_func = del_file_func,
@@ -587,4 +587,3 @@ camera_init (Camera *camera, GPContext *context)
 
 	return (GP_OK);
 }
-
