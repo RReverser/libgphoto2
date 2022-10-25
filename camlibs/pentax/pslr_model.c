@@ -45,12 +45,18 @@
 #include "js0n.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <pthread.h>
 
 #include "pslr_model.h"
 #include "pslr.h"
 
-static char *jsontext=NULL;
-static int jsonsize;
+static struct {
+    pthread_once_t once;
+
+    char *text;
+    int size;
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
+} json = {PTHREAD_ONCE_INIT, NULL, 0};
 
 static int dir_exists(char *dir) {
     int res = 0;
@@ -761,8 +767,7 @@ pslr_setting_def_t *find_setting_by_name (pslr_setting_def_t *array, int array_l
     return NULL;
 }
 
-static
-char *read_json_file(int *jsonsize) {
+static void load_json_file() {
     int jsonfd = open("pentax_settings.json", O_RDONLY);
     if (jsonfd == -1) {
         // cannot find in the current directory, also checking PKTDATADIR
@@ -771,31 +776,28 @@ char *read_json_file(int *jsonsize) {
         }
         if (jsonfd == -1) {
             fprintf(stderr, "Cannot open pentax_settings.json file\n");
-            return NULL;
+            return;
         }
     }
-    *jsonsize = lseek(jsonfd, 0, SEEK_END);
+    json.size = lseek(jsonfd, 0, SEEK_END);
     lseek(jsonfd, 0, SEEK_SET);
-    char *jsontext=malloc(*jsonsize);
-    ssize_t ret = read(jsonfd, jsontext, *jsonsize);
-    if (ret < *jsonsize) {
+    char *jsontext=malloc(json.size);
+    ssize_t ret = read(jsonfd, jsontext, json.size);
+    if (ret < json.size) {
         fprintf(stderr, "Could not read pentax_settings.json file\n");
         free(jsontext);
-        return NULL;
+        return;
     }
-    DPRINT("json text:\n%.*s\n", *jsonsize, jsontext);
-    return jsontext;
+    DPRINT("json text:\n%.*s\n", json.size, jsontext);
 }
 
 pslr_setting_def_t *setting_file_process(const char *cameraid, int *def_num) {
     pslr_setting_def_t defs[128];
     *def_num=0;
-    if (jsontext == NULL) {
-        jsontext = read_json_file(&jsonsize);
-    }
+    pthread_once(&json.once, load_json_file);
     size_t json_part_length;
     const char *json_part;
-    if (!(json_part = js0n(cameraid, strlen(cameraid), jsontext, jsonsize, &json_part_length))) {
+    if (!(json_part = js0n(cameraid, strlen(cameraid), json.text, json.size, &json_part_length))) {
         fprintf(stderr, "JSON: Cannot find camera model\n");
         return NULL;
     }
