@@ -106,6 +106,11 @@ typedef struct {
     uint32_t battery_2;
     uint32_t battery_3;
     uint32_t battery_4;
+    /* debug fields */
+#ifdef PSLR_DEBUG
+    uint8_t lastbuf[MAX_STATUS_BUF_SIZE];
+    int first;
+#endif
 } pslr_status;
 
 typedef enum {

@@ -49,8 +49,6 @@
 #include "pslr_model.h"
 #include "pslr.h"
 
-static uint8_t lastbuf[MAX_STATUS_BUF_SIZE];
-static int first = 1;
 static char *jsontext=NULL;
 static int jsonsize;
 
@@ -64,26 +62,28 @@ static int dir_exists(char *dir) {
     return res;
 }
 
-static void ipslr_status_diff(uint8_t *buf) {
+static void ipslr_status_diff(pslr_status *status, uint8_t *buf) {
+#ifdef PSLR_DEBUG
     int n;
     int diffs;
-    if (first) {
+    if (status->first) {
         hexdump(buf, MAX_STATUS_BUF_SIZE);
-        memcpy(lastbuf, buf, MAX_STATUS_BUF_SIZE);
-        first = 0;
+        memcpy(status->lastbuf, buf, MAX_STATUS_BUF_SIZE);
+        status->first = 0;
     }
 
     diffs = 0;
     for (n = 0; n < MAX_STATUS_BUF_SIZE; n++) {
-        if (lastbuf[n] != buf[n]) {
-            DPRINT("\t\tbuf[%03X] last %02Xh %3d new %02Xh %3d\n", n, lastbuf[n], lastbuf[n], buf[n], buf[n]);
+        if (status->lastbuf[n] != buf[n]) {
+            DPRINT("\t\tbuf[%03X] last %02Xh %3d new %02Xh %3d\n", n, status->lastbuf[n], status->lastbuf[n], buf[n], buf[n]);
             diffs++;
         }
     }
     if (diffs) {
         DPRINT("---------------------------\n");
-        memcpy(lastbuf, buf, MAX_STATUS_BUF_SIZE);
+        memcpy(status->lastbuf, buf, MAX_STATUS_BUF_SIZE);
     }
+#endif
 }
 
 static
@@ -222,9 +222,7 @@ int get_hw_jpeg_quality( const ipslr_model_info_t *model, int user_jpeg_stars) {
 static
 void ipslr_status_parse_k10d(ipslr_handle_t  *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
     memset(status, 0, sizeof (*status));
     status->bufmask = get_uint16_be(&buf[0x16]);
     status->user_mode_flag = get_uint32_be(&buf[0x1c]);
@@ -268,9 +266,7 @@ static
 void ipslr_status_parse_k20d(ipslr_handle_t *p, pslr_status *status) {
 
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
     memset(status, 0, sizeof (*status));
     status->bufmask = get_uint16_be( &buf[0x16]);
     status->user_mode_flag = get_uint32_be(&buf[0x1c]);
@@ -427,9 +423,7 @@ static
 void ipslr_status_parse_kx(ipslr_handle_t *p, pslr_status *status) {
 
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0);
@@ -446,9 +440,7 @@ void ipslr_status_parse_kx(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_kr(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -462,9 +454,7 @@ void ipslr_status_parse_kr(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k5(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -481,9 +471,7 @@ void ipslr_status_parse_k5(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k30(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -502,9 +490,7 @@ void ipslr_status_parse_k30(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k01(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -522,9 +508,7 @@ void ipslr_status_parse_k01(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k50(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -538,9 +522,7 @@ void ipslr_status_parse_k50(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k500(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -557,9 +539,7 @@ void ipslr_status_parse_k500(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_km(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, -4);
@@ -575,9 +555,7 @@ void ipslr_status_parse_km(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k3(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -595,9 +573,7 @@ void ipslr_status_parse_k3(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_ks1(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -613,9 +589,7 @@ void ipslr_status_parse_ks1(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k1(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -657,9 +631,7 @@ void ipslr_status_parse_k1(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k70(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     ipslr_status_parse_common( p, status, 0 );
@@ -727,9 +699,7 @@ void ipslr_status_parse_k70(ipslr_handle_t *p, pslr_status *status) {
 static
 void ipslr_status_parse_k200d(ipslr_handle_t *p, pslr_status *status) {
     uint8_t *buf = p->status_buffer;
-    if ( debug ) {
-        ipslr_status_diff(buf);
-    }
+    ipslr_status_diff(status, buf);
 
     memset(status, 0, sizeof (*status));
     status->bufmask = get_uint16_be(&buf[0x16]);

@@ -1821,15 +1821,12 @@ void write_debug( const char* message, ... ) {
 
     // Be sure debug is really on as DPRINT doesn't know
     //
-    if ( !debug ) {
-        return;
-    }
-
+#ifdef PSLR_DEBUG
     // Write to stderr
     //
     va_list argp;
     va_start(argp, message);
     vfprintf( stderr, message, argp );
     va_end(argp);
-    return;
+#endif
 }

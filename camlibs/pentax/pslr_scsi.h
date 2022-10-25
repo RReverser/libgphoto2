@@ -32,7 +32,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-extern bool debug;
 extern void write_debug( const char* message, ... );
 
 #ifdef ANDROID
