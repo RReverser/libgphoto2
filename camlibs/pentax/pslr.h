@@ -105,7 +105,7 @@ typedef enum {
     PSLR_GUI_EXPOSURE_MODE_MAX
 } pslr_gui_exposure_mode_t;
 
-typedef void *pslr_handle_t;
+typedef struct ipslr_handle* pslr_handle_t;
 
 typedef struct {
     uint32_t a;
@@ -214,15 +214,15 @@ bool pslr_get_model_bufmask_single(pslr_handle_t h);
 pslr_buffer_type pslr_get_jpeg_buffer_type(pslr_handle_t h, int quality);
 int pslr_get_jpeg_resolution(pslr_handle_t h, int hwres);
 
-int pslr_read_datetime(pslr_handle_t *h, int *year, int *month, int *day, int *hour, int *min, int *sec);
+int pslr_read_datetime(pslr_handle_t h, int *year, int *month, int *day, int *hour, int *min, int *sec);
 
-int pslr_read_dspinfo(pslr_handle_t *h, char *firmware);
+int pslr_read_dspinfo(pslr_handle_t h, char *firmware);
 
-int pslr_read_setting(pslr_handle_t *h, int offset, uint32_t *value);
-int pslr_write_setting(pslr_handle_t *h, int offset, uint32_t value);
-int pslr_write_setting_by_name(pslr_handle_t *h, char *name, uint32_t value);
-bool pslr_has_setting_by_name(pslr_handle_t *h, char *name);
-int pslr_read_settings(pslr_handle_t *h);
+int pslr_read_setting(pslr_handle_t h, int offset, uint32_t *value);
+int pslr_write_setting(pslr_handle_t h, int offset, uint32_t value);
+int pslr_write_setting_by_name(pslr_handle_t h, char *name, uint32_t value);
+bool pslr_has_setting_by_name(pslr_handle_t h, char *name);
+int pslr_read_settings(pslr_handle_t h);
 
 pslr_gui_exposure_mode_t exposure_mode_conversion( pslr_exposure_mode_t exp );
 char *format_rational( pslr_rational_t rational, char * fmt );

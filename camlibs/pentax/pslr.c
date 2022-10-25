@@ -71,8 +71,6 @@ void sleep_sec(double sec) {
     usleep(1000000*(sec-floor(sec)));
 }
 
-static ipslr_handle_t pslr;
-
 static int ipslr_set_mode(ipslr_handle_t *p, uint32_t mode);
 static int ipslr_cmd_00_09(ipslr_handle_t *p, uint32_t mode);
 static int ipslr_cmd_10_0a(ipslr_handle_t *p, uint32_t mode);
@@ -387,21 +385,22 @@ pslr_handle_t pslr_init( char *model, char *device ) {
                 && find_in_array( valid_models, sizeof(valid_models)/sizeof(valid_models[0]), productId) != -1 ) {
             if ( result == PSLR_OK ) {
                 DPRINT("\tFound camera %s %s\n", vendorId, productId);
-                pslr.fd = fd;
+                ipslr_handle_t *pslr = calloc(1, sizeof(ipslr_handle_t));
+                pslr->fd = fd;
                 if ( model != NULL ) {
                     // user specified the camera model
-                    camera_name = pslr_camera_name( &pslr );
+                    camera_name = pslr_camera_name( pslr );
                     DPRINT("\tName of the camera: %s\n", camera_name);
                     if ( str_comparison_i( camera_name, model, strlen( camera_name) ) == 0 ) {
-                        return &pslr;
+                        return pslr;
                     } else {
                         DPRINT("\tIgnoring camera %s %s\n", vendorId, productId);
-                        pslr_shutdown ( &pslr );
-                        pslr.id = 0;
-                        pslr.model = NULL;
+                        pslr_shutdown ( pslr );
+                        pslr->id = 0;
+                        pslr->model = NULL;
                     }
                 } else {
-                    return &pslr;
+                    return pslr;
                 }
             } else {
                 DPRINT("\tCannot get drive info of Pentax camera. Please do not forget to install the program using 'make install'\n");
@@ -458,6 +457,7 @@ int pslr_shutdown(pslr_handle_t h) {
     DPRINT("[C]\tpslr_shutdown()\n");
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     close_drive(&p->fd);
+    free(p);
     return PSLR_OK;
 }
 
@@ -1495,7 +1495,7 @@ static int ipslr_identify(ipslr_handle_t *p) {
     return PSLR_OK;
 }
 
-int pslr_read_datetime(pslr_handle_t *h, int *year, int *month, int *day, int *hour, int *min, int *sec) {
+int pslr_read_datetime(pslr_handle_t h, int *year, int *month, int *day, int *hour, int *min, int *sec) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_read_datetime()\n");
     uint8_t idbuf[800];
@@ -1524,7 +1524,7 @@ int pslr_read_datetime(pslr_handle_t *h, int *year, int *month, int *day, int *h
     return PSLR_OK;
 }
 
-int pslr_read_dspinfo(pslr_handle_t *h, char* firmware) {
+int pslr_read_dspinfo(pslr_handle_t h, char* firmware) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_read_dspinfo()\n");
     uint8_t buf[4];
@@ -1545,7 +1545,7 @@ int pslr_read_dspinfo(pslr_handle_t *h, char* firmware) {
     return PSLR_OK;
 }
 
-int pslr_read_setting(pslr_handle_t *h, int offset, uint32_t *value) {
+int pslr_read_setting(pslr_handle_t h, int offset, uint32_t *value) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_read_setting(%d)\n", offset);
     uint8_t buf[4];
@@ -1569,7 +1569,7 @@ int pslr_read_setting(pslr_handle_t *h, int offset, uint32_t *value) {
     return PSLR_OK;
 }
 
-int pslr_write_setting(pslr_handle_t *h, int offset, uint32_t value) {
+int pslr_write_setting(pslr_handle_t h, int offset, uint32_t value) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_write_setting(%d)=%d\n", offset, value);
     CHECK(ipslr_cmd_00_09(p, 1));
@@ -1579,7 +1579,7 @@ int pslr_write_setting(pslr_handle_t *h, int offset, uint32_t value) {
     return PSLR_OK;
 }
 
-int pslr_write_setting_by_name(pslr_handle_t *h, char *name, uint32_t value) {
+int pslr_write_setting_by_name(pslr_handle_t h, char *name, uint32_t value) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     int def_num;
     char cameraid[10];
@@ -1598,7 +1598,7 @@ int pslr_write_setting_by_name(pslr_handle_t *h, char *name, uint32_t value) {
     return PSLR_OK;
 }
 
-bool pslr_has_setting_by_name(pslr_handle_t *h, char *name) {
+bool pslr_has_setting_by_name(pslr_handle_t h, char *name) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     int def_num;
     char cameraid[10];
@@ -1610,7 +1610,7 @@ bool pslr_has_setting_by_name(pslr_handle_t *h, char *name) {
 }
 
 
-int pslr_read_settings(pslr_handle_t *h) {
+int pslr_read_settings(pslr_handle_t h) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     int index=0;
     uint32_t value;
