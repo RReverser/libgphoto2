@@ -124,7 +124,7 @@ ax203_send_cmd(Camera *camera, int to_dev, char *cmd, int cmd_size,
 
 static int
 ax203_send_eeprom_cmd(Camera *camera, int to_dev,
-	char *eeprom_cmd, int eeprom_cmd_size,
+	const char *eeprom_cmd, int eeprom_cmd_size,
 	char *data, int data_size, char extra_arg)
 {
 	char cmd_buffer[16];

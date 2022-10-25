@@ -98,7 +98,7 @@ void hexdump(uint8_t *buf, uint32_t bufLen);
 
 static pslr_progress_callback_t progress_callback = NULL;
 
-extern const user_file_format_t file_formats[3] = {
+const user_file_format_t file_formats[3] = {
     { USER_FILE_FORMAT_PEF, "PEF", "pef"},
     { USER_FILE_FORMAT_DNG, "DNG", "dng"},
     { USER_FILE_FORMAT_JPEG, "JPEG", "jpg"},
@@ -286,7 +286,7 @@ int debug_onoff(ipslr_handle_t *p, char debug_mode) {
 
 /* ************* End enabling/disabling debug mode ************ */
 
-user_file_format_t *get_file_format_t( user_file_format uff ) {
+const user_file_format_t *get_file_format_t( user_file_format uff ) {
     unsigned int i;
     for (i = 0; i<sizeof(file_formats) / sizeof(file_formats[0]); i++) {
         if (file_formats[i].uff == uff) {

@@ -655,7 +655,7 @@ nikon_wait_busy(PTPParams *params, int waitms, int timeout) {
 }
 
 struct submenu;
-#define CONFIG_GET_ARGS Camera *camera, CameraWidget **widget, struct submenu* menu, PTPDevicePropDesc *dpd
+#define CONFIG_GET_ARGS Camera *camera, CameraWidget **widget, const struct submenu* menu, PTPDevicePropDesc *dpd
 #define CONFIG_GET_NAMES camera, widget, menu, dpd
 typedef int (*get_func)(CONFIG_GET_ARGS);
 #define CONFIG_PUT_ARGS Camera *camera, CameraWidget *widget, PTPPropertyValue *propval, PTPDevicePropDesc *dpd
@@ -663,7 +663,7 @@ typedef int (*get_func)(CONFIG_GET_ARGS);
 typedef int (*put_func)(CONFIG_PUT_ARGS);
 
 struct menu;
-#define CONFIG_MENU_GET_ARGS Camera *camera, CameraWidget **widget, struct menu* menu
+#define CONFIG_MENU_GET_ARGS Camera *camera, CameraWidget **widget, const struct menu* menu
 typedef int (*get_menu_func)(CONFIG_MENU_GET_ARGS);
 #define CONFIG_MENU_PUT_ARGS Camera *camera, CameraWidget *widget
 typedef int (*put_menu_func)(CONFIG_MENU_PUT_ARGS);
@@ -686,7 +686,7 @@ struct menu {
 	uint16_t	usb_productid;
 
 	/* Either: Standard menu */
-	struct	submenu	*submenus;
+	const struct	submenu	*submenus;
 	/* Or: Non-standard menu with custom behaviour */
 	get_menu_func	getfunc;
 	put_menu_func	putfunc;
@@ -704,7 +704,7 @@ struct deviceproptable##bits {		\
 };\
 \
 static int \
-_get_Generic##bits##Table(CONFIG_GET_ARGS, struct deviceproptable##bits * tbl, int tblsize) { \
+_get_Generic##bits##Table(CONFIG_GET_ARGS, const struct deviceproptable##bits * tbl, int tblsize) { \
 	int i, j; \
 	int isset = FALSE, isset2 = FALSE; \
  \
@@ -820,7 +820,7 @@ _get_Generic##bits##Table(CONFIG_GET_ARGS, struct deviceproptable##bits * tbl, i
 \
 \
 static int \
-_put_Generic##bits##Table(CONFIG_PUT_ARGS, struct deviceproptable##bits * tbl, int tblsize) { \
+_put_Generic##bits##Table(CONFIG_PUT_ARGS, const struct deviceproptable##bits * tbl, int tblsize) { \
 	char *value; \
 	int i, intval, j; \
 	int foundvalue = 0; \
@@ -10320,7 +10320,7 @@ _get_nikon_create_wifi_profile (CONFIG_GET_ARGS)
 	gp_widget_set_name (*widget, menu->name);
 
 	for (submenuno = 0; create_wifi_profile_submenu[submenuno].name ; submenuno++ ) {
-		struct submenu *cursub = create_wifi_profile_submenu+submenuno;
+		const struct submenu *cursub = create_wifi_profile_submenu+submenuno;
 
 		ret = cursub->getfunc (camera, &subwidget, cursub, NULL);
 		if (ret == GP_OK)
@@ -10337,7 +10337,7 @@ _put_nikon_create_wifi_profile (CONFIG_PUT_ARGS)
 	CameraWidget *subwidget;
 
 	for (submenuno = 0; create_wifi_profile_submenu[submenuno].name ; submenuno++ ) {
-		struct submenu *cursub = create_wifi_profile_submenu+submenuno;
+		const struct submenu *cursub = create_wifi_profile_submenu+submenuno;
 
 		ret = gp_widget_get_child_by_label (widget, _(cursub->label), &subwidget);
 		if (ret != GP_OK)
@@ -10379,7 +10379,7 @@ _get_wifi_profiles_menu (CONFIG_MENU_GET_ARGS)
 	gp_widget_set_name (*widget, menu->name);
 
 	for (submenuno = 0; wifi_profiles_menu[submenuno].name ; submenuno++ ) {
-		struct submenu *cursub = wifi_profiles_menu+submenuno;
+		const struct submenu *cursub = wifi_profiles_menu+submenuno;
 
 		ret = cursub->getfunc (camera, &subwidget, cursub, NULL);
 		if (ret == GP_OK)
@@ -10396,7 +10396,7 @@ _put_wifi_profiles_menu (CONFIG_MENU_PUT_ARGS)
 	CameraWidget *subwidget;
 
 	for (submenuno = 0; wifi_profiles_menu[submenuno].name ; submenuno++ ) {
-		struct submenu *cursub = wifi_profiles_menu+submenuno;
+		const struct submenu *cursub = wifi_profiles_menu+submenuno;
 
 		ret = gp_widget_get_child_by_label (widget, _(cursub->label), &subwidget);
 		if (ret != GP_OK)
@@ -11158,7 +11158,7 @@ _get_config (Camera *camera, const char *confname, CameraWidget **outwidget, Cam
 	for (menuno = 0; menuno < sizeof(menus)/sizeof(menus[0]) ; menuno++ ) {
 		if (!menus[menuno].submenus) { /* Custom menu */
 			if (mode == MODE_GET) {
-				struct menu *cur = menus+menuno;
+				const struct menu *cur = menus+menuno;
 				ret = cur->getfunc(camera, &section, cur);
 				if (ret == GP_OK)
 					gp_widget_append(window, section);
@@ -11185,7 +11185,7 @@ _get_config (Camera *camera, const char *confname, CameraWidget **outwidget, Cam
 			}
 		}
 		for (submenuno = 0; menus[menuno].submenus[submenuno].name ; submenuno++ ) {
-			struct submenu *cursub = menus[menuno].submenus+submenuno;
+			const struct submenu *cursub = menus[menuno].submenus+submenuno;
 			widget = NULL;
 
 			if (	have_prop(camera,cursub->vendorid,cursub->propid) ||
@@ -11619,7 +11619,7 @@ _set_config (Camera *camera, const char *confname, CameraWidget *window, GPConte
 
 		/* Standard menu with submenus */
 		for (submenuno = 0; menus[menuno].submenus[submenuno].label ; submenuno++ ) {
-			struct submenu *cursub = menus[menuno].submenus+submenuno;
+			const struct submenu *cursub = menus[menuno].submenus+submenuno;
 
 			ret = GP_OK;
 			if (mode == MODE_SET) {
@@ -11893,7 +11893,7 @@ camera_lookup_by_property(Camera *camera, PTPDevicePropDesc *dpd, char **name, c
 		}
 
 		for (submenuno = 0; menus[menuno].submenus[submenuno].name ; submenuno++ ) {
-			struct submenu		*cursub = menus[menuno].submenus+submenuno;
+			const struct submenu		*cursub = menus[menuno].submenus+submenuno;
 			CameraWidgetType	type;
 
 			widget = NULL;

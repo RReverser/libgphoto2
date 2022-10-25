@@ -29,9 +29,9 @@
 #include <gphoto2/gphoto2-result.h>
 
 static int
-gp_gamma_correct_triple (unsigned char *table_red,
-			 unsigned char *table_green,
-			 unsigned char *table_blue,
+gp_gamma_correct_triple (const unsigned char *table_red,
+			 const unsigned char *table_green,
+			 const unsigned char *table_blue,
 			 unsigned char *data, unsigned int size)
 {
 	unsigned int x;

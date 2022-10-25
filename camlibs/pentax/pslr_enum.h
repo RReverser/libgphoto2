@@ -200,35 +200,35 @@ typedef enum {
 } pslr_scene_mode_t;
 
 int str_comparison_i (const char *s1, const char *s2, int n);
-int find_in_array( const char** array, int length, char* str );
+int find_in_array( const char* const* array, int length, const char* str );
 
-pslr_color_space_t get_pslr_color_space( char *str );
+pslr_color_space_t get_pslr_color_space( const char *str );
 const char *get_pslr_color_space_str( pslr_color_space_t value );
 
-pslr_af_mode_t get_pslr_af_mode( char *str );
+pslr_af_mode_t get_pslr_af_mode( const char *str );
 const char *get_pslr_af_mode_str( pslr_af_mode_t value );
 
-pslr_ae_metering_t get_pslr_ae_metering( char *str );
+pslr_ae_metering_t get_pslr_ae_metering( const char *str );
 const char *get_pslr_ae_metering_str( pslr_ae_metering_t value );
 
-pslr_flash_mode_t get_pslr_flash_mode( char *str );
+pslr_flash_mode_t get_pslr_flash_mode( const char *str );
 const char *get_pslr_flash_mode_str( pslr_flash_mode_t value );
 
-pslr_drive_mode_t get_pslr_drive_mode( char *str );
+pslr_drive_mode_t get_pslr_drive_mode( const char *str );
 const char *get_pslr_drive_mode_str( pslr_drive_mode_t value );
 
-pslr_af_point_sel_t get_pslr_af_point_sel( char *str );
+pslr_af_point_sel_t get_pslr_af_point_sel( const char *str );
 const char *get_pslr_af_point_sel_str( pslr_af_point_sel_t value );
 
 char *get_pslr_af11_point_str( uint32_t value );
 
-pslr_jpeg_image_tone_t get_pslr_jpeg_image_tone( char *str );
+pslr_jpeg_image_tone_t get_pslr_jpeg_image_tone( const char *str );
 const char *get_pslr_jpeg_image_tone_str( pslr_jpeg_image_tone_t value );
 
-pslr_white_balance_mode_t get_pslr_white_balance_mode( char *str );
+pslr_white_balance_mode_t get_pslr_white_balance_mode( const char *str );
 const char *get_pslr_white_balance_mode_str( pslr_white_balance_mode_t value );
 
-/* pslr_custom_ev_steps_t get_pslr_custom_ev_steps( char *str ); */
+/* pslr_custom_ev_steps_t get_pslr_custom_ev_steps( const char *str ); */
 const char *get_pslr_custom_ev_steps_str( pslr_custom_ev_steps_t value );
 
 const char *get_pslr_custom_sensitivity_steps_str( pslr_custom_sensitivity_steps_t value );

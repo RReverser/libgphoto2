@@ -93,14 +93,14 @@ uint16_t get_uint16_be(const uint8_t *buf) {
     return res;
 }
 
-uint32_t get_uint32_be(uint8_t *buf) {
+uint32_t get_uint32_be(const uint8_t *buf) {
     uint32_t res;
     res = buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3];
     return res;
 }
 
 static
-int32_t get_int32_be(uint8_t *buf) {
+int32_t get_int32_be(const uint8_t *buf) {
     int32_t res;
     res = buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3];
     return res;
@@ -113,14 +113,14 @@ uint16_t get_uint16_le(const uint8_t *buf) {
     return res;
 }
 
-uint32_t get_uint32_le(uint8_t *buf) {
+uint32_t get_uint32_le(const uint8_t *buf) {
     uint32_t res;
     res = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
     return res;
 }
 
 static
-int32_t get_int32_le(uint8_t *buf) {
+int32_t get_int32_le(const uint8_t *buf) {
     int32_t res;
     res = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
     return res;
@@ -1010,7 +1010,7 @@ const ipslr_model_info_t camera_models[] = {
     { 0x13010, "645Z",        false, false, true,  true,  false, false,  0,   3, {51, 32, 21, 3}, 9, 4000, 100, 204800, 100, 204800, PSLR_JPEG_IMAGE_TONE_CROSS_PROCESSING, true,  35, NULL}
 };
 
-ipslr_model_info_t *find_model_by_id( uint32_t id ) {
+const ipslr_model_info_t *find_model_by_id( uint32_t id ) {
     unsigned int i;
     for ( i = 0; i<sizeof (camera_models) / sizeof (camera_models[0]); i++) {
         if ( camera_models[i].id == id ) {

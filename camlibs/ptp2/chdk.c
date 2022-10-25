@@ -1254,7 +1254,7 @@ static inline uint8_t yuv_to_b (uint8_t y, int8_t u) {
 	return clip_yuv (((y<<12) + u*7258          + 2048)>>12);
 }
 
-static void yuv_live_to_ppm (unsigned char *p_yuv,
+static void yuv_live_to_ppm (const unsigned char *p_yuv,
 			     int buf_width, int width, int height,
 			     int fb_type, CameraFile *file
 ) {

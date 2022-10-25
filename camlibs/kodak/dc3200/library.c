@@ -868,7 +868,7 @@ int dc3200_process_packet(Camera *camera, unsigned char *data, int *data_len)
  * calculates the checksum for a byte array
  *
  */
-int dc3200_calc_checksum(Camera *camera, unsigned char * buffer, int len)
+int dc3200_calc_checksum(Camera *camera, const unsigned char * buffer, int len)
 {
 	int sum = 0, i;
 

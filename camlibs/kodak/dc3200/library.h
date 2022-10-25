@@ -86,7 +86,7 @@ int dc3200_process_packet(Camera *camera, unsigned char *data, int *data_len);
 int dc3200_send_ack(Camera *camera, int seqnum);
 int dc3200_check_ack(Camera *camera, unsigned char *ack, int ack_len);
 
-int dc3200_calc_checksum(Camera *camera, unsigned char *data, int data_len);
+int dc3200_calc_checksum(Camera *camera, const unsigned char *data, int data_len);
 int dc3200_calc_seqnum(Camera *camera);
 
 int dc3200_keep_alive(Camera *camera);

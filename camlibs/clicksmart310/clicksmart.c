@@ -220,7 +220,7 @@ clicksmart_reset (GPPort *port)
 
 /* create_jpeg_from_data adapted from camlibs/spca50x */
 
-int create_jpeg_from_data (unsigned char * dst, unsigned char * src,
+int create_jpeg_from_data (unsigned char * dst, const unsigned char * src,
 			int qIndex, int w, int h, unsigned char format,
 			int o_size, int *size,
 		        int omit_huffman_table, int omit_escape)

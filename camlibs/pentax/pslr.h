@@ -68,7 +68,7 @@ typedef struct {
 
 extern const user_file_format_t file_formats[3];
 
-user_file_format_t *get_file_format_t( user_file_format uff );
+const user_file_format_t *get_file_format_t( user_file_format uff );
 
 // OFF-AUTO: Off-Auto-Aperture
 typedef enum {

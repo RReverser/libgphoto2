@@ -366,7 +366,7 @@ struct _CameraFilesystemFuncs {
 	void				*unused[31];
 };
 int gp_filesystem_set_funcs	(CameraFilesystem *fs,
-				 CameraFilesystemFuncs *funcs,
+				 const CameraFilesystemFuncs *funcs,
 				 void *data);
 int gp_filesystem_put_file   (CameraFilesystem *fs, const char *folder, const char *filename,
 			      CameraFileType type, CameraFile *file, GPContext *context);

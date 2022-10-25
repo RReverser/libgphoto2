@@ -58,13 +58,13 @@
 #define BLUE 	2
 
 static
-int dRGB(int i1, int i2, unsigned char *RGB);
+int dRGB(int i1, int i2, const unsigned char *RGB);
 static
 int do_rb_ctr_row(unsigned char *image_h, unsigned char *image_v, int w,
-					int h, int y, int *pos_code);
+					int h, int y, const int *pos_code);
 static
-int do_green_ctr_row(unsigned char *image, unsigned char *image_h,
-		    unsigned char *image_v, int w, int h, int y, int *pos_code);
+int do_green_ctr_row(const unsigned char *image, unsigned char *image_h,
+		    unsigned char *image_v, int w, int h, int y, const int *pos_code);
 static
 int get_diffs_row2(unsigned char * hom_buffer_h, unsigned char *hom_buffer_v,
 		    unsigned char * buffer_h, unsigned char *buffer_v, int w);
@@ -77,7 +77,7 @@ int get_diffs_row2(unsigned char * hom_buffer_h, unsigned char *hom_buffer_v,
  * \param RGB some RGB data.
  */
 static
-int dRGB(int i1, int i2, unsigned char *RGB) {
+int dRGB(int i1, int i2, const unsigned char *RGB) {
 	int dR,dG,dB;
 	dR=RGB[i1+RED]-RGB[i2+RED];
 	dG=RGB[i1+GREEN]-RGB[i2+GREEN];
@@ -95,7 +95,7 @@ int dRGB(int i1, int i2, unsigned char *RGB) {
  */
 static
 int do_rb_ctr_row(unsigned char *image_h, unsigned char *image_v, int w,
-					int h, int y, int *pos_code)
+					int h, int y, const int *pos_code)
 {
 	int x, bayer;
 	int value,value2,div,color;
@@ -230,8 +230,8 @@ int do_rb_ctr_row(unsigned char *image_h, unsigned char *image_v, int w,
  */
 
 static
-int do_green_ctr_row(unsigned char *image, unsigned char *image_h,
-		    unsigned char *image_v, int w, int h, int y, int *pos_code)
+int do_green_ctr_row(const unsigned char *image, unsigned char *image_h,
+		    unsigned char *image_v, int w, int h, int y, const int *pos_code)
 {
 	int x, bayer;
 	int value,div;

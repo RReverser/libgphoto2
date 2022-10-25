@@ -48,7 +48,7 @@ int jl2005c_init (Camera *camera, GPPort *port, CameraPrivateLibrary *priv);
 int jl2005c_open_data_reg (Camera *camera, GPPort *port);
 int jl2005c_get_pic_data_size (CameraPrivateLibrary *priv, Info *table, int n);
 unsigned long jl2005c_get_start_of_photo (CameraPrivateLibrary *priv,
-						Info *table, unsigned int n);
+						const Info *table, unsigned int n);
 
 int set_usb_in_endpoint       (Camera *camera, int inep);
 int jl2005c_read_data  (GPPort *port, char *data, int size);

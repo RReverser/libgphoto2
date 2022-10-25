@@ -215,7 +215,7 @@ int str_comparison_i (const char *s1, const char *s2, int n) {
     return c1 - c2;
 }
 
-int find_in_array( const char** array, int length, char* str ) {
+int find_in_array( const char* const* array, int length, const char* str ) {
     int i;
     int found_index=-1;
     size_t found_index_length=0;
@@ -231,7 +231,7 @@ int find_in_array( const char** array, int length, char* str ) {
 }
 
 static
-const char *get_pslr_str( const char** array, int length, int value ) {
+const char *get_pslr_str( const char* const* array, int length, int value ) {
     if (value >=0 && value < length) {
         return array[value];
     } else {
@@ -242,7 +242,7 @@ const char *get_pslr_str( const char** array, int length, int value ) {
 }
 
 
-pslr_color_space_t get_pslr_color_space( char *str ) {
+pslr_color_space_t get_pslr_color_space( const char *str ) {
     return find_in_array( pslr_color_space_str, sizeof(pslr_color_space_str)/sizeof(pslr_color_space_str[0]),str);
 }
 
@@ -250,7 +250,7 @@ const char *get_pslr_color_space_str( pslr_color_space_t value ) {
     return get_pslr_str( pslr_color_space_str, sizeof(pslr_color_space_str)/sizeof(pslr_color_space_str[0]),value);
 }
 
-pslr_af_mode_t get_pslr_af_mode( char *str ) {
+pslr_af_mode_t get_pslr_af_mode( const char *str ) {
     return find_in_array( pslr_af_mode_str, sizeof(pslr_af_mode_str)/sizeof(pslr_af_mode_str[0]),str);
 }
 
@@ -258,7 +258,7 @@ const char *get_pslr_af_mode_str( pslr_af_mode_t value ) {
     return get_pslr_str( pslr_af_mode_str, sizeof(pslr_af_mode_str)/sizeof(pslr_af_mode_str[0]),value);
 }
 
-pslr_ae_metering_t get_pslr_ae_metering( char *str ) {
+pslr_ae_metering_t get_pslr_ae_metering( const char *str ) {
     return find_in_array( pslr_ae_metering_str, sizeof(pslr_ae_metering_str)/sizeof(pslr_ae_metering_str[0]),str);
 }
 
@@ -266,7 +266,7 @@ const char *get_pslr_ae_metering_str( pslr_ae_metering_t value ) {
     return get_pslr_str( pslr_ae_metering_str, sizeof(pslr_ae_metering_str)/sizeof(pslr_ae_metering_str[0]),value);
 }
 
-pslr_flash_mode_t get_pslr_flash_mode( char *str ) {
+pslr_flash_mode_t get_pslr_flash_mode( const char *str ) {
     return find_in_array( pslr_flash_mode_str, sizeof(pslr_flash_mode_str)/sizeof(pslr_flash_mode_str[0]),str);
 }
 
@@ -274,7 +274,7 @@ const char *get_pslr_flash_mode_str( pslr_flash_mode_t value ) {
     return get_pslr_str( pslr_flash_mode_str, sizeof(pslr_flash_mode_str)/sizeof(pslr_flash_mode_str[0]),value);
 }
 
-pslr_drive_mode_t get_pslr_drive_mode( char *str ) {
+pslr_drive_mode_t get_pslr_drive_mode( const char *str ) {
     return find_in_array( pslr_drive_mode_str, sizeof(pslr_drive_mode_str)/sizeof(pslr_drive_mode_str[0]),str);
 }
 
@@ -282,7 +282,7 @@ const char *get_pslr_drive_mode_str( pslr_drive_mode_t value ) {
     return get_pslr_str( pslr_drive_mode_str, sizeof(pslr_drive_mode_str)/sizeof(pslr_drive_mode_str[0]),value);
 }
 
-pslr_af_point_sel_t get_pslr_af_point_sel( char *str ) {
+pslr_af_point_sel_t get_pslr_af_point_sel( const char *str ) {
     return find_in_array( pslr_af_point_sel_str, sizeof(pslr_af_point_sel_str)/sizeof(pslr_af_point_sel_str[0]),str);
 }
 
@@ -315,7 +315,7 @@ char *get_pslr_af11_point_str( uint32_t value ) {
 }
 
 
-pslr_jpeg_image_tone_t get_pslr_jpeg_image_tone( char *str ) {
+pslr_jpeg_image_tone_t get_pslr_jpeg_image_tone( const char *str ) {
     return find_in_array( pslr_jpeg_image_tone_str, sizeof(pslr_jpeg_image_tone_str)/sizeof(pslr_jpeg_image_tone_str[0]),str);
 }
 
@@ -323,7 +323,7 @@ const char *get_pslr_jpeg_image_tone_str( pslr_jpeg_image_tone_t value ) {
     return get_pslr_str( pslr_jpeg_image_tone_str, sizeof(pslr_jpeg_image_tone_str)/sizeof(pslr_jpeg_image_tone_str[0]),value);
 }
 
-pslr_white_balance_mode_t get_pslr_white_balance_mode( char *str ) {
+pslr_white_balance_mode_t get_pslr_white_balance_mode( const char *str ) {
     return find_in_array( pslr_white_balance_mode_str, sizeof(pslr_white_balance_mode_str)/sizeof(pslr_white_balance_mode_str[0]),str);
 }
 

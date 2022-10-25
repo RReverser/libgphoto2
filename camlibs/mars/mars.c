@@ -60,7 +60,7 @@ m_command (GPPort *port, char *command, int size, char *response)
     	return m_read(port, response, 16);
 }
 
-static int mars_routine (Info *info, GPPort *port, char param, int n);
+static int mars_routine (const Info *info, GPPort *port, char param, int n);
 
 int
 mars_init (Camera *camera, GPPort *port, Info *info)
@@ -308,7 +308,7 @@ int mars_decompress (unsigned char *inp, unsigned char *outp, int width,
 }
 
 static int
-mars_routine (Info *info, GPPort *port, char param, int n)
+mars_routine (const Info *info, GPPort *port, char param, int n)
 {
 	char c[16];
 	char start[2] = {0x19, 0x51};
@@ -386,7 +386,7 @@ mars_routine (Info *info, GPPort *port, char param, int n)
  */
 
 int
-histogram (unsigned char *data, unsigned int size, int *htable_r, int *htable_g, int *htable_b)
+histogram (const unsigned char *data, unsigned int size, int *htable_r, int *htable_g, int *htable_b)
 {
 	unsigned int x;
 	/* Initializations */

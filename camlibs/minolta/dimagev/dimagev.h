@@ -221,7 +221,7 @@ int dimagev_set_date(dimagev_t *dimagev);
 
 /* These functions are in status.c */
 int dimagev_get_camera_status(dimagev_t *dimagev);
-dimagev_status_t *dimagev_import_camera_status(unsigned char *raw_data);
+dimagev_status_t *dimagev_import_camera_status(const unsigned char *raw_data);
 void dimagev_dump_camera_status(dimagev_status_t *status);
 
 /* These functions are in info.c */

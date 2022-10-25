@@ -43,7 +43,7 @@
 
 
 static int
-decode_panel	(unsigned char *panel_out, unsigned char *panel,
+decode_panel	(unsigned char *panel_out, const unsigned char *panel,
                     		int panelwidth, int height, int color);
 
 int
@@ -124,7 +124,7 @@ sq_decompress (SQModel model, unsigned char *output, unsigned char *data,
 }
 
 static
-int decode_panel (unsigned char *panel_out, unsigned char *panel,
+int decode_panel (unsigned char *panel_out, const unsigned char *panel,
 			int panelwidth, int height, int color) {
 	/* Here, "panelwidth" signifies width of panel_out
 	 * which is w/2, and height equals h */

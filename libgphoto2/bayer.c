@@ -49,7 +49,7 @@ static const int tile_colours[8][4] = {
 #define BLUE 2
 
 static int
-gp_bayer_accrue (unsigned char *image, int w, int h, int x0, int y0,
+gp_bayer_accrue (const unsigned char *image, int w, int h, int x0, int y0,
 		int x1, int y1, int x2, int y2, int x3, int y3, int colour);
 
 /**
@@ -260,7 +260,7 @@ gp_bayer_interpolate (unsigned char *image, int w, int h, BayerTile tile)
  * and blue. Standard algorithm is applied without change at edges of the image.
  */
 static int
-gp_bayer_accrue (unsigned char *image, int w, int h, int x0, int y0,
+gp_bayer_accrue (const unsigned char *image, int w, int h, int x0, int y0,
 		int x1, int y1, int x2, int y2, int x3, int y3, int colour)
 {	int x [4] ;
 	int y [4] ;

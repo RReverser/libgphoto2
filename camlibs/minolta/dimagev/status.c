@@ -130,7 +130,7 @@ int dimagev_get_camera_status(dimagev_t *dimagev) {
 /* This function converts a few chars of data, such as is given by the camera
    to indicate status, and massages it into a dimagev_status_t.
 */
-dimagev_status_t *dimagev_import_camera_status(unsigned char *raw_data) {
+dimagev_status_t *dimagev_import_camera_status(const unsigned char *raw_data) {
 	dimagev_status_t *processed_data;
 
 	if ( raw_data == NULL ) {

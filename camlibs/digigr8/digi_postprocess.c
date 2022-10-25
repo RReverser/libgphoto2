@@ -39,7 +39,7 @@
 #endif
 
 static int
-digi_first_decompress (unsigned char *output, unsigned char *input,
+digi_first_decompress (unsigned char *output, const unsigned char *input,
 					    unsigned int outputsize)
 {
 	unsigned char parity = 0;
@@ -110,7 +110,7 @@ digi_first_decompress (unsigned char *output, unsigned char *input,
 }
 
 static int
-digi_second_decompress (unsigned char *uncomp, unsigned char *in,
+digi_second_decompress (unsigned char *uncomp, const unsigned char *in,
 						    int width, int height)
 {
 	int diff = 0;
@@ -330,7 +330,7 @@ digi_postprocess(int width, int height,
 	===================================================================== */
 
 static int
-histogram (unsigned char *data, unsigned int size, int *htable_r,
+histogram (const unsigned char *data, unsigned int size, int *htable_r,
 					    int *htable_g, int *htable_b)
 {
 	unsigned int x;

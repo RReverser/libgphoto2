@@ -1750,7 +1750,7 @@ ptp_unpack_EOS_ImageFormat (PTPParams* params, unsigned char** data )
 }
 
 static inline uint32_t
-ptp_pack_EOS_ImageFormat (PTPParams* params, unsigned char* data, uint16_t value)
+ptp_pack_EOS_ImageFormat (PTPParams* params, const unsigned char* data, uint16_t value)
 {
 	uint32_t n = (value & 0xFF) ? 2 : 1;
 	uint32_t s = 4 + 0x10 * n;

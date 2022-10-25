@@ -208,7 +208,7 @@ jl2005c_get_pic_data_size (CameraPrivateLibrary *priv, Info *table, int n)
 }
 
 unsigned long
-jl2005c_get_start_of_photo(CameraPrivateLibrary *priv, Info *table,
+jl2005c_get_start_of_photo(CameraPrivateLibrary *priv, const Info *table,
 							unsigned int n)
 {
 	unsigned long start;
