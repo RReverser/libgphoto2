@@ -3626,7 +3626,7 @@ typedef uint16_t (* PTPDataGetFunc)	(PTPParams* params, void*priv,
 
 typedef uint16_t (* PTPDataPutFunc)	(PTPParams* params, void*priv,
 					unsigned long sendlen,
-	                                unsigned char *data);
+	                                const unsigned char *data);
 typedef struct _PTPDataHandler {
 	PTPDataGetFunc		getfunc;
 	PTPDataPutFunc		putfunc;

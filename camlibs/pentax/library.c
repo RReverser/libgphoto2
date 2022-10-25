@@ -609,7 +609,7 @@ camera_get_config (Camera *camera, CameraWidget **window, GPContext *context)
 	const char	*model;
 	pslr_status	status;
 	char		buf[20];
-	int		*available_resolutions;
+	const int		*available_resolutions;
 	int		i, ival;
 	float		fval;
 
@@ -811,7 +811,7 @@ camera_set_config (Camera *camera, CameraWidget *window, GPContext *context)
 	ret = gp_widget_get_child_by_label (window, _("Image Size"), &w);
 	if ((ret == GP_OK) && (gp_widget_changed (w))) {
 		int i, resolution = -1;
-		int *valid_resolutions;
+		const int *valid_resolutions;
 
 	        gp_widget_set_changed (w, 0);
 		valid_resolutions = pslr_get_model_jpeg_resolutions (&camera->pl->pslr);

@@ -140,7 +140,7 @@ void set_uint32_be(uint32_t v, uint8_t *buf) {
     buf[3] = v;
 }
 
-char *shexdump(uint8_t *buf, uint32_t bufLen) {
+char *shexdump(const uint8_t *buf, uint32_t bufLen) {
     char *ret = malloc(4*bufLen);
     uint32_t i;
     sprintf(ret,"%s","");
@@ -162,13 +162,13 @@ char *shexdump(uint8_t *buf, uint32_t bufLen) {
     return ret;
 }
 
-void hexdump(uint8_t *buf, uint32_t bufLen) {
+void hexdump(const uint8_t *buf, uint32_t bufLen) {
     char *dmp = shexdump(buf, bufLen);
     DPRINT("%s",dmp);
     free(dmp);
 }
 
-void hexdump_debug(uint8_t *buf, uint32_t bufLen) {
+void hexdump_debug(const uint8_t *buf, uint32_t bufLen) {
     char *dmp = shexdump(buf, bufLen);
     DPRINT("%s",dmp);
     free(dmp);
@@ -190,7 +190,7 @@ const char* int_to_binary( uint16_t x ) {
 
 
 static
-int _get_user_jpeg_stars( ipslr_model_info_t *model, int hwqual ) {
+int _get_user_jpeg_stars( const ipslr_model_info_t *model, int hwqual ) {
     if ( model->id == 0x12f71 ) {
         // K5IIs hack
         // TODO: test it
@@ -204,7 +204,7 @@ int _get_user_jpeg_stars( ipslr_model_info_t *model, int hwqual ) {
     }
 }
 
-int get_hw_jpeg_quality( ipslr_model_info_t *model, int user_jpeg_stars) {
+int get_hw_jpeg_quality( const ipslr_model_info_t *model, int user_jpeg_stars) {
     if ( model->id == 0x12f71 ) {
         // K5IIs hack
         // TODO: test it

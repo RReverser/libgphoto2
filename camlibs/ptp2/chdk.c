@@ -526,8 +526,8 @@ ISO Mode: 0
 }
 
 struct submenu;
-typedef int (*get_func) (PTPParams *, struct submenu*, CameraWidget **, GPContext *);
-#define CONFIG_GET_ARGS PTPParams *params, struct submenu *menu, CameraWidget **widget, GPContext *context
+typedef int (*get_func) (PTPParams *, const struct submenu*, CameraWidget **, GPContext *);
+#define CONFIG_GET_ARGS PTPParams *params, const struct submenu *menu, CameraWidget **widget, GPContext *context
 typedef int (*put_func) (PTPParams *, CameraWidget *, GPContext *);
 #define CONFIG_PUT_ARGS PTPParams *params, CameraWidget *widget, GPContext *context
 

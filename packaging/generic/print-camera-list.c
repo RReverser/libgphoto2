@@ -1264,7 +1264,7 @@ static int html_end_func (
 }
 
 /* time zero for debug log time stamps */
-static const struct timeval glob_tv_zero = { 0, 0 };
+static struct timeval glob_tv_zero = { 0, 0 };
 
 static void
 debug_func (GPLogLevel level, const char *domain, const char *str,

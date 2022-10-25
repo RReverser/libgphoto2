@@ -309,7 +309,7 @@ memory_getfunc(PTPParams* params, void* private,
 
 static uint16_t
 memory_putfunc(PTPParams* params, void* private,
-	       unsigned long sendlen, unsigned char *data
+	       unsigned long sendlen, const unsigned char *data
 ) {
 	PTPMemHandlerPrivate* priv = (PTPMemHandlerPrivate*)private;
 
@@ -406,7 +406,7 @@ fd_getfunc(PTPParams* params, void* private,
 
 static uint16_t
 fd_putfunc(PTPParams* params, void* private,
-	       unsigned long sendlen, unsigned char *data
+	       unsigned long sendlen, const unsigned char *data
 ) {
 	ssize_t	written;
 	PTPFDHandlerPrivate* priv = (PTPFDHandlerPrivate*)private;

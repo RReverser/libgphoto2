@@ -94,7 +94,7 @@ static int get_status(FDTYPE fd);
 static int get_result(FDTYPE fd);
 static int read_result(FDTYPE fd, uint8_t *buf, uint32_t n);
 
-void hexdump(uint8_t *buf, uint32_t bufLen);
+void hexdump(const uint8_t *buf, uint32_t bufLen);
 
 static pslr_progress_callback_t progress_callback = NULL;
 
@@ -816,7 +816,7 @@ int pslr_set_jpeg_stars(pslr_handle_t h, int jpeg_stars ) {
 }
 
 static
-int _get_user_jpeg_resolution( ipslr_model_info_t *model, int hwres ) {
+int _get_user_jpeg_resolution( const ipslr_model_info_t *model, int hwres ) {
     return model->jpeg_resolutions[hwres];
 }
 
@@ -826,7 +826,7 @@ int pslr_get_jpeg_resolution(pslr_handle_t h, int hwres) {
 }
 
 static
-int _get_hw_jpeg_resolution( ipslr_model_info_t *model, int megapixel) {
+int _get_hw_jpeg_resolution( const ipslr_model_info_t *model, int megapixel) {
     int resindex = 0;
     while ( resindex < MAX_RESOLUTION_SIZE && model->jpeg_resolutions[resindex] > megapixel ) {
         ++resindex;
@@ -1162,7 +1162,7 @@ int pslr_get_model_jpeg_property_levels(pslr_handle_t h) {
     return p->model->jpeg_property_levels;
 }
 
-int *pslr_get_model_jpeg_resolutions(pslr_handle_t h) {
+const int *pslr_get_model_jpeg_resolutions(pslr_handle_t h) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     return p->model->jpeg_resolutions;
 }

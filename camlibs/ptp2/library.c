@@ -184,8 +184,7 @@ print_debug_deviceinfo (PTPParams *params, PTPDeviceInfo *di)
 /* struct timeval is simply two long int values, so passing it by value is not expensive.
  * It is most likely going to be inlined anyway and therefore 'free'. Passing it by value
  * leads to a cleaner interface. */
-static const struct timeval
-time_now() {
+static struct timeval time_now() {
 	struct timeval curtime;
 	gettimeofday (&curtime, NULL);
 	return curtime;
@@ -8583,7 +8582,7 @@ gpfile_getfunc (PTPParams *params, void *xpriv,
 
 static uint16_t
 gpfile_putfunc (PTPParams *params, void *xpriv,
-	unsigned long sendlen, unsigned char *bytes
+	unsigned long sendlen, const unsigned char *bytes
 ) {
 	PTPCFHandlerPrivate* priv= (PTPCFHandlerPrivate*)xpriv;
 	int ret;
