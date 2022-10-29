@@ -65,11 +65,12 @@
 	}                      	\
 }
 
-
-char* CDS_Control  = ":60606/Server0/CDS_control";
-int ReadoutMode = 2; // this should be picked up from the settings.... 0-> JPG; 1->RAW; 2 -> Thumbnails
-char* cameraShutterSpeed = "B"; // //placeholder to store the value of the shutterspeed set in camera; "B" is for bulb.
-int captureDuration = 10; //placeholder to store the value of the bulb shot this should be taken as input. note that my primary goal is in fact to perform bulb captures. but this should be extended for sure to take Shutter Speed capture as set in camera
+// TODO: looks like these are not supposed to be constants, yet for now they're used as such (not set anywhere else).
+// Figure out if they're meant to be mutated.
+static const char* const CDS_Control  = ":60606/Server0/CDS_control";
+static const int ReadoutMode = 2; // this should be picked up from the settings.... 0-> JPG; 1->RAW; 2 -> Thumbnails
+static const char* const cameraShutterSpeed = "B"; // //placeholder to store the value of the shutterspeed set in camera; "B" is for bulb.
+static const int captureDuration = 10; //placeholder to store the value of the bulb shot this should be taken as input. note that my primary goal is in fact to perform bulb captures. but this should be extended for sure to take Shutter Speed capture as set in camera
 
 static int NumberPix(Camera *camera);
 static char* loadCmd (Camera *camera,char* cmd);
@@ -1837,7 +1838,7 @@ int camera_abilities (CameraAbilitiesList *list) {
 * are NULL.
 *
 */
-CameraFilesystemFuncs fsfuncs = {
+const CameraFilesystemFuncs fsfuncs = {
 	.file_list_func = file_list_func,
 	.folder_list_func = folder_list_func,
 //	.get_info_func = get_info_func,

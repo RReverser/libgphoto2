@@ -71,7 +71,7 @@ locate_tables_n_write(JOCTET *jpeg, int jpeg_size, JOCTET table_type,
 }
 
 static int
-copy_huffman(uint8_t *dst, JOCTET *src, int n)
+copy_huffman(uint8_t *dst, const JOCTET *src, int n)
 {
 	int i, copied = 0;
 

@@ -51,7 +51,7 @@
 #define JPEG_HEIGHT_OFFSET	 94
 
 static int
-find_eoi (uint8_t *jpeg_data, int jpeg_data_idx, int jpeg_data_size)
+find_eoi (const uint8_t *jpeg_data, int jpeg_data_idx, int jpeg_data_size)
 {
 	int i;
 

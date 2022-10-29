@@ -45,7 +45,7 @@
 #define COOLSHOT_LAST_MOD "09/06/2001 02:28 EST"
 
 /* define what cameras we support */
-static char *coolshot_cameras[] = {
+static const char *const coolshot_cameras[] = {
 	"Panasonic:Coolshot KXL-600A",
 	"Panasonic:Coolshot KXL-601A",
 	""

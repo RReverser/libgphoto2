@@ -15,13 +15,13 @@ struct pixel_cal {
 #define LUT_FILE_DUMMY_END 0x800
 #define LUT_FILE_SIZE (2 * (CAL_SIZE * NUM_POINTS + CAL_SIZE * 2 + CAL_SIZE * sizeof(struct lut)) + LUT_FILE_DUMMY_END + SERIALNO_LEN + 2)	/* 2526866 */
 
-static char cmd_get_cal[]  = { 0x56, 0x00, 0x00, 0xc0, 0x5d, 0x00, 0x00, 0x1a };
-static char cmd_get_cal1[] = { 0x56, 0x01, 0x00, 0xc0, 0x61, 0x00, 0x00, 0x1a };
+static const char cmd_get_cal[]  = { 0x56, 0x00, 0x00, 0xc0, 0x5d, 0x00, 0x00, 0x1a };
+static const char cmd_get_cal1[] = { 0x56, 0x01, 0x00, 0xc0, 0x61, 0x00, 0x00, 0x1a };
 
 /* VALUES (y) at which data points (x) are stored */
-static unsigned char cal_points[] = { 0, 32, 38, 106, 192, 252, 255 };
+static const unsigned char cal_points[] = { 0, 32, 38, 106, 192, 252, 255 };
 
-static unsigned char empty[] = { 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const unsigned char empty[] = { 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 /* build look-up table (LUT) from calibration data */
 static void make_lut(unsigned char lut[], unsigned char p[]) {

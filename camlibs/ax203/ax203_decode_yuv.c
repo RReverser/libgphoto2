@@ -44,7 +44,7 @@
 
 #ifdef HAVE_LIBGD
 static void
-ax203_decode_block_yuv(char *src, int **dest, int dest_x, int dest_y)
+ax203_decode_block_yuv(const char *src, int **dest, int dest_x, int dest_y)
 {
 	int x, y, r, g, b;
 	uint8_t Y[4];

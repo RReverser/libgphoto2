@@ -56,7 +56,7 @@
 #  define N_(String) (String)
 #endif
 
-static const char *BayerTileNames[8] = {
+static const char *const BayerTileNames[8] = {
     "RGGB",
     "GRBG",
     "BGGR",

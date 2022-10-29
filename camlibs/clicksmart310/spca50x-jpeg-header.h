@@ -35,7 +35,7 @@
 #define SPCA50X_JPG_DEFAULT_HEADER_PART3_LENGTH 33
 #define SPCA50X_JPG_DEFAULT_HEADER_LENGTH	589
 
-static unsigned
+static const unsigned
 char SPCA50xJPGDefaultHeaderPart1[SPCA50X_JPG_DEFAULT_HEADER_PART1_LENGTH] = {
 	/* SOI(Start of Image) */
 	0xFF,0xD8,
@@ -53,7 +53,7 @@ char SPCA50xJPGDefaultHeaderPart1[SPCA50X_JPG_DEFAULT_HEADER_PART1_LENGTH] = {
 	0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,
 	0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22
 };
-static unsigned
+static const unsigned
 char SPCA50xJPGDefaultHeaderPart2[SPCA50X_JPG_DEFAULT_HEADER_PART2_LENGTH] = {
 	/* DHT(Define Huffman Table) */
 	0xFF,0xC4,
@@ -89,7 +89,7 @@ char SPCA50xJPGDefaultHeaderPart2[SPCA50X_JPG_DEFAULT_HEADER_PART2_LENGTH] = {
  *  5 - 6 : Image Height(H Byte,L Byte)
  *  7 - 8 : Image Width(H Byte,L Byte)
  */
-static unsigned
+static const unsigned
 char  SPCA50xJPGDefaultHeaderPart3[SPCA50X_JPG_DEFAULT_HEADER_PART3_LENGTH] = {
 	/* SOFn(Start of Frame) */
 	0xFF,0xC0,
@@ -101,7 +101,7 @@ char  SPCA50xJPGDefaultHeaderPart3[SPCA50X_JPG_DEFAULT_HEADER_PART3_LENGTH] = {
 	0x03,0x01,0x00,0x02,0x11,0x03,0x11,0x00,0x3F,0x00
 };
 
-static unsigned char SPCA50xQTable[20][64]=
+static const unsigned char SPCA50xQTable[20][64]=
 {
 	/*  index 0, Q50 */
 	{  16, 11, 12, 14, 12, 10, 16, 14, 13, 14, 18, 17, 16, 19, 24, 40,

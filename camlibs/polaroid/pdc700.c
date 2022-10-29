@@ -150,15 +150,15 @@ struct _PDCPicInfo {
 #define AUTO_POWEROFF _("Auto Power Off (minutes)")
 #define SHOW_CAPTIONS _("Information")
 
-static const char *quality[] = {N_("normal"), N_("fine"), N_("superfine"),
+static const char *const quality[] = {N_("normal"), N_("fine"), N_("superfine"),
 				NULL};
-static const char *flash[]   = {N_("auto"), N_("on"), N_("off"), NULL};
-static const char *bool[]    = {N_("off"), N_("on"), NULL};
-static const char *mode[]    = {N_("play"), N_("record"), N_("menu"), NULL};
-static const char *power[]   = {N_("battery"), N_("a/c adaptor"), NULL};
+static const char *const flash[]   = {N_("auto"), N_("on"), N_("off"), NULL};
+static const char *const bool[]    = {N_("off"), N_("on"), NULL};
+static const char *const mode[]    = {N_("play"), N_("record"), N_("menu"), NULL};
+static const char *const power[]   = {N_("battery"), N_("a/c adaptor"), NULL};
 /* no real need to translate those ... */
-static const char *speed[]   = {"9600", "19200", "38400", "57600", "115200", NULL};
-static const char *size[]    = {"VGA (640x480)", "XGA (1024x768", NULL};
+static const char *const speed[]   = {"9600", "19200", "38400", "57600", "115200", NULL};
+static const char *const size[]    = {"VGA (640x480)", "XGA (1024x768", NULL};
 
 #define CR(result) {int __r=(result);if(__r<0) return (__r);}
 #define CRF(result,d)      {int r=(result);if(r<0) {free(d);return(r);}}

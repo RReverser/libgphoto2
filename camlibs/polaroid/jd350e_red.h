@@ -23,7 +23,7 @@
  * Boston, MA  02110-1301  USA
  */
 
- static unsigned jd350e_red_curve [] = {
+ static const unsigned jd350e_red_curve [] = {
   0, 1, 2, 3,
   4, 5, 6, 8,
   9, 10, 11, 12,

@@ -16,7 +16,7 @@ struct huffman {
 
 #define NOT_FOUND -1
 #define RL_EOL    -2
-struct huffman black[], white[], blackterm[], whiteterm[];
+static const struct huffman black[], white[], blackterm[], whiteterm[];
 
 static void skip(struct decoder *d, int nrbits) {
 	d->bitoff += nrbits % 8;
@@ -46,7 +46,7 @@ static unsigned short get(struct decoder *d, int nrbits) {
 	return ret >> i;
 }
 
-static int find(struct decoder *d, struct huffman *tab)
+static int find(struct decoder *d, const struct huffman *tab)
 {
 	unsigned short bits;
 
@@ -105,7 +105,7 @@ int decoder_token(struct decoder *d, int *type, int *len) {
 	return 0;
 }
 
-struct huffman black[] = {
+static const struct huffman black[] = {
 	{ 0x0080, RL_EOL,  8 },
 	{ 0x0800, RL_EOL, 12 },
 	{ 0x001b,   64, 5 },
@@ -151,7 +151,7 @@ struct huffman black[] = {
 	{      0,    0, 0 }
 };
 
-struct huffman blackterm[] = {
+static const struct huffman blackterm[] = {
 	{ 0x0080, RL_EOL,  8 },
 	{ 0x0800, RL_EOL, 12 },
 	{ 0x00ac,  0, 8 },
@@ -221,7 +221,7 @@ struct huffman blackterm[] = {
 	{      0, 0, 0 }
 };
 
-struct huffman white[] = {
+static const struct huffman white[] = {
 	{ 0x0080, RL_EOL,  8 },
 	{ 0x0800 ,RL_EOL, 12 },
 	{ 0x03c0,   64, 10 },
@@ -267,7 +267,7 @@ struct huffman white[] = {
 	{      0,    0, 0 }
 };
 
-struct huffman whiteterm[] = {
+static const struct huffman whiteterm[] = {
 	{ 0x0080, RL_EOL,  8 },
 	{ 0x0800, RL_EOL, 12 },
 	{ 0x03b0,  0, 10 },

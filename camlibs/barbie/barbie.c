@@ -239,7 +239,7 @@ barbie_read_picture(GPPort *port, int picture_number, int get_thumbnail, CameraF
 
 
 /* GPhoto specific stuff */
-static char *models[] = {
+static const char *const models[] = {
         "Barbie",
         "Nick Click",
         "WWF",

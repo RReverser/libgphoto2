@@ -58,7 +58,7 @@ static const int corr_tables[4][8] = {
    then 2 bits encoding which correction/delta table to use and
    then 3x3 bits code deltas from the previous pixel. */
 static void
-ax203_decode_component_values(char *src, char *dest)
+ax203_decode_component_values(const char *src, char *dest)
 {
 	int i, table, corr;
 	dest[0] = src[0] & ~0x07;
