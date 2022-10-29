@@ -65,33 +65,33 @@ static unsigned char EmailImage[] =
 #endif
 
 
-static unsigned char IdentString[] =
+static const unsigned char IdentString[] =
     { 0, 1, 1, 'S', 'O', 'N', 'Y', ' ', ' ', ' ', ' ', ' ' };
-static unsigned char EmptyPacket[] = { 0 };	/* null packet */
-static unsigned char SetTransferRate[] = { 0, 1, 3, 0 };
-static unsigned char SendImageCount[] = { 0, 2, 1 };
-static unsigned char StillImage[] =
+static const unsigned char EmptyPacket[] = { 0 };	/* null packet */
+static const unsigned char SetTransferRate[] = { 0, 1, 3, 0 };
+static const unsigned char SendImageCount[] = { 0, 2, 1 };
+static const unsigned char StillImage[] =
     { 0, 2, 2, 0, 14, '/', 'D', 'C', 'I', 'M', '/', '1', '0', '0', 'M',
 'S',
 	'D', 'C', 'F'
 };
-static unsigned char MpegImage[] =
+static const unsigned char MpegImage[] =
     { 0, 2, 2, 0, 16, '/', 'M', 'S', 'S', 'O', 'N', 'Y', '/', 'M', 'O',
 'M',
 	'L', '0', '0', '0', '1'
 };
-static unsigned char SelectImage[] = { 0, 2, 48, 0, 0, 0, 0 };
-static unsigned char SendImage[] = { 0, 2, '1', 0, 1, 0, 0 };
-static unsigned char SendNextImagePacket[] = { 0, 2, '1', 0 };
-static unsigned char SendThumbnail[] = { 0, 2, '0', 0 };
+static const unsigned char SelectImage[] = { 0, 2, 48, 0, 0, 0, 0 };
+static const unsigned char SendImage[] = { 0, 2, '1', 0, 1, 0, 0 };
+static const unsigned char SendNextImagePacket[] = { 0, 2, '1', 0 };
+static const unsigned char SendThumbnail[] = { 0, 2, '0', 0 };
 
 #if 0
-static unsigned char SelectCamera[] = { 0, 1, 2 };
-static unsigned char DownloadComplete[] = { 0, 2, '0', 255 };
-static unsigned char X10Camera[] = { 0, 1, 5 };
+static const unsigned char SelectCamera[] = { 0, 1, 2 };
+static const unsigned char DownloadComplete[] = { 0, 2, '0', 255 };
+static const unsigned char X10Camera[] = { 0, 1, 5 };
 
-static unsigned char X5Camera[] = { 0, 2, 1 };
-static unsigned char X13Camera[] = { 0, 2, 18 };
+static const unsigned char X5Camera[] = { 0, 2, 1 };
+static const unsigned char X13Camera[] = { 0, 2, 18 };
 
 #endif
 
@@ -349,7 +349,7 @@ sony_packet_write(Camera * camera, Packet * p)
  * Communicates packets
  */
 static int
-sony_converse(Camera * camera, Packet * out, unsigned char *str, int len)
+sony_converse_(Camera * camera, Packet * out, unsigned char *str, int len)
 {
 	Packet ps;
 	char old_sequence = 33;
@@ -445,6 +445,13 @@ sony_converse(Camera * camera, Packet * out, unsigned char *str, int len)
 	return GP_ERROR;
 }
 
+#define local_copy_of_arr(name, arr) \
+	unsigned char name[sizeof(arr)]; \
+	memcpy(name, arr, sizeof(arr));
+
+#define sony_converse(camera, out, arr) \
+	sony_converse_(camera, out, arr, sizeof(arr))
+
 
 /**
  * Sets baud rate
@@ -476,13 +483,13 @@ sony_baud_set(Camera * camera, long baud)
 			baud);
 
 	if (camera->pl->current_baud_rate != baud) {
-		/* FIXME */
-		SetTransferRate[3] = sony_baud_to_id(baud);
+		local_copy_of_arr(set_transfer_rate, SetTransferRate);
+		set_transfer_rate[3] = sony_baud_to_id(baud);
 
-		rc = sony_converse(camera, &dp, SetTransferRate, 4);
+		rc = sony_converse(camera, &dp, set_transfer_rate);
 		if (rc == GP_OK) {
 			sony_baud_port_set(camera, baud);
-			rc = sony_converse(camera, &dp, EmptyPacket, 1);
+			rc = sony_converse(camera, &dp, EmptyPacket);
 			if (rc == GP_OK) {
 				camera->pl->current_baud_rate = baud;
 			}
@@ -536,7 +543,7 @@ sony_init_first_contact (Camera *camera)
 	for (count = 0; count < 3; count++) {
 		camera->pl->sequence_id = 0;
 
-		rc = sony_converse(camera, &dp, IdentString, 12);
+		rc = sony_converse(camera, &dp, IdentString);
 		if (rc == GP_OK) {
 			GP_DEBUG(
 					"Init OK");
@@ -587,7 +594,7 @@ sony_exit(Camera * camera)
 
 	rc = sony_baud_set(camera, 9600);
 	while (rc == GP_OK && camera->pl->sequence_id > 0) {
-		rc = sony_converse(camera, &dp, EmptyPacket, 1);
+		rc = sony_converse(camera, &dp, EmptyPacket);
 	}
 
 	return rc;
@@ -601,7 +608,7 @@ sony_set_file_mode(Camera * camera, SonyFileType file_type)
 	Packet dp;
 	if (file_type == SONY_FILE_MPEG) {
 		if (camera->pl->current_mpeg_mode != 1) {
-			rc = sony_converse(camera, &dp, MpegImage, 21);
+			rc = sony_converse(camera, &dp, MpegImage);
 			if (rc == GP_OK) {
 				camera->pl->current_mpeg_mode = 1;
 			}
@@ -609,7 +616,7 @@ sony_set_file_mode(Camera * camera, SonyFileType file_type)
 	}
 	else {
 		if (camera->pl->current_mpeg_mode != 0) {
-			rc = sony_converse(camera, &dp, StillImage, 19);
+			rc = sony_converse(camera, &dp, StillImage);
 			if (rc == GP_OK) {
 				camera->pl->current_mpeg_mode = 0;
 			}
@@ -634,13 +641,13 @@ sony_file_count(Camera * camera, SonyFileType file_type, int *count)
 		return GP_OK;
 	}
 	*count = -1;
-	rc = sony_converse(camera, &dp, SetTransferRate, 4);
+	rc = sony_converse(camera, &dp, SetTransferRate);
 	if (rc != GP_OK)
 		return rc;
 	rc = sony_set_file_mode(camera, file_type);
 	if (rc != GP_OK)
 		return rc;
-	rc = sony_converse(camera, &dp, SendImageCount, 3);
+	rc = sony_converse(camera, &dp, SendImageCount);
 	if (rc != GP_OK)
 		return rc;
 	nr = dp.buffer[5] | (dp.buffer[4]<<8);
@@ -665,10 +672,10 @@ sony_file_name_get(Camera *camera, int imageid, SonyFileType mpeg, char buf[13])
 	if (rc != GP_OK)
 		return rc;
 	sony_baud_set(camera, baud_rate);
-	/* FIXME: Not nice, changing global data like this. */
-	SelectImage[3] = (imageid >> 8);
-	SelectImage[4] = imageid & 0xff;
-	rc = sony_converse(camera, &dp, SelectImage, 7);
+	local_copy_of_arr(select_image, SelectImage);
+	select_image[3] = (imageid >> 8);
+	select_image[4] = imageid & 0xff;
+	rc = sony_converse(camera, &dp, select_image);
 	if (rc != GP_OK)
 		return rc;
 	memcpy(buf, &dp.buffer[5], 8);
@@ -728,9 +735,10 @@ sony_file_get(Camera * camera, int imageid, int file_type,
 		if (rc == GP_OK) {
 			if (file_type == SONY_FILE_THUMBNAIL) {
 				sc = 0x247;
-				SelectImage[3] = (imageid >> 8);
-				SelectImage[4] = imageid & 0xff;
-				sony_converse(camera, &dp, SelectImage, 7);
+				local_copy_of_arr(select_image, SelectImage);
+				select_image[3] = imageid >> 8;
+				select_image[4] = imageid & 0xff;
+				sony_converse(camera, &dp, select_image);
 
 				if (camera->pl->model
 				    != SONY_MODEL_DSC_F55) {
@@ -747,8 +755,7 @@ sony_file_get(Camera * camera, int imageid, int file_type,
 					}
 					gp_context_idle(context);
 
-					sony_converse(camera, &dp,
-						      SendThumbnail, 4);
+					sony_converse(camera, &dp, SendThumbnail);
 
 					gp_file_append(file,
 						       (char *) dp.buffer +
@@ -761,9 +768,10 @@ sony_file_get(Camera * camera, int imageid, int file_type,
 			} else {
 				sc = 11;
 
-				SendImage[3] = (imageid >> 8);
-				SendImage[4] = imageid;
-				sony_converse(camera, &dp, SendImage, 7);
+				local_copy_of_arr(send_image, SendImage);
+				send_image[3] = (imageid >> 8);
+				send_image[4] = imageid;
+				sony_converse(camera, &dp, send_image);
 
 				for (;;) {
 					if (gp_context_cancel(context)
@@ -796,8 +804,7 @@ sony_file_get(Camera * camera, int imageid, int file_type,
 						break;
 
 					sony_converse(camera, &dp,
-						      SendNextImagePacket,
-						      4);
+						      SendNextImagePacket);
 				}
 			}
 		}
@@ -867,9 +874,10 @@ sony_image_info(Camera * camera, int imageid, SonyFileType file_type,
 		return GP_ERROR_CANCEL;
 	}
 
-	SelectImage[3] = (imageid >> 8);
-	SelectImage[4] =  imageid & 0xff;
-	rc = sony_converse(camera, &dp, SelectImage, 7);
+	local_copy_of_arr(select_image, SelectImage);
+	select_image[3] = imageid >> 8;
+	select_image[4] = imageid & 0xff;
+	rc = sony_converse(camera, &dp, select_image);
 	if (rc == GP_OK) {
 		l = (l << 8) | dp.buffer[16];
 		l = (l << 8) | dp.buffer[17];
