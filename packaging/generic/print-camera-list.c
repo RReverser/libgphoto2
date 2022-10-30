@@ -1264,6 +1264,7 @@ static int html_end_func (
 }
 
 /* time zero for debug log time stamps */
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables) - this app is not multithreaded.
 static struct timeval glob_tv_zero = { 0, 0 };
 
 static void
