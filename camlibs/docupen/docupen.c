@@ -52,7 +52,8 @@ static const char cmd_get_profile[]	= { 0x58, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00
 static const char cmd_set_profile[]	= { 0x59, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x1a }; /* length = 0x400 */
 
 #define RAW_HEADER_SERIAL_OFFSET 0x4e
-static const char raw_header[] = {
+#define RAW_HEADER_SERIAL_END_OFFSET (RAW_HEADER_SERIAL_OFFSET + SERIALNO_LEN)
+static const char raw_header_template[] = {
 /*  0 */ 0x53, 0x53, 0x08, 0x5f, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01, 0x40, 0xc0, /* SS._..........@. */
 /* 10 */ 0x12, 0x00, 0x20, 0x48, 0x88, 0x00, 0x00, 0x68, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* .. H...h........ */
 /* 20 */ 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* ................ */
@@ -511,9 +512,11 @@ get_file_func (CameraFilesystem *fs, const char *folder, const char *filename,
 		break;
 	case GP_FILE_TYPE_RAW:
 		gp_file_set_mime_type(file, GP_MIME_RAW);
-		memcpy(raw_header + RAW_HEADER_SERIAL_OFFSET, camera->pl->info.serialno, sizeof(camera->pl->info.serialno));
-		gp_file_append(file, (void *)&raw_header, sizeof(raw_header));
-		gp_file_append(file, (void *)&header, sizeof(header));
+		gp_file_append(file, raw_header_template, RAW_HEADER_SERIAL_OFFSET);
+		gp_file_append(file, (const char *) camera->pl->info.serialno, sizeof(camera->pl->info.serialno));
+		gp_file_append(file, raw_header_template + RAW_HEADER_SERIAL_END_OFFSET,
+			       sizeof(raw_header_template) - RAW_HEADER_SERIAL_END_OFFSET);
+		gp_file_append(file, (const char *) &header, sizeof(header));
 		gp_file_append(file, file_data, le32toh(header.payloadlen));
 		free(file_data);
 		gp_file_adjust_name_for_mime_type(file);

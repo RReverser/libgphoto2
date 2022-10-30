@@ -214,7 +214,7 @@ sony_packet_validate(Camera * camera, Packet * p)
  * Constructs a packet.
  */
 static int
-sony_packet_make(Camera * camera, Packet * p, unsigned char *buffer,
+sony_packet_make(Camera * camera, Packet * p, const unsigned char *buffer,
 		 unsigned short int length)
 {
 	p->length = 0;
