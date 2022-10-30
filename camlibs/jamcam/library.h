@@ -33,16 +33,24 @@
 
 #define CHECK(result) {int __res; __res = result; if (__res < 0) return (__res);}
 
-struct jamcam_file {
+typedef struct {
 	unsigned int position;
 	unsigned int width;
 	unsigned int height;
 	unsigned int data_incr;
+} jamcam_file;
+
+#define JAMCAM_FILES_CAPACITY 1024
+
+struct _CameraPrivateLibrary {
+	jamcam_file jamcam_files[JAMCAM_FILES_CAPACITY];
+	unsigned int jamcam_count;
+	int jamcam_mmc_card_size;
 };
 
 int jamcam_enq(Camera *camera);
 int jamcam_file_count(Camera *camera);
-struct jamcam_file *jamcam_file_info(Camera *camera, int number);
+jamcam_file *jamcam_file_info(Camera *camera, int number);
 int jamcam_request_image(Camera *camera, CameraFile *file, char *buf, unsigned int *len, int number, GPContext *context );
 int jamcam_request_thumbnail(Camera *camera, CameraFile *file, char *buf, unsigned int *len, int number, GPContext *context );
 

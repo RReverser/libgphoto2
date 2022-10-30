@@ -119,7 +119,7 @@ static int get_info_func (CameraFilesystem *fs, const char *folder,
 {
 	Camera *camera = data;
 	int n;
-	struct jamcam_file *jc_file;
+	jamcam_file *jc_file;
 
 	GP_DEBUG ("* get_info_func");
 	GP_DEBUG ("*** folder: %s", folder);
@@ -149,7 +149,14 @@ static int camera_exit (Camera *camera, GPContext *context)
 {
 	GP_DEBUG ("* camera_exit");
 
-	jamcam_file_count (camera);
+	// TODO: why was this used here before? It should be a ~pure function :/
+	// jamcam_file_count (camera);
+
+	if (camera->pl != NULL) {
+		free(camera->pl);
+		camera->pl = NULL;
+	}
+
 	return (GP_OK);
 }
 
@@ -173,7 +180,7 @@ static int get_file_func (CameraFilesystem *fs, const char *folder,
 	unsigned int size = 0;
 	int n = 0;
 	int width, height;
-	struct jamcam_file *jc_file;
+	jamcam_file *jc_file;
 
 	GP_DEBUG ("* camera_file_get");
 	GP_DEBUG ("*** folder: %s", folder);
@@ -329,6 +336,11 @@ int camera_init (Camera *camera, GPContext *context)
 	}
 	CHECK (gp_port_set_settings (camera->port, settings));
 	CHECK (gp_port_set_timeout (camera->port, TIMEOUT));
+
+	camera->pl = malloc (sizeof (CameraPrivateLibrary));
+	camera->pl->jamcam_count = 0;
+	camera->pl->jamcam_mmc_card_size = 0;
+	if (!camera->pl) return GP_ERROR_NO_MEMORY;
 
 	/* check to see if camera is really there */
 	CHECK (jamcam_enq (camera));

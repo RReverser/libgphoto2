@@ -38,10 +38,6 @@
 
 #define GP_MODULE
 
-static struct jamcam_file jamcam_files[1024];
-static unsigned int jamcam_count = 0;
-static int jamcam_mmc_card_size = 0;
-
 static int jamcam_read_packet (Camera *camera, unsigned char *packet, int length);
 static int jamcam_write_packet (Camera *camera, unsigned char *packet, int length);
 static int jamcam_fetch_memory( Camera *camera, CameraFile *file,
@@ -90,15 +86,11 @@ static int jamcam_set_usb_mem_pointer( Camera *camera, unsigned int position ) {
 	return GP_OK;
 }
 
-
 /* get the number of images on the mmc card */
 static int jamcam_mmc_card_file_count (Camera *camera) {
 	unsigned char buf[16];
 	unsigned char reply[512];
 	unsigned int position = 0x40000000;
-	unsigned int data_incr;
-	unsigned int width;
-	unsigned int height;
 
 	GP_DEBUG ("* jamcam_mmc_card_file_count");
 
@@ -108,75 +100,30 @@ static int jamcam_mmc_card_file_count (Camera *camera) {
 		default:
 		case GP_PORT_SERIAL:
 			memcpy( buf, "KB00", 4 );
-			jamcam_set_int_at_pos( buf, 4, position );
-			jamcam_write_packet( camera, buf, 8 );
 
-			jamcam_read_packet( camera, reply, 16 );
-
-			while( memcmp( reply, "KB", 2 ) == 0 ) {
-				width  = (reply[5] * 256) + reply[4];
-				height = (reply[7] * 256) + reply[6];
-
-				data_incr = jamcam_get_int_at_pos( reply, 8 );
-
-				jamcam_files[jamcam_count].position = position;
-				jamcam_files[jamcam_count].width = width;
-				jamcam_files[jamcam_count].height = height;
-				jamcam_files[jamcam_count].data_incr = data_incr;
-
-				if (jamcam_count+1 >= sizeof(jamcam_files)/sizeof(jamcam_files[0]))
-					break;
-				jamcam_count++;
-
-				position += data_incr;
-
+			while (camera->pl->jamcam_count < JAMCAM_FILES_CAPACITY) {
 				jamcam_set_int_at_pos( buf, 4, position );
 				jamcam_write_packet( camera, buf, 8 );
 
 				jamcam_read_packet( camera, reply, 16 );
+
+				if ( memcmp( reply, "KB", 2 ) != 0 ) {
+					break;
+				}
+
+				jamcam_file *jc_file = &camera->pl->jamcam_files[camera->pl->jamcam_count++];
+
+				jc_file->position = position;
+				jc_file->width  = (reply[5] * 256) + reply[4];
+				jc_file->height = (reply[7] * 256) + reply[6];
+				jc_file->data_incr = jamcam_get_int_at_pos( reply, 8 );
+
+				position += jc_file->data_incr;
 			}
 			break;
 
 		case GP_PORT_USB:
-			gp_port_usb_msg_write( camera->port,
-				0xa5,
-				0x0005,
-				0x0000,
-				NULL, 0 );
-
-			jamcam_set_usb_mem_pointer( camera, position );
-
-			CHECK( gp_port_read (camera->port, (char*)reply, 0x10 ));
-
-			width  = (reply[13] * 256) + reply[12];
-			height = (reply[15] * 256) + reply[14];
-
-			jamcam_set_usb_mem_pointer( camera, position + 8 );
-
-			CHECK( gp_port_read (camera->port, (char*)reply, 512 ));
-
-			gp_port_usb_msg_write( camera->port,
-				0xa5,
-				0x0006,
-				0x0000,
-				NULL, 0 );
-
-			while((reply[0] != 0xff ) &&
-			      (reply[0] != 0xaa ) &&
-				  ((reply[0] != 0x00 ) ||
-				   (reply[1] != 0x00 ))) {
-				data_incr = jamcam_get_int_at_pos( reply, 0 );
-
-				jamcam_files[jamcam_count].position = position;
-				jamcam_files[jamcam_count].width = width;
-				jamcam_files[jamcam_count].height = height;
-				jamcam_files[jamcam_count].data_incr = data_incr;
-				if (jamcam_count+1 >= sizeof(jamcam_files)/sizeof(jamcam_files[0]))
-					break;
-				jamcam_count++;
-
-				position += data_incr;
-
+			while (camera->pl->jamcam_count < JAMCAM_FILES_CAPACITY) {
 				gp_port_usb_msg_write( camera->port,
 					0xa5,
 					0x0005,
@@ -187,8 +134,8 @@ static int jamcam_mmc_card_file_count (Camera *camera) {
 
 				CHECK( gp_port_read (camera->port, (char*)reply, 0x10 ));
 
-				width  = (reply[13] * 256) + reply[12];
-				height = (reply[15] * 256) + reply[14];
+				unsigned int width  = (reply[13] * 256) + reply[12];
+				unsigned int height = (reply[15] * 256) + reply[14];
 
 				jamcam_set_usb_mem_pointer( camera, position + 8 );
 
@@ -199,11 +146,24 @@ static int jamcam_mmc_card_file_count (Camera *camera) {
 					0x0006,
 					0x0000,
 					NULL, 0 );
+
+				if (reply[0] == 0xff || reply[0] == 0xaa || (reply[0] == 0x00 && reply[1] == 0x00)) {
+					break;
+				}
+
+				jamcam_file *jc_file = &camera->pl->jamcam_files[camera->pl->jamcam_count++];
+
+				jc_file->position = position;
+				jc_file->width = width;
+				jc_file->height = height;
+				jc_file->data_incr = jamcam_get_int_at_pos( reply, 0 );
+
+				position += jc_file->data_incr;
 			}
 			break;
 	}
 
-	GP_DEBUG (		"*** returning with jamcam_count = %u", jamcam_count);
+	GP_DEBUG ("*** returning with jamcam_count = %u", camera->pl->jamcam_count);
 	return( 0 );
 }
 
@@ -211,14 +171,11 @@ int jamcam_file_count (Camera *camera) {
 	unsigned char buf[16];
 	unsigned char reply[16];
 	int position = 0;
-	int data_incr;
-	int width;
-	int height;
 	int last_offset_size = 0;
 
 	GP_DEBUG ("* jamcam_file_count");
 
-	jamcam_count = 0;
+	camera->pl->jamcam_count = 0;
 
 	memset( buf, 0, sizeof( buf ));
 
@@ -226,34 +183,26 @@ int jamcam_file_count (Camera *camera) {
 		default:
 		case GP_PORT_SERIAL:
 			memcpy( buf, "KB00", 4 );
-			jamcam_set_int_at_pos( buf, 4, position );
-			jamcam_write_packet( camera, buf, 8 );
 
-			jamcam_read_packet( camera, reply, 16 );
-
-			while( reply[0] == 'K' ) {
-				width  = (reply[5] * 256) + reply[4];
-				height = (reply[7] * 256) + reply[6];
-
-				data_incr = jamcam_get_int_at_pos( reply, 8 );
-
-				last_offset_size = data_incr;
-
-				jamcam_files[jamcam_count].position = position;
-				jamcam_files[jamcam_count].width = width;
-				jamcam_files[jamcam_count].height = height;
-				jamcam_files[jamcam_count].data_incr = data_incr;
-				if (jamcam_count+1 >= sizeof(jamcam_files)/sizeof(jamcam_files[0]))
-					break;
-
-				jamcam_count++;
-
-				position += data_incr;
-
+			while (camera->pl->jamcam_count < JAMCAM_FILES_CAPACITY) {
 				jamcam_set_int_at_pos( buf, 4, position );
 				jamcam_write_packet( camera, buf, 8 );
 
 				jamcam_read_packet( camera, reply, 16 );
+
+				if (reply[0] != 'K') {
+					break;
+				}
+
+				jamcam_file *jc_file = &camera->pl->jamcam_files[camera->pl->jamcam_count++];
+
+				jc_file->position = position;
+				jc_file->width  = (reply[5] * 256) + reply[4];
+				jc_file->height = (reply[7] * 256) + reply[6];
+				jc_file->data_incr = jamcam_get_int_at_pos( reply, 8 );
+
+				last_offset_size = jc_file->data_incr;
+				position += jc_file->data_incr;
 			}
 
 			/* the v3 camera uses 0x3fdf0 data increments so check for MMC */
@@ -263,50 +212,40 @@ int jamcam_file_count (Camera *camera) {
 			break;
 
 		case GP_PORT_USB:
-			jamcam_set_usb_mem_pointer( camera, position );
-
-			CHECK( gp_port_read (camera->port, (char*)reply, 0x10 ));
-
-			width  = (reply[13] * 256) + reply[12];
-			height = (reply[15] * 256) + reply[14];
-
-			jamcam_set_usb_mem_pointer( camera, position + 8 );
-
-			CHECK( gp_port_read (camera->port, (char*)reply, 0x10 ));
-
-			while(reply[0] != 0xff ) {
-				data_incr = jamcam_get_int_at_pos( reply, 0 );
-
-				jamcam_files[jamcam_count].position = position;
-				jamcam_files[jamcam_count].width = width;
-				jamcam_files[jamcam_count].height = height;
-				jamcam_files[jamcam_count].data_incr = data_incr;
-				if (jamcam_count+1 >= sizeof(jamcam_files)/sizeof(jamcam_files[0]))
-					break;
-				jamcam_count++;
-
-				position += data_incr;
-
+			while (camera->pl->jamcam_count < JAMCAM_FILES_CAPACITY) {
 				jamcam_set_usb_mem_pointer( camera, position );
 
 				CHECK( gp_port_read (camera->port, (char*)reply, 0x10 ));
 
-				width  = (reply[13] * 256) + reply[12];
-				height = (reply[15] * 256) + reply[14];
+				unsigned int width  = (reply[13] * 256) + reply[12];
+				unsigned int height = (reply[15] * 256) + reply[14];
 
 				jamcam_set_usb_mem_pointer( camera, position + 8 );
 
 				CHECK( gp_port_read (camera->port, (char*)reply, 0x10 ));
+
+				if (reply[0] == 0xff) {
+					break;
+				}
+
+				jamcam_file *jc_file = &camera->pl->jamcam_files[camera->pl->jamcam_count++];
+
+				jc_file->position = position;
+				jc_file->width = width;
+				jc_file->height = height;
+				jc_file->data_incr = jamcam_get_int_at_pos( reply, 0 );
+
+				position += jc_file->data_incr;
 			}
 			break;
 	}
 
-	if ( jamcam_mmc_card_size ) {
-		jamcam_count += jamcam_mmc_card_file_count( camera );
+	if ( camera->pl->jamcam_mmc_card_size ) {
+		camera->pl->jamcam_count += jamcam_mmc_card_file_count( camera );
 	}
 
-	GP_DEBUG (		"*** returning jamcam_count = %u", jamcam_count);
-	return( jamcam_count );
+	GP_DEBUG ("*** returning jamcam_count = %u", camera->pl->jamcam_count);
+	return( camera->pl->jamcam_count );
 }
 
 static int jamcam_fetch_memory( Camera *camera, CameraFile *file,
@@ -402,7 +341,9 @@ int jamcam_request_image( Camera *camera, CameraFile *file,
 	GP_DEBUG ("* jamcam_request_image");
 	tmp_buf = malloc(640*480*3);
 
-	position = jamcam_files[number].position;
+	jamcam_file *jc_file = jamcam_file_info( camera, number );
+
+	position = jc_file->position;
 
 	/* don't know why this is necessary, but do it anyway */
 	if ( camera->port->type == GP_PORT_USB ) {
@@ -416,9 +357,9 @@ int jamcam_request_image( Camera *camera, CameraFile *file,
 			0x0000,
 			NULL, 0 );
 	}
-	if (jamcam_files[number].data_incr <= 640*480*3)
+	if (jc_file->data_incr <= 640*480*3)
 		result = jamcam_fetch_memory( camera, file, tmp_buf, position,
-			jamcam_files[number].data_incr, context );
+			jc_file->data_incr, context );
 	else
 		result = GP_ERROR;
 
@@ -432,7 +373,7 @@ int jamcam_request_image( Camera *camera, CameraFile *file,
 	}
 
 	if ( result == GP_OK ) {
-		*len = jamcam_files[number].width * jamcam_files[number].height;
+		*len = jc_file->width * jc_file->height;
 		if (*len < 640*480*3)
 			memcpy( buf, tmp_buf + 0x10, *len );
 	}
@@ -441,10 +382,10 @@ int jamcam_request_image( Camera *camera, CameraFile *file,
 	return result;
 }
 
-struct jamcam_file *jamcam_file_info(Camera *camera, int number)
+jamcam_file *jamcam_file_info(Camera *camera, int number)
 {
 	GP_DEBUG(" * jamcam_file_info, nr is %d", number);
-	return( &jamcam_files[number] );
+	return( &camera->pl->jamcam_files[number] );
 }
 
 int jamcam_request_thumbnail( Camera *camera, CameraFile *file,
@@ -462,7 +403,9 @@ int jamcam_request_thumbnail( Camera *camera, CameraFile *file,
 
 	memset( packet, 0, sizeof( packet ));
 
-	position = jamcam_files[number].position + 0x10;
+	jamcam_file *jc_file = jamcam_file_info( camera, number );
+
+	position = jc_file->position + 0x10;
 
 	*len = 4800;
 
@@ -477,7 +420,7 @@ int jamcam_request_thumbnail( Camera *camera, CameraFile *file,
 			NULL, 0 );
 
 		/* just read one row of data at a time */
-		bytes_to_read = jamcam_files[number].width;
+		bytes_to_read = jc_file->width;
 	} else {
 		/* MMC card is quirky, need to fetch larger amounts of data */
 		if ( position >= 0x40000000 ) {
@@ -485,7 +428,7 @@ int jamcam_request_thumbnail( Camera *camera, CameraFile *file,
 			bytes_to_read = 2048;
 		} else {
 			/* just read one row of data at a time */
-			bytes_to_read = jamcam_files[number].width;
+			bytes_to_read = jc_file->width;
 		}
 	}
 
@@ -495,7 +438,7 @@ int jamcam_request_thumbnail( Camera *camera, CameraFile *file,
 	}
 
 	/* fetch thumbnail lines and build the thumbnail */
-	position += 10 * jamcam_files[number].width;
+	position += 10 * jc_file->width;
 	id = gp_context_progress_start (context, 60.,
 					_("Downloading thumbnail..."));
 	for( y = 0 ; y < 60 ; y++ ) {
@@ -507,7 +450,7 @@ int jamcam_request_thumbnail( Camera *camera, CameraFile *file,
 			break;
 		}
 
-		if ( jamcam_files[number].width == 600 ) {
+		if ( jc_file->width == 600 ) {
 			for( x = 22; x < 578 ; x += 7 ) {
 				*(ptr++) = line[x];
 			}
@@ -635,11 +578,11 @@ int jamcam_enq (Camera *camera)
 					/* found a JamCam v3 camera */
 					/* reply contains 4-bytes with MMC card size if present */
 					/* set to 0 if none */
-					jamcam_mmc_card_size = jamcam_get_int_at_pos( buf, 8 );
+					camera->pl->jamcam_mmc_card_size = jamcam_get_int_at_pos( buf, 8 );
 
-					if ( jamcam_mmc_card_size ) {
+					if ( camera->pl->jamcam_mmc_card_size ) {
 						GP_DEBUG (							"* jamcam_enq, MMC card size = %d",
-							jamcam_mmc_card_size );
+							camera->pl->jamcam_mmc_card_size );
 					}
 
 					return (GP_OK);
@@ -689,11 +632,11 @@ static int jamcam_query_mmc_card (Camera *camera)
 			return (ret);
 
 		/* reply is 4-byte int showing length of MMC card if any, 0 if none */
-		jamcam_mmc_card_size = jamcam_get_int_at_pos( buf, 0 );
+		camera->pl->jamcam_mmc_card_size = jamcam_get_int_at_pos( buf, 0 );
 
-		if ( jamcam_mmc_card_size ) {
+		if ( camera->pl->jamcam_mmc_card_size ) {
 			GP_DEBUG ("* jamcam_query_mmc_card, MMC card size = %d",
-				jamcam_mmc_card_size );
+				camera->pl->jamcam_mmc_card_size );
 		}
 
 		return (GP_OK);
