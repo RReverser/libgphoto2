@@ -5,7 +5,7 @@
 #include <time.h>
 #include <sys/stat.h>
 
-void main (int argc, char **argv)
+int main (int argc, char **argv)
 {
     FILE *jpgfile;
     time_t time;

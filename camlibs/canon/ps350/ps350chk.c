@@ -59,7 +59,7 @@
 
 #include <stdio.h>
 
-void
+int
 main (void)
 {
   long datalen = 296;		/* number of data bytes. Always 296. */

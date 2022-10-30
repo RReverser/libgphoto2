@@ -18,8 +18,6 @@
  * Boston, MA  02110-1301  USA
  */
 
-#define _DEFAULT_SOURCE
-
 #include "config.h"
 
 #include <stdio.h>
@@ -349,7 +347,7 @@ sony_packet_write(Camera * camera, Packet * p)
  * Communicates packets
  */
 static int
-sony_converse_(Camera * camera, Packet * out, unsigned char *str, int len)
+sony_converse_(Camera * camera, Packet * out, const unsigned char *str, int len)
 {
 	Packet ps;
 	char old_sequence = 33;
