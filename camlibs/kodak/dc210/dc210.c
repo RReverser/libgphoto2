@@ -45,7 +45,7 @@
 
 #include "dc210.h"
 
-static const char *exp_comp[] = {"-2.0 EV", "-1.5 EV", "-1.0 EV", "-0.5 EV", "AUTO", "+0.5 EV",
+static const char *const exp_comp[] = {"-2.0 EV", "-1.5 EV", "-1.0 EV", "-0.5 EV", "AUTO", "+0.5 EV",
 		     "+1.0 EV", "+1.5 EV", "+2.0 EV"};
 
 int camera_id (CameraText *id) {
