@@ -24,17 +24,36 @@
 #ifndef CAMLIBS_SONYDSCF1_COMMAND_H
 #define CAMLIBS_SONYDSCF1_COMMAND_H
 
-int	F1ok (GPPort*);
-long	F1getdata (GPPort*,char *, unsigned char *);
-int	F1status (GPPort*);
-char	F1newstatus (GPPort *port, int, char *);
-int	F1howmany (GPPort *);
-int	F1fopen (GPPort *,char *);
-long	F1fread(GPPort *,unsigned char *data, long len);
-long	F1fwrite(GPPort *,unsigned char *data, long len, unsigned char b);
-long	F1fseek (GPPort *,long, int);
-unsigned long	F1finfo (GPPort *,char *);
-int	F1fclose (GPPort *);
-int	F1deletepicture (GPPort*,int);
+#define MAX_PICTURE_NUM 200
+
+typedef struct {
+  unsigned char index;
+  unsigned short thumbnail_index;
+  unsigned char protect;
+  unsigned char rotate;
+} picture_t;
+
+struct _CameraPrivateLibrary {
+  picture_t pictures[MAX_PICTURE_NUM];
+  unsigned char address;
+  int sw_mode;
+  int pic_num;
+  int pic_num2;
+  int year, month, date;
+  int hour, minutes;
+};
+
+int	F1ok (Camera *);
+long	F1getdata (Camera *,char *, unsigned char *);
+int	F1status (Camera *);
+char	F1newstatus (Camera *port, int, char *);
+int	F1howmany (Camera *);
+int	F1fopen (Camera *,char *);
+long	F1fread(Camera *,unsigned char *data, long len);
+long	F1fwrite(Camera *,unsigned char *data, long len, unsigned char b);
+long	F1fseek (Camera *,long, int);
+unsigned long	F1finfo (Camera *,char *);
+int	F1fclose (Camera *);
+int	F1deletepicture (Camera *,int);
 
 #endif /* !defined(CAMLIBS_SONYDSCF1_COMMAND_H) */

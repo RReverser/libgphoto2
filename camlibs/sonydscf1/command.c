@@ -31,20 +31,14 @@
 
 #include "command.h"
 
-static unsigned char address = 0;
 static const unsigned char sendaddr[8] = { 0x00, 0x22, 0x44, 0x66, 0x88, 0xaa, 0xcc, 0xee };
 static const unsigned char recvaddr[8] = { 0x0e, 0x20, 0x42, 0x64, 0x86, 0xa8, 0xca, 0xec };
-static int sw_mode = 0;
-static int pic_num = 0;
-static int pic_num2 = 0;
-static int year, month, date;
-static int hour, minutes;
 
 static const unsigned char BOFRAME = 0xC0;
 static const unsigned char EOFRAME = 0xC1;
 #define CESCAPE 0x7D
 
-static int F1reset(GPPort *port);
+static int F1reset(Camera *camera);
 
 static int
 wbyte(GPPort *port,unsigned char c)
@@ -63,8 +57,10 @@ checksum(unsigned char addr, unsigned char *cp, int len)
 }
 
 static void
-sendcommand(GPPort *port,unsigned char *p, int len)
+sendcommand(Camera *camera,unsigned char *p, int len)
 {
+  GPPort *port = camera->port;
+  unsigned char address = camera->pl->address;
   wbyte(port,BOFRAME);
   wbyte(port,sendaddr[address]);
   gp_port_write (port, (char*)p, len);
@@ -75,21 +71,24 @@ sendcommand(GPPort *port,unsigned char *p, int len)
 }
 
 static void
-Abort(GPPort *port)
+Abort(Camera *camera)
 {
   unsigned char buf[4];
   buf[0] = BOFRAME;
   buf[1] = 0x85;
   buf[2] = 0x7B;
   buf[3] = EOFRAME;
-  gp_port_write (port, (char*)buf, 4);
+  gp_port_write (camera->port, (char*)buf, 4);
 }
 
-static int recvdata(GPPort *port, unsigned char *p, int len)
+static int recvdata(Camera *camera, unsigned char *p, int len)
 {
   unsigned char s, t;
   int sum;
   int i;
+
+  GPPort *port = camera->port;
+  unsigned char address = camera->pl->address;
 
   gp_log (GP_LOG_DEBUG, "recvdata", "reading %d bytes", len);
   gp_port_read(port, (char *)&s, 1);  /* BOFL */
@@ -100,7 +99,7 @@ static int recvdata(GPPort *port, unsigned char *p, int len)
     gp_port_read(port, (char *)&s, 1);  /* drain */
     gp_port_read(port, (char *)&s, 1);  /* drain */
     gp_port_read(port, (char *)&s, 1);  /* drain */
-    Abort(port);
+    Abort(camera);
     return(-1);
   }
   i = len;
@@ -133,7 +132,7 @@ static int recvdata(GPPort *port, unsigned char *p, int len)
 /*------------------------------------------------------------*/
 
 
-char F1newstatus(GPPort *port, int verbose, char *return_buf)
+char F1newstatus(Camera *camera, int verbose, char *return_buf)
 {
   unsigned char buf[34];
   char status_buf[1000]="";
@@ -142,26 +141,26 @@ char F1newstatus(GPPort *port, int verbose, char *return_buf)
 
   buf[0] = 0x03;
   buf[1] = 0x02;
-  sendcommand(port,buf, 2);
-  i = recvdata(port, buf, 33);
+  sendcommand(camera,buf, 2);
+  i = recvdata(camera, buf, 33);
   gp_log (GP_LOG_DEBUG, "F1newstatus", "Status: %02x%02x:%02x(len = %d)", buf[0], buf[1], buf[2], i);
   if((buf[0] != 0x03) || (buf[1] != 0x02) ||(buf[2] != 0)){
-    Abort(port);
+    Abort(camera);
     return(-1);
   }
-  sw_mode = buf[3];
-  pic_num = buf[4] * 0x100 + buf[5];
-  pic_num2 = buf[6] * 0x100 + buf[7];
-  year = (buf[10] >> 4 ) * 10 + (buf[10] & 0x0f);
-  month = (buf[11] >> 4 ) * 10 + (buf[11] & 0x0f);
-  date = (buf[12] >> 4 ) * 10 + (buf[12] & 0x0f);
-  hour = (buf[13] >> 4 ) * 10 + (buf[13] & 0x0f);
-  minutes = (buf[14] >> 4 ) * 10 + (buf[14] & 0x0f);
+  camera->pl->sw_mode = buf[3];
+  camera->pl->pic_num = buf[4] * 0x100 + buf[5];
+  camera->pl->pic_num2 = buf[6] * 0x100 + buf[7];
+  camera->pl->year = (buf[10] >> 4 ) * 10 + (buf[10] & 0x0f);
+  camera->pl->month = (buf[11] >> 4 ) * 10 + (buf[11] & 0x0f);
+  camera->pl->date = (buf[12] >> 4 ) * 10 + (buf[12] & 0x0f);
+  camera->pl->hour = (buf[13] >> 4 ) * 10 + (buf[13] & 0x0f);
+  camera->pl->minutes = (buf[14] >> 4 ) * 10 + (buf[14] & 0x0f);
 
   if(verbose){
     strcat(status_buf, "Current camera statistics\n\n");
     strcat(status_buf, "Mode: ");
-    switch (sw_mode){
+    switch (camera->pl->sw_mode){
     case 1:
       strcat(status_buf, "Playback\n");
       break;
@@ -175,11 +174,11 @@ char F1newstatus(GPPort *port, int verbose, char *return_buf)
       strcat(status_buf, "Huh?\n");
       break;
     }
-    sprintf(tmp_buf, "Total Pictures: %02d\n", pic_num);
+    sprintf(tmp_buf, "Total Pictures: %02d\n", camera->pl->pic_num);
     strcat(status_buf, tmp_buf);
-    sprintf(tmp_buf, "Date: %02d/%02d/%02d\n", month, date, year);
+    sprintf(tmp_buf, "Date: %02d/%02d/%02d\n", camera->pl->month, camera->pl->date, camera->pl->year);
     strcat(status_buf, tmp_buf);
-    sprintf(tmp_buf, "Time: %02d:%02d\n",hour, minutes);
+    sprintf(tmp_buf, "Time: %02d:%02d\n",camera->pl->hour, camera->pl->minutes);
     strcat(status_buf, tmp_buf);
   }
 
@@ -188,32 +187,32 @@ char F1newstatus(GPPort *port, int verbose, char *return_buf)
 }
 
 
-int F1status(GPPort *port)
+int F1status(Camera *camera)
 {
   unsigned char buf[34];
   int i;
 
   buf[0] = 0x03;
   buf[1] = 0x02;
-  sendcommand(port,buf, 2);
-  i = recvdata(port, buf, 33);
+  sendcommand(camera,buf, 2);
+  i = recvdata(camera, buf, 33);
   gp_log (GP_LOG_DEBUG, "F1status", "Status: %02x%02x:%02x(len = %d)\n", buf[0], buf[1], buf[2], i);
   if((buf[0] != 0x03) || (buf[1] != 0x02) ||(buf[2] != 0)){
-    Abort(port);
+    Abort(camera);
     return(-1);
   }
-  sw_mode = buf[3];
-  pic_num = buf[4] * 0x100 + buf[5];
-  pic_num2 = buf[6] * 0x100 + buf[7];
-  year = (buf[10] >> 4 ) * 10 + (buf[10] & 0x0f);
-  month = (buf[11] >> 4 ) * 10 + (buf[11] & 0x0f);
-  date = (buf[12] >> 4 ) * 10 + (buf[12] & 0x0f);
-  hour = (buf[13] >> 4 ) * 10 + (buf[13] & 0x0f);
-  minutes = (buf[14] >> 4 ) * 10 + (buf[14] & 0x0f);
+  camera->pl->sw_mode = buf[3];
+  camera->pl->pic_num = buf[4] * 0x100 + buf[5];
+  camera->pl->pic_num2 = buf[6] * 0x100 + buf[7];
+  camera->pl->year = (buf[10] >> 4 ) * 10 + (buf[10] & 0x0f);
+  camera->pl->month = (buf[11] >> 4 ) * 10 + (buf[11] & 0x0f);
+  camera->pl->date = (buf[12] >> 4 ) * 10 + (buf[12] & 0x0f);
+  camera->pl->hour = (buf[13] >> 4 ) * 10 + (buf[13] & 0x0f);
+  camera->pl->minutes = (buf[14] >> 4 ) * 10 + (buf[14] & 0x0f);
 
   if(0){
     fprintf(stdout, "FnDial: ");
-    switch (sw_mode){
+    switch (camera->pl->sw_mode){
     case 1:
       fprintf(stdout, "play\n");
       break;
@@ -227,20 +226,21 @@ int F1status(GPPort *port)
       fprintf(stdout, "unknown?\n");
       break;
     }
-    fprintf(stdout, "Picture: %3d\n", pic_num);
+    fprintf(stdout, "Picture: %3d\n", camera->pl->pic_num);
     fprintf(stdout,"Date: %02d/%02d/%02d\nTime: %02d:%02d\n",
-            year,month,date, hour, minutes);
+            camera->pl->year, camera->pl->month, camera->pl->date,
+            camera->pl->hour, camera->pl->minutes);
   }
   return (buf[2]);              /*ok*/
 }
 
-int F1howmany(GPPort *port)
+int F1howmany(Camera *camera)
 {
-  F1status(port);
-  return(pic_num);
+  F1status(camera);
+  return(camera->pl->pic_num);
 }
 
-int F1fopen(GPPort *port, char *name)
+int F1fopen(Camera *camera, char *name)
 {
   unsigned char buf[64];
   int len;
@@ -250,10 +250,10 @@ int F1fopen(GPPort *port, char *name)
   buf[3] = 0x00;
   snprintf((char*)&buf[4], sizeof(buf)-4, "%s", name);
   len = strlen(name) + 5;
-  sendcommand(port,buf, len);
-  recvdata(port, buf, 6);
+  sendcommand(camera,buf, len);
+  recvdata(camera, buf, 6);
   if((buf[0] != 0x02) || (buf[1] != 0x0A) || (buf[2] != 0x00)){
-    Abort(port);
+    Abort(camera);
     fprintf(stderr,"F1fopen fail\n");
     return(-1);
   }
@@ -261,7 +261,7 @@ int F1fopen(GPPort *port, char *name)
   return(buf[3]);
 }
 
-int F1fclose(GPPort*port)
+int F1fclose(Camera *camera)
 {
   unsigned char buf[4];
   int i;
@@ -270,18 +270,18 @@ int F1fclose(GPPort*port)
   buf[1] = 0x0B;
   buf[2] = 0x00;
   buf[3] = 0x00;
-  sendcommand(port,buf, 4);
-  i = recvdata(port, buf, 3);
+  sendcommand(camera,buf, 4);
+  i = recvdata(camera, buf, 3);
   gp_log (GP_LOG_DEBUG, "F1fclose", "Fclose: %02x%02x:%02x(len = %d)\n", buf[0], buf[1], buf[2], i);
   if((buf[0] != 0x02) || (buf[1] != 0x0B) || (buf[2] != 0x00)){
     fprintf(stderr,"F1fclose fail\n");
-    Abort(port);
+    Abort(camera);
     return(-1);
   }
   return (buf[2]);              /* ok == 0 */
 }
 
-long F1fread(GPPort *port, unsigned char *data, long len)
+long F1fread(Camera *camera, unsigned char *data, long len)
 {
 
   long len2;
@@ -300,10 +300,12 @@ long F1fread(GPPort *port, unsigned char *data, long len)
 
   buf[6] = (len >> 8) & 0xff;
   buf[7] = 0xff & len;
-  sendcommand(port,buf, 8);
+  sendcommand(camera,buf, 8);
+
+  GPPort *port = camera->port;
   gp_port_read(port, (char *)buf, 9);
   if((buf[2] != 0x02) || (buf[3] != 0x0C) || (buf[4] != 0x00)){
-    Abort(port);
+    Abort(camera);
     fprintf(stderr,"F1fread fail\n");
     return(-1);
   }
@@ -331,7 +333,7 @@ long F1fread(GPPort *port, unsigned char *data, long len)
   return(i);
 }
 
-long F1fseek(GPPort *port,long offset, int base)
+long F1fseek(Camera *camera,long offset, int base)
 {
   unsigned char buf[10];
 
@@ -348,17 +350,17 @@ long F1fseek(GPPort *port,long offset, int base)
   buf[8] = (base >> 8) & 0xff;
   buf[9] = 0xff & base;
 
-  sendcommand(port,buf, 10);
-  recvdata(port, buf, 3);
+  sendcommand(camera,buf, 10);
+  recvdata(camera, buf, 3);
   if((buf[0] != 0x02) || (buf[1] != 0x0E) || (buf[2] != 0x00)){
-    Abort(port);
+    Abort(camera);
     return(-1);
   }
 
   return(buf[2]);
 }
 
-long F1fwrite(GPPort *port,unsigned char *data, long len, unsigned char b) /* this function not work well */
+long F1fwrite(Camera *camera,unsigned char *data, long len, unsigned char b) /* this function not work well */
 {
 
   long i = 0;
@@ -367,6 +369,9 @@ long F1fwrite(GPPort *port,unsigned char *data, long len, unsigned char b) /* th
   unsigned char buf[10];
 
   int checksum;
+
+  GPPort *port = camera->port;
+  unsigned char address = camera->pl->address;
 
   p = data;
   wbyte(port,BOFRAME);
@@ -406,7 +411,7 @@ long F1fwrite(GPPort *port,unsigned char *data, long len, unsigned char b) /* th
 
   gp_port_read(port, (char *)buf, 7);
   if((buf[2] != 0x02) || (buf[3] != 0x14) || (buf[4] != 0x00)){
-    Abort(port);
+    Abort(camera);
     fprintf(stderr,"F1fwrite fail\n");
     return(-1);
   }
@@ -414,7 +419,7 @@ long F1fwrite(GPPort *port,unsigned char *data, long len, unsigned char b) /* th
   return(i);
 }
 
-unsigned long F1finfo(GPPort *port,char *name)
+unsigned long F1finfo(Camera *camera,char *name)
 {
   unsigned char buf[64];
   int len;
@@ -425,10 +430,10 @@ unsigned long F1finfo(GPPort *port,char *name)
   snprintf((char*)&buf[2], sizeof(buf)-2, "%s", name);
   len = strlen(name) + 3;
 
-  sendcommand(port,buf, len);
-  len = recvdata(port, buf, 37);
+  sendcommand(camera,buf, len);
+  len = recvdata(camera, buf, 37);
   if((buf[0] != 0x02) || (buf[1] != 0x0F) || (buf[2] != 00)){
-    Abort(port);
+    Abort(camera);
     return(0);
   }
 
@@ -441,35 +446,35 @@ unsigned long F1finfo(GPPort *port,char *name)
   return(flen);
 }
 
-long F1getdata(GPPort*port,char *name, unsigned char *data)
+long F1getdata(Camera *camera,char *name, unsigned char *data)
 {
   long filelen;
   long total = 0;
   long len;
   unsigned char *p;
 
-  F1status(port);
+  F1status(camera);
   p = data;
-  filelen = F1finfo(port,name);
+  filelen = F1finfo(camera,name);
   if(filelen < 0)
     return(0);
 
-  if(F1fopen(port,name) != 0)
+  if(F1fopen(camera,name) != 0)
     return(0);
 
-  while((len = F1fread(port, p, 0x0400)) != 0){
+  while((len = F1fread(camera, p, 0x0400)) != 0){
     if(len < 0){
-      F1fclose(port);
+      F1fclose(camera);
       return(0);
     }
     p = p + len;
     total = total + len;
   }
-  F1fclose(port);
+  F1fclose(camera);
   return(total);
 }
 
-int F1deletepicture(GPPort *port,int n)
+int F1deletepicture(Camera *camera,int n)
 {
   unsigned char buf[4];
 
@@ -478,16 +483,16 @@ int F1deletepicture(GPPort *port,int n)
   buf[1] = 0x15;
   buf[2] = 0x00;
   buf[3] = 0xff & n;
-  sendcommand(port,buf, 4);
-  recvdata(port, buf, 3);
+  sendcommand(camera,buf, 4);
+  recvdata(camera, buf, 3);
   if((buf[0] != 0x02) || (buf[1] != 0x15) || (buf[2] != 0)){
-    Abort(port);
+    Abort(camera);
     return GP_ERROR;
   }
   return GP_OK;
 }
 
-int F1ok(GPPort*port)
+int F1ok(Camera *camera)
 {
   int retrycount = 100;
   unsigned char buf[64];
@@ -499,13 +504,13 @@ int F1ok(GPPort*port)
   sprintf((char*)&buf[2],"SONY     MKY-1001         1.00");
 
   while(retrycount--){
-    sendcommand(port,buf, 32);
-    recvdata(port, buf, 32);
+    sendcommand(camera,buf, 32);
+    recvdata(camera, buf, 32);
     gp_log (GP_LOG_DEBUG, "F1ok", "OK:%02x%02x:%c%c%c%c\n", buf[0], buf[1],
             buf[3],buf[4],buf[5],buf[6]);
     if((buf[0] != 0x01) || (buf[1] != 0x01) || (buf[2] != 0x00) ){
-      Abort(port);
-      F1reset(port);
+      Abort(camera);
+      F1reset(camera);
    } else
       return 1;
   }
@@ -513,15 +518,15 @@ int F1ok(GPPort*port)
 }
 
 static int
-F1reset(GPPort *port)
+F1reset(Camera *camera)
 {
   unsigned char buf[3];
   gp_log (GP_LOG_DEBUG, "F1reset", "Resetting camera...");
  retryreset:
   buf[0] = 0x01;
   buf[1] = 0x02;
-  sendcommand(port,buf, 2);
-  recvdata(port, buf, 3);
+  sendcommand(camera,buf, 2);
+  recvdata(camera, buf, 3);
   gp_log (GP_LOG_DEBUG, "F1reset", "Reset: %02x%02x:%02x\n", buf[0], buf[1], buf[2]);
   if(!((buf[0] == 0x01 ) && (buf[1] == 0x02) && (buf[2] == 0x00)))
     goto retryreset;

@@ -42,12 +42,6 @@
 
 #define PMF_MAXSIZ 3*1024
 
-#define MAX_PICTURE_NUM 200
-static unsigned char  picture_index[MAX_PICTURE_NUM];
-static unsigned short picture_thumbnail_index[MAX_PICTURE_NUM];
-static unsigned char  picture_protect[MAX_PICTURE_NUM];
-static unsigned char  picture_rotate[MAX_PICTURE_NUM];
-
 static int
 make_jpeg_comment(unsigned char *buf, unsigned char *jpeg_comment)
 {
@@ -156,7 +150,7 @@ make_jpeg_comment(unsigned char *buf, unsigned char *jpeg_comment)
 }
 
 static int
-get_picture_information(GPPort *port,int *pmx_num, int outit)
+get_picture_information(Camera *camera,int *pmx_num, int outit)
 {
   unsigned char buforg[PMF_MAXSIZ];
   char name[64];
@@ -165,8 +159,8 @@ get_picture_information(GPPort *port,int *pmx_num, int outit)
   char *buf = (char *) &buforg;
 
   strcpy(name, "/PIC_CAM/PIC00000/PIC_INF.PMF");
-  F1ok(port);
-  F1getdata(port, name, (unsigned char *)buf);
+  F1ok(camera);
+  F1getdata(camera, name, (unsigned char *)buf);
 
   n = buf[26] * 256 + buf[27]; /* how many files */
   *pmx_num = buf[31];  /* ??? */
@@ -177,25 +171,26 @@ get_picture_information(GPPort *port,int *pmx_num, int outit)
   k = 0;
   for(i = 0 ; i < (int) *pmx_num ; i++){
     for(j = 0 ; j < buforg[0x20 + 4 * i + 3]; j++){
-      picture_thumbnail_index[k] = (j << 8) | buforg[0x20 + 4 * i] ;
-      k++;
+      camera->pl->pictures[k++].thumbnail_index = (j << 8) | buforg[0x20 + 4 * i];
     }
   }
   for(i = 0 ; i < n ; i++){
-    picture_index[i] = buf[0x420 + 0x10 * i + 3];
-    picture_rotate[i] = buf[0x420 + 0x10 * i + 5];
-    picture_protect[i] = buf[0x420 + 0x10 * i + 14];
+    picture_t *pic = &camera->pl->pictures[i];
+    pic->index = buf[0x420 + 0x10 * i + 3];
+    pic->rotate = buf[0x420 + 0x10 * i + 5];
+    pic->protect = buf[0x420 + 0x10 * i + 14];
   }
 
   if(outit == 2){
       fprintf(stdout," No:Internal name:Thumbnail name(Nth):Rotate:Protect\n");
     for(i = 0 ; i < n ; i++){
+      picture_t *pic = &camera->pl->pictures[i];
       fprintf(stdout,"%03d:", i + 1);
-      fprintf(stdout," PSN%05d.PMP:", picture_index[i]);
+      fprintf(stdout," PSN%05d.PMP:", pic->index);
       fprintf(stdout,"PIDX%03d.PMX(%02d)    :",
-              0xff & picture_thumbnail_index[i],
-              0xff & (picture_thumbnail_index[i] >> 8));
-      switch(picture_rotate[i]){
+              0xff & pic->thumbnail_index,
+              0xff & (pic->thumbnail_index >> 8));
+      switch(pic->rotate){
       case 0x00:
         fprintf(stdout,"     0:");
         break;
@@ -212,7 +207,7 @@ get_picture_information(GPPort *port,int *pmx_num, int outit)
         fprintf(stdout,"   ???:");
         break;
       }
-      if(picture_protect[i])
+      if(pic->protect)
         fprintf(stdout,"on");
       else
         fprintf(stdout,"off");
@@ -223,7 +218,7 @@ get_picture_information(GPPort *port,int *pmx_num, int outit)
 }
 
 static int
-get_file(GPPort *port, char *name, CameraFile *file, int format, GPContext *context)
+get_file(Camera *camera, char *name, CameraFile *file, int format, GPContext *context)
 {
   unsigned long filelen;
   unsigned long total = 0;
@@ -232,22 +227,22 @@ get_file(GPPort *port, char *name, CameraFile *file, int format, GPContext *cont
   unsigned char jpeg_comment[256];
   int ret, id;
 
-  F1ok(port);
-  F1status(port);
+  F1ok(camera);
+  F1status(camera);
 
-  filelen = F1finfo(port,name);
+  filelen = F1finfo(camera,name);
   if(filelen == 0)
     return GP_ERROR;
 
-  if(F1fopen(port,name) != 0)
+  if(F1fopen(camera,name) != 0)
     return GP_ERROR_IO;
 
   if(format != JPEG)
     return GP_ERROR;
 
-  len = F1fread(port, buf, 126);
+  len = F1fread(camera, buf, 126);
   if( len < 126){
-    F1fclose(port);
+    F1fclose(camera);
     return GP_ERROR_IO_READ;
   }
   jpegcommentlen = make_jpeg_comment(buf, jpeg_comment);
@@ -258,7 +253,7 @@ get_file(GPPort *port, char *name, CameraFile *file, int format, GPContext *cont
   id = gp_context_progress_start (context, filelen,
                                     _("Downloading data..."));
   ret = GP_OK;
-  while((len = F1fread(port, buf, 0x0400)) != 0){
+  while((len = F1fread(camera, buf, 0x0400)) != 0){
     if(len < 0)
       return GP_ERROR_IO_READ;
     total = total + len;
@@ -270,12 +265,12 @@ get_file(GPPort *port, char *name, CameraFile *file, int format, GPContext *cont
     }
   }
   gp_context_progress_stop (context, id);
-  F1fclose(port);
+  F1fclose(camera);
   return ret;
 }
 
 static long
-get_thumbnail(GPPort *port,char *name, CameraFile *file, int format, int n)
+get_thumbnail(Camera *camera,char *name, CameraFile *file, int format, int n)
 {
   unsigned long filelen;
   unsigned long total = 0;
@@ -286,22 +281,22 @@ get_thumbnail(GPPort *port,char *name, CameraFile *file, int format, int n)
 
   p = buf;
 
-  F1ok(port);
-  F1status(port);
+  F1ok(camera);
+  F1status(camera);
 
-  filelen = F1finfo(port,name);
+  filelen = F1finfo(camera,name);
   if(filelen == 0)
     return GP_ERROR_IO;
 
-  if(F1fopen(port,name) != 0)
+  if(F1fopen(camera,name) != 0)
     return GP_ERROR_IO;
 
   for( i = 0 ; i < n ; i++)
-    len = F1fseek(port, 0x1000, 1);
+    len = F1fseek(camera, 0x1000, 1);
 
-  while((len = F1fread(port, p, 0x0400)) != 0){
+  while((len = F1fread(camera, p, 0x0400)) != 0){
     if(len < 0){
-      F1fclose(port);
+      F1fclose(camera);
       return GP_ERROR_IO_READ;
     }
     total = total + len;
@@ -309,7 +304,7 @@ get_thumbnail(GPPort *port,char *name, CameraFile *file, int format, int n)
     if(total >= 0x1000)
       break;
   }
-  F1fclose(port);
+  F1fclose(camera);
 
   filelen = buf[12] * 0x1000000 + buf[13] * 0x10000 +
     buf[14] * 0x100 + buf[15];
@@ -330,12 +325,12 @@ get_date_info(GPPort *port, char *name, char *outfilename ,char *newfilename)
   int second = 0;
   unsigned char buf[128];
 
-  F1ok(port);
-  F1status(port);
+  F1ok(camera);
+  F1status(camera);
 
-  (void) F1finfo(port, name);
-  if(F1fopen(port, name) ==0){
-    if(F1fread(port, buf, 126) == 126){
+  (void) F1finfo(camera, name);
+  if(F1fopen(camera, name) ==0){
+    if(F1fread(camera, buf, 126) == 126){
       if(*(buf+PMP_TAKE_YEAR) != 0xff){
         year = (int) *(buf+PMP_TAKE_YEAR);
         month = (int) *(buf+PMP_TAKE_MONTH);
@@ -345,7 +340,7 @@ get_date_info(GPPort *port, char *name, char *outfilename ,char *newfilename)
         second = (int) *(buf+PMP_TAKE_SECOND);
       }
     }
-    F1fclose(port);
+    F1fclose(camera);
   }
 
   p = outfilename;
@@ -403,7 +398,7 @@ get_date_info(GPPort *port, char *name, char *outfilename ,char *newfilename)
 #endif
 
 static int
-get_picture(GPPort *port, int n, CameraFile *file, int format, int ignore, int all_pic_num,
+get_picture(Camera *camera, int n, CameraFile *file, int format, int ignore, int all_pic_num,
 GPContext *context)
 {
   long  len;
@@ -412,7 +407,7 @@ GPContext *context)
   int i;
 
   fprintf(stderr,"all_pic_num 1 %d\n", all_pic_num);
-  all_pic_num = get_picture_information(port,&i,0);
+  all_pic_num = get_picture_information(camera,&i,0);
   fprintf(stderr,"all_pic_num 2 %d\n", all_pic_num);
 
 
@@ -423,13 +418,15 @@ retry:
     return(GP_ERROR);
    }
 
+  picture_t *pic = &camera->pl->pictures[n];
+
   switch(format){
   case PMX:
     sprintf(name, "/PIC_CAM/PIC00000/PIDX%03d.PMX", n - 1);
     break;
   case JPEG_T:
     sprintf(name, "/PIC_CAM/PIC00000/PIDX%03d.PMX",
-            (picture_thumbnail_index[n] & 0xff));
+            (pic->thumbnail_index & 0xff));
     break;
   case JPEG:
   case PMP:
@@ -437,13 +434,13 @@ retry:
     if(ignore)
       sprintf(name, "/PIC_CAM/PIC00000/PSN%05d.PMP", n);
     else
-      sprintf(name, "/PIC_CAM/PIC00000/PSN%05d.PMP", picture_index[n]);
+      sprintf(name, "/PIC_CAM/PIC00000/PSN%05d.PMP", pic->index);
     break;
   }
   if(ignore)
     sprintf(name2, "/PIC_CAM/PIC00000/PSN%05d.PMP", n );
   else
-    sprintf(name2, "/PIC_CAM/PIC00000/PSN%05d.PMP", picture_index[n]);
+    sprintf(name2, "/PIC_CAM/PIC00000/PSN%05d.PMP", pic->index);
 
   /* printf("name %s, name2 %s, %d\n",name,name2,n); */
 
@@ -463,10 +460,10 @@ retry:
     }
 
   if(format == JPEG_T)
-    len = get_thumbnail(port, name, file, format,
-                        0xff & (picture_thumbnail_index[n] >> 8));
+    len = get_thumbnail(camera, name, file, format,
+                        0xff & (pic->thumbnail_index >> 8));
   else
-    len = get_file(port, name, file, format, context);
+    len = get_file(camera, name, file, format, context);
   if(len < GP_OK )
     goto retry;
 
@@ -495,9 +492,13 @@ int camera_abilities (CameraAbilitiesList *list) {
 }
 
 static int camera_exit (Camera *camera, GPContext *context) {
-        if(F1ok(camera->port))
+        if (camera->pl) {
+                free(camera->pl);
+                camera->pl = NULL;
+        }
+        if(F1ok(camera))
            return(GP_ERROR);
-        return (F1fclose(camera->port));
+        return (F1fclose(camera));
 }
 
 static int get_file_func (CameraFilesystem *fs, const char *folder,
@@ -509,7 +510,7 @@ static int get_file_func (CameraFilesystem *fs, const char *folder,
 
         gp_log (GP_LOG_DEBUG, "sonyf1/get_file_func","folder: %s, file: %s", folder, filename);
 
-        if(!F1ok(camera->port))
+        if(!F1ok(camera))
            return (GP_ERROR);
 
 	gp_file_set_mime_type (file, GP_MIME_JPEG);
@@ -521,9 +522,9 @@ static int get_file_func (CameraFilesystem *fs, const char *folder,
 
 	switch (type) {
 	case GP_FILE_TYPE_NORMAL:
-		return get_picture (camera->port, num, file, JPEG, 0, F1howmany(camera->port), context);
+		return get_picture (camera, num, file, JPEG, 0, F1howmany(camera), context);
 	case GP_FILE_TYPE_PREVIEW:
-		return get_picture (camera->port, num, file, JPEG_T, TRUE, F1howmany(camera->port), context);
+		return get_picture (camera, num, file, JPEG_T, TRUE, F1howmany(camera), context);
 	default:
 		return (GP_ERROR_NOT_SUPPORTED);
 	}
@@ -546,13 +547,13 @@ delete_file_func (CameraFilesystem *fs, const char *folder,
 	if (max<GP_OK)
 		return max;
 	gp_log (GP_LOG_DEBUG, "sonydscf1/delete_file_func", "file nr %d", num);
-	if(!F1ok(camera->port))
+	if(!F1ok(camera))
 		return GP_ERROR;
-	if(picture_protect[num] != 0x00){
+	if(camera->pl->pictures[num].protect != 0x00){
 		gp_log (GP_LOG_ERROR, "sonydscf1/delete_file_func", "picture %d is protected.", num);
 		return GP_ERROR;
 	}
-	return F1deletepicture(camera->port, picture_index[num]);
+	return F1deletepicture(camera, camera->pl->pictures[num].index);
 }
 
 static int
@@ -560,10 +561,10 @@ camera_summary (Camera *camera, CameraText *summary, GPContext *context)
 {
         int i;
 
-        if(!F1ok(camera->port))
+        if(!F1ok(camera))
            return (GP_ERROR);
-        get_picture_information(camera->port,&i,2);
-        return (F1newstatus(camera->port, 1, summary->text));
+        get_picture_information(camera,&i,2);
+        return (F1newstatus(camera, 1, summary->text));
 }
 
 static int camera_about (Camera *camera, CameraText *about, GPContext *context)
@@ -578,11 +579,11 @@ static int file_list_func (CameraFilesystem *fs, const char *folder,
 			   CameraList *list, void *data, GPContext *context)
 {
 	Camera *camera = data;
-        F1ok(camera->port);
-        /*if(F1ok(camera->port))
+        F1ok(camera);
+        /*if(F1ok(camera))
            return(GP_ERROR);*/
         /* Populate the list */
-        return gp_list_populate(list, "PSN%05i.jpg", F1howmany(camera->port));
+        return gp_list_populate(list, "PSN%05i.jpg", F1howmany(camera));
 }
 
 static const CameraFilesystemFuncs fsfuncs = {
@@ -605,6 +606,9 @@ int camera_init (Camera *camera, GPContext *context) {
         settings.serial.parity  = 0;
         settings.serial.stopbits= 1;
         gp_port_set_settings (camera->port, settings);
+
+        camera->pl = calloc(1, sizeof(CameraPrivateLibrary));
+        if (!camera->pl) return GP_ERROR_NO_MEMORY;
 
 	/* Set up the filesystem */
 	return gp_filesystem_set_funcs (camera->fs, &fsfuncs, camera);
