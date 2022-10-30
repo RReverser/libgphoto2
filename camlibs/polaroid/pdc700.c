@@ -936,7 +936,7 @@ camera_about (Camera *camera, CameraText *about, GPContext *context)
  * We encapsulate the process of adding an entire radio control.
  */
 static void
-add_radio (CameraWidget *section, const char *blurb, const char **opt,
+add_radio (CameraWidget *section, const char *blurb, const char *const *opt,
 	   int selected)
 {
 	CameraWidget *child;
