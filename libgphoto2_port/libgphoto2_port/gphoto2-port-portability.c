@@ -162,7 +162,7 @@ int gp_system_is_dir (const char *dirname) {
 
         if (stat(dirname, &st)!=0)
                 return 0;
-        return (st.st_mode & _S_IFDIR);
+        return S_ISDIR(st.st_mode);
 }
 
 

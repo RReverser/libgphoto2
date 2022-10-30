@@ -62,7 +62,7 @@ static int dir_exists(char *dir) {
     int res = 0;
     struct stat info;
 
-    if ( (stat(dir, &info) == 0) && (info.st_mode & S_IFDIR) ) {
+    if ( (stat(dir, &info) == 0) && S_ISDIR(info.st_mode) ) {
         res = 1;
     }
     return res;
