@@ -68,7 +68,7 @@
 // TODO: looks like these are not supposed to be constants, yet for now they're used as such (not set anywhere else).
 // Figure out if they're meant to be mutated.
 static const char* const CDS_Control  = ":60606/Server0/CDS_control";
-static const int ReadoutMode = 2; // this should be picked up from the settings.... 0-> JPG; 1->RAW; 2 -> Thumbnails
+// static const int ReadoutMode = 2; // this should be picked up from the settings.... 0-> JPG; 1->RAW; 2 -> Thumbnails
 static const char* const cameraShutterSpeed = "B"; // //placeholder to store the value of the shutterspeed set in camera; "B" is for bulb.
 static const int captureDuration = 10; //placeholder to store the value of the bulb shot this should be taken as input. note that my primary goal is in fact to perform bulb captures. but this should be extended for sure to take Shutter Speed capture as set in camera
 
@@ -585,12 +585,12 @@ Get_Quality(Camera *camera) {
 	return generic_setting_getter(camera,"quality");
 }
 
-static void
-Set_quality(Camera *camera,const char* Quality) {
-	char buf[200];
-	sprintf(buf,"cam.cgi?mode=setsetting&type=quality&value=%s", Quality);
-	loadCmd(camera,buf);
-}
+// static void
+// Set_quality(Camera *camera,const char* Quality) {
+// 	char buf[200];
+// 	sprintf(buf,"cam.cgi?mode=setsetting&type=quality&value=%s", Quality);
+// 	loadCmd(camera,buf);
+// }
 
 
 static int
