@@ -29,6 +29,11 @@
 
 #define CHECK(result) {int res; res = result; if (res < 0) return (res);}
 
+struct _CameraPrivateLibrary {
+	int speed;
+	int packet_size;
+};
+
 int coolshot_sm           (Camera *camera);
 int coolshot_sb           (Camera *camera, int speed);
 int coolshot_enq			(Camera *camera);

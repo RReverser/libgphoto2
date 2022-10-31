@@ -61,8 +61,6 @@ static int coolshot_check_checksum( char *packet, int length );
 static int coolshot_download_image( Camera *camera, CameraFile *file,
 		char *buf, int *len, int thumbnail, GPContext *context );
 
-static int packet_size = 500;
-
 /* ??set mode?? */
 int coolshot_sm( Camera *camera ) {
 	char buf[16];
@@ -88,7 +86,7 @@ int coolshot_sm( Camera *camera ) {
 	/* send ACK */
 	coolshot_ack( camera );
 
-	packet_size = 128;
+	camera->pl->packet_size = 128;
 
 	return( GP_OK );
 }
@@ -212,7 +210,7 @@ int coolshot_sp( Camera *camera ) {
 	/* read ACK */
 	coolshot_read_packet( camera, buf );
 
-	packet_size = 500;
+	camera->pl->packet_size = 500;
 
 	return( GP_OK );
 }
@@ -370,7 +368,7 @@ int coolshot_download_image( Camera *camera, CameraFile *file,
 	data_len += (unsigned char)packet[7];
 
 	/* fixme, get rid of hardcoded length */
-	if ( coolshot_check_checksum( packet, 8 + packet_size + 4 ) == GP_OK ) {
+	if ( coolshot_check_checksum( packet, 8 + camera->pl->packet_size + 4 ) == GP_OK ) {
 		coolshot_ack( camera );
 		last_good = 1;
 	} else {
@@ -402,7 +400,7 @@ int coolshot_download_image( Camera *camera, CameraFile *file,
 		data_len += (unsigned char)packet[7];
 
 		/* fixme, get rid of hardcoded length */
-		if ( coolshot_check_checksum( packet, 8 + packet_size + 4 ) == GP_OK) {
+		if ( coolshot_check_checksum( packet, 8 + camera->pl->packet_size + 4 ) == GP_OK) {
 			coolshot_ack( camera );
 			last_good = 1;
 		} else {
@@ -532,7 +530,7 @@ read_packet_again:
 			length = (unsigned char)packet[6] * 256;
 			length += (unsigned char)packet[7];
 
-			if (( packet_size == 128 ) ||
+			if (( camera->pl->packet_size == 128 ) ||
 				( length == 128 )) {
 				length = 128;
 			} else {

@@ -51,10 +51,6 @@ static const char *const coolshot_cameras[] = {
 	""
 };
 
-struct _CameraPrivateLibrary {
-	int speed;
-};
-
 int camera_id (CameraText *id)
 {
 	/* GP_DEBUG ("* camera_id"); */
@@ -271,6 +267,7 @@ int camera_init (Camera *camera, GPContext *context)
 	camera->pl = malloc (sizeof (CameraPrivateLibrary));
 	if (!camera->pl)
 		return (GP_ERROR_NO_MEMORY);
+	camera->pl->packet_size = 500;
 
 	/* Set up the port and remember the requested speed */
 	CHECK (gp_port_get_settings (camera->port, &settings));
