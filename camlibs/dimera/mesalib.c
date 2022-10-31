@@ -1009,8 +1009,6 @@ mesa_get_image( GPPort *port, int image )
 uint8_t *
 mesa_get_image( GPPort *port, int image )
 {
-	static struct mesa_image_info	info;
-	static struct mesa_image_arg	ia;
 	uint8_t				*rbuffer, *b;
 	int				r, res, retry;
 	unsigned long			size;
@@ -1023,6 +1021,7 @@ mesa_get_image( GPPort *port, int image )
 			return NULL;
 		}
 
+		struct mesa_image_info	info;
 		if ( mesa_read_image_info( port, image, &info ) < 0 )
 		{
 			mesa_flush( port, 100 );
@@ -1045,14 +1044,14 @@ mesa_get_image( GPPort *port, int image )
 		return NULL;
 	b = rbuffer;
 
-	ia.start = 28;
-	ia.send = 4;
-	ia.skip = 0;
-	ia.repeat = (res ? 80 : 160);
-	ia.row_cnt = 40;
-	ia.inc1 = 1;
-	ia.inc2 = 128;
-	ia.inc3 = ia.inc4 = 0;
+	struct mesa_image_arg	ia = {
+		.start = 28,
+		.send = 4,
+		.repeat = (res ? 80 : 160),
+		.row_cnt = 40,
+		.inc1 = 1,
+		.inc2 = 128,
+	};
 
 	for ( ia.row = 4; ia.row < (res ? 244 : 484) ; ia.row += ia.row_cnt )
 	{

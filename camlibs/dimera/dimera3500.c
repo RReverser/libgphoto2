@@ -549,7 +549,6 @@ static uint8_t *
 Dimera_Get_Full_Image (int picnum, long *size, int *width, int *height,
 			Camera *camera, GPContext *context)
 {
-	static struct mesa_image_arg	ia;
 	int32_t				r;
 	uint8_t			*b, *rbuffer = NULL;
 	int				hires, s, retry;
@@ -605,14 +604,14 @@ Dimera_Get_Full_Image (int picnum, long *size, int *width, int *height,
 		return NULL;
 	}
 
-	ia.start = 28;
-	ia.send = 4;
-	ia.skip = 0;
-	ia.repeat = ( hires ? 160 : 80 );
-	ia.row_cnt = 40;
-	ia.inc1 = 1;
-	ia.inc2 = 128;
-	ia.inc3 = ia.inc4 = 0;
+	struct mesa_image_arg	ia = {
+		.start = 28,
+		.send = 4,
+		.repeat = ( hires ? 160 : 80 ),
+		.row_cnt = 40,
+		.inc1 = 1,
+		.inc2 = 128,
+	};
 
 	/* due to reports of mesa_read_image not working for some cameras */
 	/* this is changed to use mesa_read_row */
