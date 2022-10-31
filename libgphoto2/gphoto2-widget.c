@@ -25,6 +25,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdatomic.h>
 
 #include <gphoto2/gphoto2-result.h>
 #include <gphoto2/gphoto2-port-log.h>
@@ -93,7 +94,7 @@ int
 gp_widget_new (CameraWidgetType type, const char *label,
 		   CameraWidget **widget)
 {
-	static int i = 0;
+	atomic_int i = 0;
 
 	C_PARAMS (label && widget);
 
