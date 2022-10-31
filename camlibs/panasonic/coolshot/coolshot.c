@@ -67,7 +67,7 @@ int camera_id (CameraText *id)
 int camera_abilities (CameraAbilitiesList *list)
 {
 	int x = 0;
-	char *ptr;
+	const char *ptr;
 	CameraAbilities a;
 
 	/* GP_DEBUG ("* camera_abilities"); */
