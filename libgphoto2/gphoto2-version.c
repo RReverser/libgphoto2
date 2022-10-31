@@ -27,7 +27,7 @@
 
 #include <gphoto2/gphoto2-version.h>
 
-const char **gp_library_version(GPVersionVerbosity verbose)
+const char *const *gp_library_version(GPVersionVerbosity verbose)
 {
 	/* we could also compute/parse the short strings from the long
 	   ones, but the current method is easier for now :-) */

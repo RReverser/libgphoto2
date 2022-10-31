@@ -31,8 +31,8 @@ typedef enum {
 extern "C" {
 #endif
 
-typedef const char **(*GPVersionFunc)(GPVersionVerbosity verbose);
-const char **gp_port_library_version(GPVersionVerbosity verbose);
+typedef const char *const *(*GPVersionFunc)(GPVersionVerbosity verbose);
+const char *const *gp_port_library_version(GPVersionVerbosity verbose);
 
 #ifdef __cplusplus
 }

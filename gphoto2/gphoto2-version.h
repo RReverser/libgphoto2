@@ -30,7 +30,7 @@
 extern "C" {
 #endif
 
-const char **gp_library_version(GPVersionVerbosity verbose);
+const char *const *gp_library_version(GPVersionVerbosity verbose);
 
 #ifdef __cplusplus
 }

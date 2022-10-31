@@ -23,11 +23,11 @@
 
 #include <gphoto2/gphoto2-port-version.h>
 
-const char **gp_port_library_version(GPVersionVerbosity verbose)
+const char *const *gp_port_library_version(GPVersionVerbosity verbose)
 {
 	/* we could also compute/parse the short strings from the long
 	   ones, but the current method is easier for now :-) */
-	static const char *shrt[] =
+	static const char *const shrt[] =
 		{
 			PACKAGE_VERSION,
 			"iolibs: " IOLIB_LIST,
@@ -69,7 +69,7 @@ const char **gp_port_library_version(GPVersionVerbosity verbose)
 #endif
 			NULL
 		};
-	static const char *verb[] =
+	static const char *const verb[] =
 		{
 			PACKAGE_VERSION,
 			"iolibs: " IOLIB_LIST,

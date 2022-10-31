@@ -83,7 +83,7 @@ print_version_comment(FILE *out,
 	for (n=0; (module_versions[n].name != NULL) && (module_versions[n].version_func != NULL); n++) {
 		const char *name = module_versions[n].name;
 		GPVersionFunc func = module_versions[n].version_func;
-		const char **v = func(GP_VERSION_SHORT);
+		const char *const *v = func(GP_VERSION_SHORT);
 		unsigned int i;
 		if (!v) { continue; }
 		if (!v[0]) { continue; }
@@ -116,7 +116,7 @@ print_version_verbose(FILE *out,
 	for (n=0; (module_versions[n].name != NULL) && (module_versions[n].version_func != NULL); n++) {
 		const char *name = module_versions[n].name;
 		GPVersionFunc func = module_versions[n].version_func;
-		const char **v = func(GP_VERSION_VERBOSE);
+		const char *const *v = func(GP_VERSION_VERBOSE);
 		unsigned int i;
 		if (!v) { continue; }
 		if (!v[0]) { continue; }
