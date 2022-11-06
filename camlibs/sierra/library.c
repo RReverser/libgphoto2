@@ -1209,20 +1209,19 @@ int sierra_get_string_register (Camera *camera, int reg, int fnumber,
 	unsigned int packlength, total = (b_len) ? *b_len : 0;
 	int retries, r;
 	unsigned int min_progress_bytes;
-	static int in_function = 0;
 	unsigned int id = 0;
 
 	GP_DEBUG ("sierra_get_string_register:  reg %i, file number %i, "
 		  " total %d, flags 0x%x", reg, fnumber, total,
 		  camera->pl->flags);
 
-	if (in_function != 0) {
+	if (camera->pl->in_get_string_register_function != 0) {
 		gp_context_error (context, _("recursive calls are not"
 			" supported by the sierra driver! Please contact"
 			" %s."), MAIL_GPHOTO_DEVEL);
 		return GP_ERROR;
 	}
-	in_function = 1;
+	camera->pl->in_get_string_register_function = 1;
 
 	/* Set the current picture number */
 	if (fnumber >= 0)
@@ -1258,7 +1257,7 @@ int sierra_get_string_register (Camera *camera, int reg, int fnumber,
 		r = sierra_read_packet (camera, p, context);
 		if (r == GP_ERROR_TIMEOUT) {
 			if (++retries > RETRIES) {
-				in_function = 0;
+				camera->pl->in_get_string_register_function = 0;
 				return (r);
 			}
 			GP_DEBUG ("Timeout! Retrying (%i of %i)...",
@@ -1274,7 +1273,7 @@ int sierra_get_string_register (Camera *camera, int reg, int fnumber,
 			gp_context_error (context, _("Could not get "
 				"string register %i. Please contact "
 				"%s."), reg, MAIL_GPHOTO_DEVEL);
-			in_function = 0;
+			camera->pl->in_get_string_register_function = 0;
 			return GP_ERROR;
 		default:
 			break;
@@ -1300,7 +1299,7 @@ int sierra_get_string_register (Camera *camera, int reg, int fnumber,
 
 	GP_DEBUG ("sierra_get_string_register: completed OK, *b_len %d",
 		  *b_len);
-	in_function = 0;
+	camera->pl->in_get_string_register_function = 0;
 	return GP_OK;
 }
 

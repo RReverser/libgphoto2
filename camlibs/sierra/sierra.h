@@ -54,6 +54,7 @@ struct _CameraPrivateLibrary {
 	SierraFlags flags;
 	struct CameraDesc const *cam_desc;
 	char folder[128];
+	int in_get_string_register_function;
 };
 
 struct CameraDescriptor;
