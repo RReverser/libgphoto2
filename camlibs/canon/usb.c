@@ -54,10 +54,6 @@
  * an URB to come back on an interrupt endpoint */
 #define CANON_FAST_TIMEOUT 500
 
-/* WARNING: This destroys reentrancy of the code. Better to put this
- * in the camera descriptor somewhere. */
-static int serial_code = 0;
-
 /* Map camera status codes (from offset 0x50 in reply block) to
  * messages. */
 static const struct canon_usb_status canon_usb_status_table[] = {
@@ -997,7 +993,7 @@ canon_usb_capture_dialogue (Camera *camera, unsigned int *return_length, int *ph
 {
         int status;
         unsigned char payload[9]; /* used for sending data to camera */
-        static unsigned char *buffer; /* used for receiving data from camera */
+        unsigned char *buffer; /* used for receiving data from camera */
         unsigned char buf2[0x40]; /* for reading from interrupt endpoint */
 
         int mstimeout = -1;                  /* To save original timeout after shutter release */
@@ -1267,9 +1263,8 @@ FAIL2:	/* After "photographic error" is signaled, we know pipe is clean. */
  *
  * Returns: a string with the error message, or NUL if status is OK.
  */
-static char *canon_usb_decode_status ( int code ) {
+static char *canon_usb_decode_status ( Camera *camera, int code ) {
         unsigned int i;
-        static char message[100];
 
         for ( i=0;
               i<sizeof(canon_usb_status_table)/sizeof(struct canon_usb_status);
@@ -1277,6 +1272,7 @@ static char *canon_usb_decode_status ( int code ) {
                 if ( canon_usb_status_table[i].code == code )
                         return canon_usb_status_table[i].message;
 
+        char *message = camera->pl->usb.decode_status_message;
         sprintf ( message, "Unknown status code 0x%08x from camera", code );
         return message;
 }
@@ -1327,7 +1323,7 @@ canon_usb_dialogue_full (Camera *camera, canonCommandIndex canon_funct, unsigned
         int cmd3 = 0, read_bytes1 = 0, read_bytes2 = 0;
 	unsigned int read_bytes = 0;
         unsigned char packet[1024];     /* used for sending data to camera */
-        static unsigned char buffer[0x474];     /* used for receiving data from camera */
+        unsigned char *buffer = camera->pl->usb.dialogue_full_buffer;     /* used for receiving data from camera */
 	char *msg;
         int j, canon_subfunc = 0;
         int additional_read_bytes = 0;
@@ -1341,7 +1337,7 @@ canon_usb_dialogue_full (Camera *camera, canonCommandIndex canon_funct, unsigned
          * data in this buffer is a result of this particular canon_usb_dialogue() call
          * if we return error but this is not checked for... good or bad I don't know.
          */
-        memset (buffer, 0x00, sizeof (buffer));
+        memset (buffer, 0x00, sizeof (camera->pl->usb.dialogue_full_buffer));
 
         /* search through the list of known canon commands (canon_usb_cmd)
          * and look for parameters to be used for function 'canon_funct'
@@ -1448,7 +1444,7 @@ canon_usb_dialogue_full (Camera *camera, canonCommandIndex canon_funct, unsigned
                         packet[0x46] = 0x10;
         }
 
-        htole32a (packet + 0x4c, serial_code++);        /* serial number */
+        htole32a (packet + 0x4c, camera->pl->usb.packet_serial_number++);
         htole32a (packet + 0x48, 0x10 + payload_length);
         msgsize = 0x50 + payload_length;        /* TOTAL msg size */
 
@@ -1565,7 +1561,7 @@ canon_usb_dialogue_full (Camera *camera, canonCommandIndex canon_funct, unsigned
                 }
         }
 
-                msg = canon_usb_decode_status ( le32atoh ( buffer+0x50 ) );
+                msg = canon_usb_decode_status ( camera, le32atoh ( buffer+0x50 ) );
                 if ( msg != NULL ) {
                         GP_DEBUG ( "canon_usb_dialogue_full: camera status \"%s\""
 				   " in response to command 0x%x 0x%x 0x%x (%s)",
@@ -2366,7 +2362,7 @@ canon_usb_put_file (Camera *camera, CameraFile *file,
 				return GP_ERROR_CORRUPTED_DATA;
 		}
 		else {
-			char *msg = canon_usb_decode_status ( le32atoh ( buffer+0x50 ) );
+			char *msg = canon_usb_decode_status ( camera, le32atoh ( buffer+0x50 ) );
 			if ( msg != NULL ) {
 				GP_DEBUG ( "canon_put_file_usb: camera status \"%s\" during upload",
 					   msg );

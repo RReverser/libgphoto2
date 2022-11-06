@@ -528,6 +528,8 @@ camera_exit (Camera *camera, GPContext *context)
 
 	if (camera->pl) {
 		canon_int_switch_camera_off (camera, context);
+		if (camera->port->type == GP_PORT_SERIAL)
+			free (camera->pl->serial.recv_msg_buffer);
 		free (camera->pl);
 		camera->pl = NULL;
 	}

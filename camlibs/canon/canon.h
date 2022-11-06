@@ -535,6 +535,25 @@ struct _CameraPrivateLibrary
 	int cached_disk;
 	int cached_capacity;
 	int cached_available;
+
+	/* Various bookkeeping. */
+	char filename2thumbname[1024];
+	char canon2gphotopath_buf[2000];
+	char gphoto2canonpath_buf[2000];
+	char filename2audioname_buf[1024];
+	union {
+		struct {
+			int packet_serial_number;
+			char decode_status_message[100];
+			unsigned char dialogue_full_buffer[0x474];
+		} usb;
+		struct {
+			unsigned char send_frame_buffer[2100];
+			unsigned char recv_frame_buffer[5000];
+			unsigned char *recv_msg_buffer;
+			int recv_msg_buffer_size;
+		} serial;
+	};
 };
 
 /**

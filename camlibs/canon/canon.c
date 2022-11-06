@@ -363,26 +363,25 @@ static const char * canon2gphotopath (Camera __unused__ *camera, const char *pat
  */
 
 static const char *
-replace_filename_extension(const char *filename, const char __unused__ *newext)
+replace_filename_extension(const char *filename, const char __unused__ *newext, char *buf, size_t buf_len)
 {
         char *p;
-        static char buf[1024];
 
         /* We just replace file ending by .THM and assume this is the
          * name of the thumbnail file.
          */
-        if (sizeof(buf) < strlen (filename) + 1) {
+        if (buf_len < strlen (filename) + 1) {
                 GP_DEBUG ("replace_filename_extension: Buffer too small in %s line %i.",
                           __FILE__, __LINE__);
                 return NULL;
         }
-        strncpy (buf, filename, sizeof (buf) - 1);
+        strncpy (buf, filename, buf_len - 1);
         if ((p = strrchr (buf, '.')) == NULL) {
                 GP_DEBUG ("replace_filename_extension: No '.' found in filename '%s' "
                           "in %s line %i.", filename, __FILE__, __LINE__);
                 return NULL;
         }
-        if ((unsigned int)(p - buf) < sizeof (buf) - 4) {
+        if ((unsigned int)(p - buf) < buf_len - 4) {
                 strncpy (p, ".THM", 4);
                 GP_DEBUG ("replace_filename_extension: New name for '%s' is '%s'",
                           filename, buf);
@@ -407,17 +406,16 @@ replace_filename_extension(const char *filename, const char __unused__ *newext)
  */
 
 static char *
-filename_to_audio(const char *filename, const char __unused__ *newext)
+filename_to_audio(const char *filename, const char __unused__ *newext, char *buf, size_t buf_len)
 {
         char *p;
-        static char buf[1024];
 
-        if (sizeof(buf) < strlen (filename) + 1) {
+        if (buf_len < strlen (filename) + 1) {
                 GP_DEBUG ("filename_to_audio: Buffer too small in %s line %i.",
                           __FILE__, __LINE__);
                 return NULL;
         }
-        strncpy (buf, filename, sizeof (buf) - 1);
+        strncpy (buf, filename, buf_len - 1);
         if ((p = strrchr (buf, '_')) == NULL) {
                 GP_DEBUG ("filename_to_audio: No '.' found in filename '%s' "
                           "in %s line %i.", filename, __FILE__, __LINE__);
@@ -434,7 +432,7 @@ filename_to_audio(const char *filename, const char __unused__ *newext)
                           "in %s line %i.", filename, __FILE__, __LINE__);
                 return NULL;
         }
-        if ((unsigned int)(p - buf) < sizeof (buf) - 4) {
+        if ((unsigned int)(p - buf) < buf_len - 4) {
                 strncpy (p, ".WAV", 4);
                 GP_DEBUG ("filename_to_audio: New name for '%s' is '%s'",
                           filename, buf);
@@ -461,7 +459,7 @@ filename_to_audio(const char *filename, const char __unused__ *newext)
  */
 
 const char *
-canon_int_filename2audioname (Camera __unused__ *camera, const char *filename)
+canon_int_filename2audioname (Camera *camera, const char *filename)
 {
         char *result;
 
@@ -481,7 +479,8 @@ canon_int_filename2audioname (Camera __unused__ *camera, const char *filename)
                 return NULL;
         }
 
-        result = filename_to_audio (filename, ".WAV");
+        result = filename_to_audio (filename, ".WAV", camera->pl->filename2audioname_buf,
+                                    sizeof (camera->pl->filename2audioname_buf));
 
         GP_DEBUG ("canon_int_filename2audioname: audio for file \"%s\" is external: \"%s\"",
                   filename, result);
@@ -504,27 +503,25 @@ canon_int_filename2audioname (Camera __unused__ *camera, const char *filename)
  */
 
 const char *
-canon_int_filename2thumbname (Camera __unused__ *camera, const char *filename)
+canon_int_filename2thumbname (Camera *camera, const char *filename)
 {
-        static const char *const nullstring = "";
-
         /* First handle cases where we shouldn't try to get extra .THM
          * file but use the special get_thumbnail_of_xxx function.
          */
         if (!extra_file_for_thumb_of_jpeg && is_jpeg (filename)) {
                 GP_DEBUG ("canon_int_filename2thumbname: thumbnail for JPEG \"%s\" is internal",
                           filename);
-                return nullstring;
+                return "";
         }
         if (!extra_file_for_thumb_of_crw && is_crw (filename)) {
                 GP_DEBUG ("canon_int_filename2thumbname: thumbnail for CRW \"%s\" is internal",
                           filename);
-                return nullstring;
+                return "";
         }
         if (!extra_file_for_thumb_of_cr2 && is_cr2 (filename)) {
                 GP_DEBUG ("canon_int_filename2thumbname: thumbnail for CR2 \"%s\" is internal",
                           filename);
-                return nullstring;
+                return "";
         }
 
         /* We use the thumbnail file itself as the thumbnail of the
@@ -549,10 +546,7 @@ canon_int_filename2thumbname (Camera __unused__ *camera, const char *filename)
         /* We just replace file ending by .THM and assume this is the
          * name of the thumbnail file.
          */
-        return replace_filename_extension (filename, ".THM");
-
-        /* never reached */
-        return NULL;
+        return replace_filename_extension (filename, ".THM", camera->pl->filename2thumbname, sizeof (camera->pl->filename2thumbname));
 }
 
 /**
@@ -2954,7 +2948,7 @@ canon_int_get_disk_name_info (Camera *camera, const char *name, int *capacity, i
 const char *
 gphoto2canonpath (Camera *camera, const char *path, GPContext *context)
 {
-        static char tmp[2000];
+        char *tmp = camera->pl->gphoto2canonpath_buf;
         char *p;
 
         if (path[0] != '/') {
@@ -2971,7 +2965,7 @@ gphoto2canonpath (Camera *camera, const char *path, GPContext *context)
                 }
         }
 
-        snprintf (tmp, sizeof (tmp), "%s%s", camera->pl->cached_drive, path);
+        snprintf (tmp, sizeof (camera->pl->gphoto2canonpath_buf), "%s%s", camera->pl->cached_drive, path);
 
         /* Convert to upper case, since FAT file system on camera
          doesn't do case, and replace all slashes by backslashes */
@@ -3010,9 +3004,9 @@ gphoto2canonpath (Camera *camera, const char *path, GPContext *context)
  *
  */
 static const char *
-canon2gphotopath (Camera __unused__ *camera, const char *path)
+canon2gphotopath (Camera *camera, const char *path)
 {
-        static char tmp[2000];
+        char *tmp = camera->pl->canon2gphotopath_buf;
         char *p;
 
         if (!((path[1] == ':') && (path[2] == '\\'))) {
@@ -3021,7 +3015,7 @@ canon2gphotopath (Camera __unused__ *camera, const char *path)
         }
 
         /* 3 is D: plus NULL byte */
-        if (strlen (path) - 3 > sizeof (tmp)) {
+        if (strlen (path) - 3 > sizeof (camera->pl->canon2gphotopath_buf)) {
                 GP_DEBUG ("canon2gphotopath called on too long canon path (%li bytes): %s",
                           (long)(strlen (path)), path);
                 return NULL;
