@@ -176,7 +176,7 @@ sq_is_clip (CameraPrivateLibrary *priv, int entry)
 int
 sq_rewind (GPPort *port, CameraPrivateLibrary *priv)
 {
-	static unsigned char dummy_buf[0x4000];
+	unsigned char dummy_buf[0x4000];
 
 
 	GP_DEBUG("REWIND cam's data pointer");
@@ -276,5 +276,3 @@ sq_preprocess (SQModel model, int comp_ratio, unsigned char is_in_clip,
 	}
 	return GP_OK;
 }
-
-

@@ -2514,7 +2514,7 @@ ptp_unpack_CANON_changes (PTPParams *params, unsigned char* data, unsigned int d
 
 /* largely input from users, CONFIRMED is really confirmed from debug
  * traces via "testolc", rest is guessed */
-static unsigned int olcsizes[0x15][13] = {
+static const unsigned int olcsizes[0x15][13] = {
 	/* 1,2,4,8,0x10,  0x20,0x40,0x80,0x100,0x200, 0x400,0x800,0x1000*/
 	{0,0,0,0,0, 0,0,0,0,0, 0,0,0 },	/* 0x0 */
 	{0,0,0,0,0, 0,0,0,0,0, 0,0,0 },	/* 0x1 */
