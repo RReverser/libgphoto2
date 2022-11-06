@@ -711,12 +711,9 @@ NumberPix(Camera *camera) {
 }
 
 /*utility function to creat a SOAP envelope for the lumix cam */
-static char*
-SoapEnvelop(int start, int num){
-	static char  Envelop[1000];
-	snprintf(Envelop,1000, "<?xml version=\"1.0\" encoding=\"utf-8\"?><s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><s:Body><u:Browse xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\"xmlns:pana=\"urn:schemas-panasonic-com:pana\"><ObjectID>0</ObjectID><BrowseFlag>BrowseDirectChildren</BrowseFlag><Filter>*</Filter><StartingIndex>%d</StartingIndex><RequestedCount>%d</RequestedCount><SortCriteria></SortCriteria><pana:X_FromCP>LumixLink2.0</pana:X_FromCP></u:Browse></s:Body></s:Envelope>",start,num);
-
-	return Envelop;
+static void
+SoapEnvelop(int start, int num, char *buf, size_t buf_len){
+	snprintf(buf,buf_len, "<?xml version=\"1.0\" encoding=\"utf-8\"?><s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><s:Body><u:Browse xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\"xmlns:pana=\"urn:schemas-panasonic-com:pana\"><ObjectID>0</ObjectID><BrowseFlag>BrowseDirectChildren</BrowseFlag><Filter>*</Filter><StartingIndex>%d</StartingIndex><RequestedCount>%d</RequestedCount><SortCriteria></SortCriteria><pana:X_FromCP>LumixLink2.0</pana:X_FromCP></u:Browse></s:Body></s:Envelope>",start,num);
 }
 
 /*
@@ -737,6 +734,7 @@ GetPixRange(Camera *camera, int start, int num) {
 	char		*xpath;
 	LumixMemoryBuffer	lmb;
 	char		URL[1000];
+	char 		SoapMsg[1000];
 
 	switchToPlayMode (camera);
 	NumPix  = NumberPix(camera);
@@ -750,7 +748,7 @@ GetPixRange(Camera *camera, int start, int num) {
 	}
 
 	while (num > 0) {
-		SoapMsg = SoapEnvelop(start, num);
+		SoapEnvelop(start, num, SoapMsg, sizeof(SoapMsg));
 		//GP_LOG_D("SoapMsg is %s \n", SoapMsg);
 
 		curl = curl_easy_init();
