@@ -144,7 +144,7 @@ digi_get_picture_width (CameraPrivateLibrary *priv, int entry)
 int
 digi_rewind (GPPort *port, CameraPrivateLibrary *priv)
 {
-	static char dummy_buf[0x4000];
+	char dummy_buf[0x4000];
 
 
 	GP_DEBUG("REWIND cam's data pointer");
