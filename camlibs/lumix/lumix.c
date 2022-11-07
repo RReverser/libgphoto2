@@ -726,7 +726,7 @@ GetPixRange(Camera *camera, int start, int num) {
         xmlDocPtr       docin, docin2;
         xmlNodePtr      docroot, docroot2, output, output2, next;
 	xmlChar 	*xchar, *numread;
-	char*		SoapMsg;
+	char 		SoapMsg[1000];
 	CURL 		*curl;
 	CURLcode	res;
 	struct curl_slist *list = NULL;
@@ -734,7 +734,6 @@ GetPixRange(Camera *camera, int start, int num) {
 	char		*xpath;
 	LumixMemoryBuffer	lmb;
 	char		URL[1000];
-	char 		SoapMsg[1000];
 
 	switchToPlayMode (camera);
 	NumPix  = NumberPix(camera);
