@@ -254,10 +254,9 @@ LT_INIT([
 ])
 
 # Emscripten tweaks
-AM_CONDITIONAL([HAVE_EMSCRIPTEN], [test "x$host_cpu" = "xwasm32"])
+AM_CONDITIONAL([HAVE_EMSCRIPTEN], [test "x$host_os" = "xemscripten"])
 AM_COND_IF([HAVE_EMSCRIPTEN], [
-	AC_SUBST(EXEEXT, [.html])
-	AM_LDFLAGS="$AM_LDFLAGS --bind -s ASYNCIFY=1 -s ALLOW_MEMORY_GROWTH=1"
+	AM_LDFLAGS="$AM_LDFLAGS -lembind -s ASYNCIFY -s ALLOW_MEMORY_GROWTH"
 ])
 
 dnl
@@ -469,7 +468,7 @@ dnl dnl Solaris hack for grep and tr
 dnl [
 dnl if test -n "`echo $host_os | grep '[sS]olaris'`"; then
 dnl   TR=/usr/xpg4/bin/tr
-dnl   GREP=/usr/xpg4/bin/grep  
+dnl   GREP=/usr/xpg4/bin/grep
 dnl else
 dnl   TR=tr
 dnl   GREP=grep
@@ -615,7 +614,7 @@ AC_SUBST([pkgconfigdir])
 dnl ---------------------------------------------------------------------------
 dnl libexif: The CameraFilesystem can use libexif for extracting thumbnails
 dnl	     out of EXIF data. Similarly, it can extract the mtime of
-dnl	     a file. 
+dnl	     a file.
 dnl	     libexif is available from
 dnl	     http://www.sourceforge.net/projects/libexif
 dnl ---------------------------------------------------------------------------
