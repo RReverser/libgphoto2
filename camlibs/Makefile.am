@@ -78,8 +78,10 @@ camlib_libadd += $(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port
 
 camlib_cflags  =
 
-camlib_cppflags  =
-camlib_cppflags += $(AM_CPPFLAGS)
+camlib_cppflags = $(AM_CPPFLAGS)
+camlib_cppflags += -Dcamera_abilities=$(@D)_LTX_camera_abilities
+camlib_cppflags += -Dcamera_id=$(@D)_LTX_camera_id
+camlib_cppflags += -Dcamera_init=$(@D)_LTX_camera_init
 camlib_cppflags += -I$(top_srcdir)
 camlib_cppflags += -I$(top_builddir)
 camlib_cppflags += -I$(top_srcdir)/libgphoto2_port

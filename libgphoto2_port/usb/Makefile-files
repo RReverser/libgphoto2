@@ -3,12 +3,7 @@
 EXTRA_LTLIBRARIES += usb.la
 
 usb_la_LDFLAGS = $(iolib_ldflags)
-usb_la_CPPFLAGS = \
-	$(AM_CPPFLAGS) \
-	$(INTL_CFLAGS) \
-	$(LIBUSB_CFLAGS) \
-	$(CPPFLAGS)
+usb_la_CPPFLAGS = $(iolib_cppflags) $(LIBUSB_CFLAGS)
 usb_la_DEPENDENCIES = $(iolib_dependencies)
-usb_la_LIBADD = $(iolib_libadd)
-usb_la_LIBADD += $(LIBUSB_LIBS)	$(INTLLIBS)
+usb_la_LIBADD = $(iolib_libadd) $(LIBUSB_LIBS)
 usb_la_SOURCES = usb/libusb.c

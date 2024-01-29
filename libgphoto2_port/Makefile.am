@@ -41,6 +41,8 @@ distclean-local:
 	@:
 
 
+AM_CPPFLAGS += -I$(top_srcdir)
+
 ########################################################################
 # All iolibs are defined as EXTRA_LTLIBRARIES. This requires that
 # all iolibs have -rpath set explicitly in foobar_la_LDFLAGS.
@@ -58,8 +60,11 @@ iolib_ldflags = -module -no-undefined -avoid-version \
         -export-symbols $(top_srcdir)/iolib.sym \
 	-rpath '$(iolibdir)'
 iolib_libadd = $(top_builddir)/libgphoto2_port/libgphoto2_port.la
-
-AM_CPPFLAGS += -I$(top_srcdir)
+iolib_libadd += $(INTLLIBS)
+iolib_cppflags = $(AM_CPPFLAGS) $(INTL_CFLAGS) $(CPPFLAGS)
+iolib_cppflags += -Dgp_port_library_list=$(@D)_LTX_gp_port_library_list
+iolib_cppflags += -Dgp_port_library_operations=$(@D)_LTX_gp_port_library_operations
+iolib_cppflags += -Dgp_port_library_type=$(@D)_LTX_gp_port_library_type
 
 include disk/Makefile-files
 include ptpip/Makefile-files
