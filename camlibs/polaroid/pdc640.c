@@ -34,8 +34,6 @@
 #include "dlink350f.h"
 
 
-#define GP_MODULE "pdc640"
-
 #define PDC640_PING  "\x01"
 #define PDC640_SPEED "\x69\x0b"
 

@@ -14,7 +14,7 @@ panasonic_l859_la_SOURCES      += %reldir%/l859.c
 panasonic_l859_la_SOURCES      += %reldir%/l859.h
 
 panasonic_l859_la_CFLAGS        = $(camlib_cflags)
-panasonic_l859_la_CPPFLAGS      = $(camlib_cppflags)
+panasonic_l859_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=panasonic_l859
 panasonic_l859_la_DEPENDENCIES  = $(camlib_dependencies)
 panasonic_l859_la_LDFLAGS       = $(camlib_ldflags)
 panasonic_l859_la_LIBADD        = $(camlib_libadd)

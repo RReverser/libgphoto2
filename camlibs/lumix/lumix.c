@@ -53,8 +53,6 @@
 #include "libgphoto2/i18n.h"
 
 
-#define GP_MODULE "lumix"
-
 #define CHECK(result)                                   \
 {                                                       \
 	int res = (result);                             \

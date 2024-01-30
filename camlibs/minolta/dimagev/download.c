@@ -25,8 +25,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 int dimagev_get_picture(dimagev_t *dimagev, int file_number, CameraFile *file) {
 	int total_packets, i;
 	unsigned long size = 0;

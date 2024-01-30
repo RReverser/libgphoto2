@@ -61,7 +61,6 @@
 #define sleep(x)
 #endif
 
-#define GP_MODULE "gsmart300"
 static int gsmart300_download_data (CameraPrivateLibrary * lib,
 		int data_type, uint16_t index, unsigned int size,
 		uint8_t * buf);

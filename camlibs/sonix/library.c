@@ -49,8 +49,6 @@
 #include <gphoto2/gphoto2-port.h>
 #include "sonix.h"
 #include "sakar-avi-header.h"
-#define GP_MODULE "sonix"
-
 static const struct {
 	char *name;
 	CameraDriverStatus status;

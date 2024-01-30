@@ -32,8 +32,6 @@
 #include "digita.h"
 #include "libgphoto2/gphoto2-endian.h"
 
-#define GP_MODULE "digita"
-
 #include <gphoto2/gphoto2-port.h>
 
 static void build_command(struct digita_command *cmd, int length, short command)
@@ -217,4 +215,3 @@ int digita_delete_picture(CameraPrivateLibrary *dev, struct filename *filename)
 
 	return 0;
 }
-

@@ -14,7 +14,7 @@ lg_gsm_la_SOURCES      += %reldir%/lg_gsm.c
 lg_gsm_la_SOURCES      += %reldir%/lg_gsm.h
 
 lg_gsm_la_CFLAGS        = $(camlib_cflags)
-lg_gsm_la_CPPFLAGS      = $(camlib_cppflags)
+lg_gsm_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=lg_gsm
 lg_gsm_la_DEPENDENCIES  = $(camlib_dependencies)
 lg_gsm_la_LDFLAGS       = $(camlib_ldflags)
 lg_gsm_la_LIBADD        = $(camlib_libadd)

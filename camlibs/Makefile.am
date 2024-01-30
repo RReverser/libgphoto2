@@ -66,9 +66,7 @@ camlib_ldflags += -no-undefined
 camlib_ldflags += -avoid-version
 camlib_ldflags += -export-dynamic
 
-EXTRA_DIST          += camlib.sym
-camlib_dependencies += $(top_srcdir)/camlibs/camlib.sym
-camlib_ldflags      += -export-symbols '$(top_srcdir)/camlibs/camlib.sym'
+camlib_ldflags      += -export-symbols-regex _LTX_camera_
 
 camlib_ldflags += -rpath '$(camlibdir)'
 
@@ -79,9 +77,6 @@ camlib_libadd += $(top_builddir)/libgphoto2_port/libgphoto2_port/libgphoto2_port
 camlib_cflags  =
 
 camlib_cppflags = $(AM_CPPFLAGS)
-camlib_cppflags += -Dcamera_abilities=$(@D)_LTX_camera_abilities
-camlib_cppflags += -Dcamera_id=$(@D)_LTX_camera_id
-camlib_cppflags += -Dcamera_init=$(@D)_LTX_camera_init
 camlib_cppflags += -I$(top_srcdir)
 camlib_cppflags += -I$(top_builddir)
 camlib_cppflags += -I$(top_srcdir)/libgphoto2_port

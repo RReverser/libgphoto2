@@ -36,8 +36,6 @@
 #  define __FILE__ "dc.c"
 #endif
 
-#define GP_MODULE "dc"
-
 
 static const char
 	c_prefix[13] = /* generic command prefix */

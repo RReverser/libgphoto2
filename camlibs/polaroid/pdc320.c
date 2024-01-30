@@ -46,8 +46,6 @@
 #include "pdc320.h"
 
 
-#define GP_MODULE "pdc320"
-
 /*******************************************************************************/
 /* NOTICE: There is a 16x8 block of pixels after the image data.               */
 /* All of them are about the same and I believe they are for image correction. */

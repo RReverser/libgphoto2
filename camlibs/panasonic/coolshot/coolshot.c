@@ -36,8 +36,6 @@
 #include "library.h"
 
 
-#define GP_MODULE "coolshot"
-
 #define TIMEOUT	      2000
 #define DEFAULT_SPEED 9600
 

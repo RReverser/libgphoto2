@@ -64,14 +64,28 @@ typedef int (* CameraLibraryAbilitiesFunc) (CameraAbilitiesList *list);
  **/
 typedef int (* CameraLibraryInitFunc)      (Camera *camera, GPContext *context);
 
+// Force second expansion so that LIBPREFIX is expanded before concatenation.
+#define PREFIXLIB(funcname) CAT(LIBNAME, _LTX_ ## funcname)
+#define CAT(x, y) CAT_(x, y)
+#define CAT_(x, y) x ## y
+
 /*
  * If you want to write a camera library, you need to implement
  * the following three functions. Everything else should be declared
  * as static.
  */
+#define camera_id 		PREFIXLIB(camera_id)
+#define camera_abilities 	PREFIXLIB(camera_abilities)
+#define camera_init 		PREFIXLIB(camera_init)
+
 int camera_id		(CameraText *id);
 int camera_abilities 	(CameraAbilitiesList *list);
 int camera_init 	(Camera *camera, GPContext *context);
+
+// Force second expansion so that LIBPREFIX is expanded before stringification.
+#define GP_MODULE GP_MODULE_(LIBPREFIX)
+#define GP_MODULE_(x) GP_MODULE__(x)
+#define GP_MODULE__(x) #x
 
 #ifdef __cplusplus
 }

@@ -15,7 +15,7 @@ gsmart300_la_SOURCES      += %reldir%/library.c
 gsmart300_la_SOURCES      += %reldir%/gsmart300-jpeg-header.h
 
 gsmart300_la_CFLAGS        = $(camlib_cflags)
-gsmart300_la_CPPFLAGS      = $(camlib_cppflags)
+gsmart300_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=gsmart300
 gsmart300_la_DEPENDENCIES  = $(camlib_dependencies)
 gsmart300_la_LDFLAGS       = $(camlib_ldflags)
 gsmart300_la_LIBADD        = $(camlib_libadd)

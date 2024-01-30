@@ -27,8 +27,6 @@
 
 void clear_readiness(Camera *camera);
 
-#define GP_MODULE "canon"
-
 #endif /* !defined(CAMLIBS_CANON_LIBRARY_H) */
 
 /****************************************************************************

@@ -25,8 +25,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 int dimagev_delete_picture(dimagev_t *dimagev, int file_number) {
 	dimagev_packet *p, *raw;
 	unsigned char command_buffer[3];

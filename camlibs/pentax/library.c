@@ -22,8 +22,6 @@
 
 #include "config.h"
 
-#define GP_MODULE "pentax"
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

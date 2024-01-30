@@ -36,8 +36,6 @@
 #include "fuji.h"
 
 
-#define GP_MODULE "fuji"
-
 #define CR(result) {int __r = (result); if (__r < 0) return (__r);}
 
 static const struct {

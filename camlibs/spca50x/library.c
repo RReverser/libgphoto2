@@ -40,7 +40,6 @@
 #include "spca50x-flash.h"
 #include "spca50x-sdram.h"
 
-#define GP_MODULE "spca50x"
 #define TIMEOUT	      5000
 
 #define SPCA50X_VERSION "0.1"

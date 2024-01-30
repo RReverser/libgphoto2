@@ -36,8 +36,6 @@
 #include "libgphoto2/i18n.h"
 
 
-#define GP_MODULE "dimera"
-
 #ifndef MAX
 # define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif

@@ -34,7 +34,7 @@ ptp2_la_SOURCES      += %reldir%/fujiptpip.c
 ptp2_la_SOURCES      += %reldir%/ptpip-private.h
 
 ptp2_la_CFLAGS        = $(camlib_cflags)
-ptp2_la_CPPFLAGS      = $(camlib_cppflags)
+ptp2_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=ptp2
 ptp2_la_DEPENDENCIES  = $(camlib_dependencies)
 ptp2_la_LDFLAGS       = $(camlib_ldflags)
 ptp2_la_LIBADD        = $(camlib_libadd)

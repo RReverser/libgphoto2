@@ -29,8 +29,6 @@
 #include "libgphoto2/i18n.h"
 
 
-#define GP_MODULE "Toshiba"
-
 int
 camera_id (CameraText *id)
 {

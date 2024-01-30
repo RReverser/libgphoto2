@@ -50,8 +50,6 @@
 
 #include <gphoto2/gphoto2-port.h>
 
-#define GP_MODULE "sq905"
-
 static const struct {
 	char *name;
 	CameraDriverStatus status;

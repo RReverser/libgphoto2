@@ -36,8 +36,6 @@
 #include "soundvision.h"
 #include "commands.h"
 
-#define GP_MODULE "soundvision"
-
     /* Regular commands always 8 bytes long */
 int32_t soundvision_send_command(uint32_t command, uint32_t argument,
 				  CameraPrivateLibrary *dev) {

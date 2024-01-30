@@ -39,7 +39,7 @@ canon_la_SOURCES      += %reldir%/util.c
 canon_la_SOURCES      += %reldir%/util.h
 
 canon_la_CFLAGS        = $(camlib_cflags)
-canon_la_CPPFLAGS      = $(camlib_cppflags)
+canon_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=canon
 canon_la_DEPENDENCIES  = $(camlib_dependencies)
 canon_la_LDFLAGS       = $(camlib_ldflags)
 canon_la_LIBADD        = $(camlib_libadd)

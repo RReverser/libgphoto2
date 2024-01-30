@@ -54,10 +54,9 @@ iolib_LTLIBRARIES = $(IOLIB_LTLIST)
 ########################################################################
 # Define the compile/link/etc. flags common to all iolibs in one place,
 # i.e. here.
-iolib_dependencies = $(top_srcdir)/iolib.sym
 iolib_ldflags = -module -no-undefined -avoid-version \
 	-export-dynamic \
-        -export-symbols $(top_srcdir)/iolib.sym \
+        -export-symbols-regex _LTX_gp_port_library_ \
 	-rpath '$(iolibdir)'
 iolib_libadd = $(top_builddir)/libgphoto2_port/libgphoto2_port.la
 iolib_libadd += $(INTLLIBS)
@@ -85,7 +84,6 @@ EXTRA_DIST +=   		\
 	COPYING.LIB \
 	NEWS \
 	README \
-	iolib.sym \
 	gphoto2-port-config.in
 
 doc_DATA = AUTHORS README NEWS

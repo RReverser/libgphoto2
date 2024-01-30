@@ -30,8 +30,6 @@
 
 #include "lg_gsm.h"
 
-#define GP_MODULE "lg_gsm"
-
 #define MSGWRITE gp_port_usb_msg_write
 #define WRITE gp_port_write
 #define READ  gp_port_read

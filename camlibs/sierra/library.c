@@ -28,14 +28,13 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <gphoto2/gphoto2-library.h>
 #include <gphoto2/gphoto2-port-log.h>
 
 #include "libgphoto2/i18n.h"
 
 #include "sierra.h"
 #include "sierra-usbwrap.h"
-
-#define GP_MODULE "sierra"
 
 enum _SierraPacket {
 	NUL				= 0x00,

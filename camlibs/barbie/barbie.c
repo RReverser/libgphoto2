@@ -50,8 +50,6 @@
 #define BARBIE_DATA_THUMBNAIL	1
 #define BARBIE_DATA_PICTURE	2
 
-#define GP_MODULE "barbie"
-
 /* Some simple packet templates */
 static const char packet_1[4]                = {0x02, 0x01, 0x01, 0x03};
 

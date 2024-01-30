@@ -46,8 +46,6 @@
 #define ENIGMA13_WAIT_FOR_READY_TIMEOUT_S 5
 #define ENIGMA13_WAIT_TOC_DELAY_MS 500
 #define ENIGMA13_WAIT_IMAGE_READY_MS 300
-#define GP_MODULE "enigma13"
-
 
 #define CHECK(result) {int res; res = result; if (res < 0) return (res);}
 #define CHECK_AND_FREE(result, buf) {int res; res = result; if (res < 0) { free(buf); return (res); }}

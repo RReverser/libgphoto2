@@ -32,8 +32,6 @@
 
 #include "jl2005a.h"
 
-#define GP_MODULE "jl2005a"
-
 int
 jl2005a_init (Camera *camera, GPPort *port, CameraPrivateLibrary *priv)
 {
@@ -232,4 +230,3 @@ int jl2005a_decompress (unsigned char *inp, unsigned char *outp, int width,
 
 	return 0;
 }
-

@@ -36,8 +36,6 @@
 #include <gphoto2/gphoto2.h>
 #include <gphoto2/gphoto2-port.h>
 
-#define GP_MODULE "pccam300"
-
 #ifdef ENABLE_NLS
 #  include <libintl.h>
 #  undef _
@@ -51,8 +49,6 @@
 #  define _(String) (String)
 #  define N_(String) (String)
 #endif
-
-#define GP_MODULE "pccam300"
 
 static const struct models
 {

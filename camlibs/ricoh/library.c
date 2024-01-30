@@ -33,8 +33,6 @@
 
 #include "ricoh.h"
 
-#define GP_MODULE "ricoh"
-
 
 #define CR(result) {int r=(result); if (r<0) return r;}
 #define CRW(result,widget) {int r=(result); if (r<0) { gp_widget_free (widget); return r; } }
@@ -587,4 +585,3 @@ camera_init (Camera *camera, GPContext *context)
 
 	return (GP_OK);
 }
-

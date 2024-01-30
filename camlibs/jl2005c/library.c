@@ -46,8 +46,6 @@
 #include "jl2005c.h"
 #include <gphoto2/gphoto2-port.h>
 
-#define GP_MODULE "jl2005c"
-
 struct {
 	char *name;
 	CameraDriverStatus status;

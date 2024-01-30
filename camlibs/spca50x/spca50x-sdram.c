@@ -42,8 +42,6 @@
 #include "spca50x-avi-header.h"
 
 
-#define GP_MODULE "spca50x"
-
 static int spca50x_mode_set_idle (CameraPrivateLibrary * lib);
 static int spca50x_is_idle (CameraPrivateLibrary * lib);
 static int spca50x_mode_set_download (CameraPrivateLibrary * lib);

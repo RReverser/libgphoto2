@@ -34,8 +34,6 @@
 #include "libgphoto2/gphoto2-endian.h"
 #include "digita.h"
 
-#define GP_MODULE "digita"
-
 #include <gphoto2/gphoto2-port.h>
 
 #define MAX_BEACON_RETRIES	5

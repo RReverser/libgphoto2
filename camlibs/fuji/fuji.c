@@ -60,8 +60,6 @@
 #define MAX(a, b)  (((a) > (b)) ? (a) : (b))
 #endif
 
-#define GP_MODULE "fuji"
-
 #define CR(result)    {int __r = (result); if (__r < 0) return (__r);}
 #define CRF(result,d) {int __r = (result); if (__r < 0) {free (d); return (__r);}}
 #define CLEN(buf_len,required)					\

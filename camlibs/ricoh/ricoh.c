@@ -31,8 +31,6 @@
 #include "crctab.h"
 
 
-#define GP_MODULE "ricoh"
-
 #define STX 0x02 /* start of text */
 #define ETX 0x03 /* end of text */
 #define ACK 0x06 /* acknowledge */

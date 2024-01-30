@@ -27,8 +27,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 /* This is the parent function, who calls most of the functions below.
    It returns GP_ERROR if it cannot get the camera data, and GP_OK otherwise.
    The subroutines will print out more detained information should they fail. */

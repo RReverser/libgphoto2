@@ -28,8 +28,6 @@
 #  define N_(String) (String)
 #endif
 
-#define GP_MODULE "adc65"
-
 #define ACK		0x15
 
 #define ADC65_DATA_FIRMWARE	0

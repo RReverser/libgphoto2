@@ -38,7 +38,6 @@
 #include "library.h"
 
 
-#define GP_MODULE "jamcam"
 #define TIMEOUT	      2000
 
 #define JAMCAM_VERSION "0.6"
@@ -339,4 +338,3 @@ int camera_init (Camera *camera, GPContext *context)
 	/* Set up the CameraFilesystem */
 	return gp_filesystem_set_funcs (camera->fs, &fsfuncs, camera);
 }
-

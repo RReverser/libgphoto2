@@ -18,7 +18,7 @@ st2205_la_SOURCES      += %reldir%/st2205_decode.c
 st2205_la_SOURCES      += %reldir%/st2205_tables.c
 
 st2205_la_CFLAGS        = $(camlib_cflags)
-st2205_la_CPPFLAGS      = $(camlib_cppflags)
+st2205_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=st2205
 st2205_la_DEPENDENCIES  = $(camlib_dependencies)
 st2205_la_LDFLAGS       = $(camlib_ldflags)
 st2205_la_LIBADD        = $(camlib_libadd)

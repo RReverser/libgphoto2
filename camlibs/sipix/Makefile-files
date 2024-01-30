@@ -25,7 +25,7 @@ EXTRA_LTLIBRARIES            += sipix_blink2.la
 sipix_blink2_la_SOURCES       = %reldir%/blink2.c
 
 sipix_blink2_la_CFLAGS        = $(camlib_cflags)
-sipix_blink2_la_CPPFLAGS      = $(camlib_cppflags)
+sipix_blink2_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=sipix_blink2
 sipix_blink2_la_DEPENDENCIES  = $(camlib_dependencies)
 sipix_blink2_la_LDFLAGS       = $(camlib_ldflags)
 sipix_blink2_la_LIBADD        = $(camlib_libadd)

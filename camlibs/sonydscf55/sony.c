@@ -30,8 +30,6 @@
 #include <gphoto2/gphoto2.h>
 #include "sony.h"
 
-#define GP_MODULE "sony55"
-
 /**
  * Constants
  */

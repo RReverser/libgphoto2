@@ -4,6 +4,5 @@ EXTRA_LTLIBRARIES += usb1.la
 
 usb1_la_LDFLAGS = $(iolib_ldflags)
 usb1_la_CPPFLAGS = $(iolib_cppflags) $(LIBUSB1_CFLAGS)
-usb1_la_DEPENDENCIES = $(iolib_dependencies)
 usb1_la_LIBADD = $(iolib_libadd) $(LIBUSB1_LIBS)
 usb1_la_SOURCES = libusb1/libusb1.c

@@ -120,8 +120,6 @@ typedef struct {
 #undef DEBUG
 #define TIMEOUT 500
 #define RETRIES 5
-#define GP_MODULE "kodak-dc210"
-
 #ifdef DEBUG
 #define DC210_DEBUG(msg, params...) fprintf(stderr, msg, ##params)
 #else
@@ -236,4 +234,3 @@ int dc210_debug_callback(Camera * camera, CameraWidget * widget, GPContext * con
 #endif
 
 #endif /* !defined(CAMLIBS_KODAK_DC210_DC210_H) */
-

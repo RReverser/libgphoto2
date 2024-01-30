@@ -35,8 +35,6 @@
 #include <gphoto2/gphoto2-port.h>
 #include <gphoto2/gphoto2-port-log.h>
 
-#define GP_MODULE "pccam300"
-
 #ifdef ENABLE_NLS
 #  include <libintl.h>
 #  undef _

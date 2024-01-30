@@ -34,8 +34,6 @@
 #include "soundvision.h"
 #include "commands.h"
 
-#define GP_MODULE "soundvision"
-
     /* Below contributed by Ben Hague <benhague@btinternet.com> */
 int agfa_capture(CameraPrivateLibrary *dev, CameraFilePath *path) {
     /*FIXME: Not fully implemented according to the gphoto2 spec.*/

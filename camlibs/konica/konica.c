@@ -33,7 +33,6 @@
 #include "lowlevel.h"
 
 
-#define GP_MODULE "konica"
 #define CHECK_NULL(r)     {if (!(r)) return (GP_ERROR_BAD_PARAMETERS);}
 
 static int

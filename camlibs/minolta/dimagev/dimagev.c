@@ -30,8 +30,6 @@
 #include "dimagev.h"
 
 
-#define GP_MODULE "dimagev"
-
 int camera_id (CameraText *id)
 {
 #if defined HAVE_STRNCPY

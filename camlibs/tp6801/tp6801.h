@@ -28,8 +28,6 @@
 #include <gphoto2/gphoto2-library.h>
 #include <libgphoto2/gphoto2-endian.h>
 
-#define GP_MODULE "tp6801"
-
 #define TP6801_PAT_MAGIC		"erutangiS metsyS eliF egamI 1086PT xneT"
 #define TP6801_PAT_MAGIC_OFFSET		0x1e80
 #define TP6801_PAT_OFFSET		0x1e00

@@ -8,7 +8,7 @@ EXTRA_LTLIBRARIES         += directory.la
 directory_la_SOURCES       = %reldir%/directory.c
 
 directory_la_CFLAGS        = $(camlib_cflags)
-directory_la_CPPFLAGS      = $(camlib_cppflags)
+directory_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=directory
 directory_la_DEPENDENCIES  = $(camlib_dependencies)
 directory_la_LDFLAGS       = $(camlib_ldflags)
 directory_la_LIBADD        = $(camlib_libadd)

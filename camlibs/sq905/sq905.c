@@ -27,8 +27,6 @@
 #include <gphoto2/gphoto2-port.h>
 #include "sq905.h"
 
-#define GP_MODULE "sq905"
-
 #define SQWRITE gp_port_usb_msg_write
 #define SQREAD  gp_port_usb_msg_read
 
@@ -276,5 +274,3 @@ sq_preprocess (SQModel model, int comp_ratio, unsigned char is_in_clip,
 	}
 	return GP_OK;
 }
-
-

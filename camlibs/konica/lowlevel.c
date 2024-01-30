@@ -33,8 +33,6 @@
 #include "konica.h"
 
 
-#define GP_MODULE "konica"
-
 #define DEFAULT_TIMEOUT	1000
 
 #define LESSER_ESCAPES

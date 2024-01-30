@@ -32,8 +32,6 @@
 #include <limits.h>
 #endif
 
-#define GP_MODULE "digita"
-
 #include <gphoto2/gphoto2.h>
 #include <gphoto2/gphoto2-port.h>
 
@@ -473,4 +471,3 @@ int camera_init(Camera *camera, GPContext *context)
 
 	return GP_OK;
 }
-

@@ -30,8 +30,6 @@
 
 #include "tinyjpeg.h"
 
-#define GP_MODULE "ax203"
-
 #define AX203_ABFS_MAGIC		"ABFS"
 #define AX203_ABFS_COUNT_OFFSET		0x05
 #define AX203_ABFS_FILE_OFFSET(idx)     (0x20 + 2 * (idx))

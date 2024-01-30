@@ -38,7 +38,6 @@
 #define C(r) {int ret=(r);if(ret<0) return(ret);}
 #define C_NULL(r) {if (!(r)) return (GP_ERROR_BAD_PARAMETERS);}
 
-#define GP_MODULE "konica"
 #define PING_TIMEOUT 60
 
 static struct {

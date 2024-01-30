@@ -30,8 +30,6 @@
 #include "sx330z.h"
 
 
-#define GP_MODULE "sx330z"
-
 
 #define TIMEOUT 2000
 
@@ -282,4 +280,3 @@ camera_init(Camera *camera,GPContext *context)
  return(sx330z_init(camera,context));
 
 } /* camera init */
-

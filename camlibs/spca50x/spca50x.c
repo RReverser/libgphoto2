@@ -44,8 +44,6 @@
 #include "spca50x-jpeg-header.h"
 
 
-#define GP_MODULE "spca50x"
-
 int
 spca50x_get_firmware_revision (CameraPrivateLibrary *lib)
 {

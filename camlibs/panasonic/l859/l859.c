@@ -32,8 +32,6 @@
 #  define __FILE__ "l859.c"
 #endif
 
-#define GP_MODULE "l859"
-
 /******************************************************************************/
 /* Internal utility functions */
 

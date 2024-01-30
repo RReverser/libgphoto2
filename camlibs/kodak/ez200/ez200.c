@@ -47,8 +47,6 @@ typedef enum {
 	MODEL_MINI
 } Model;
 
-#define GP_MODULE "ez200"
-
 #define WRITE gp_port_usb_msg_write
 #define READ  gp_port_usb_msg_read
 

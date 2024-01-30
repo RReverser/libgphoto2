@@ -48,8 +48,6 @@
 #include "aox.h"
 #include <gphoto2/gphoto2-port.h>
 
-#define GP_MODULE "aox"
-
 struct _CameraPrivateLibrary {
 	Model model;
 	Info info[2];

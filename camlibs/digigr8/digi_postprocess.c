@@ -29,8 +29,6 @@
 #include <libgphoto2/gamma.h>
 #include "digigr8.h"
 
-#define GP_MODULE "digigr8"
-
 #ifndef MAX
 # define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif

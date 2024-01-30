@@ -35,8 +35,6 @@
 
 #include "jl2005c.h"
 
-#define GP_MODULE "jl2005c"
-
 /* do not sleep during fuzzing */
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
 # define usleep(x)

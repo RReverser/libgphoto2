@@ -31,8 +31,6 @@
 #include <gphoto2/gphoto2-library.h>
 #include <libgphoto2/gphoto2-endian.h>
 
-#define GP_MODULE "st2205"
-
 #define ST2205_CMD_OFFSET 0x6200
 #define ST2205_WRITE_OFFSET 0x6600
 #define ST2205_READ_OFFSET 0xb000

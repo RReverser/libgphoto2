@@ -14,7 +14,7 @@ quicktake1x0_la_SOURCES      += %reldir%/qtk-helpers.c
 quicktake1x0_la_SOURCES      += %reldir%/quicktake1x0.h
 
 quicktake1x0_la_CFLAGS        = $(camlib_cflags)
-quicktake1x0_la_CPPFLAGS      = $(camlib_cppflags)
+quicktake1x0_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=quicktake1x0
 quicktake1x0_la_DEPENDENCIES  = $(camlib_dependencies)
 quicktake1x0_la_LDFLAGS       = $(camlib_ldflags)
 quicktake1x0_la_LIBADD        = $(camlib_libadd)

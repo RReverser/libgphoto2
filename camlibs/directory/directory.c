@@ -119,8 +119,6 @@ static const struct {
 /* #define DEBUG */
 /* #define FOLLOW_LINKS */
 
-#define GP_MODULE "directory"
-
 static const char *
 get_mime_type (const char *filename)
 {

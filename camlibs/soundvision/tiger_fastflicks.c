@@ -49,8 +49,6 @@
 #include "soundvision.h"
 #include "commands.h"
 
-#define GP_MODULE "soundvision"
-
 
     /* Used at start of most tiger commands.  Also */
     /* Seems to set the camera into "PC" mode      */

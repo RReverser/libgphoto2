@@ -30,8 +30,6 @@
 
 #include "aox.h"
 
-#define GP_MODULE "aox"
-
 #define WRITE gp_port_usb_msg_write
 #define READ  gp_port_usb_msg_read
 

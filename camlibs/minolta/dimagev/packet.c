@@ -27,8 +27,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 /* This function takes an array of unsigned chars, as well as the length, and
    creates a dimagev_packet ready for sending to the camera. Packets must be
    of the form below:

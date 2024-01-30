@@ -31,8 +31,6 @@
 
 #include "sony.h"
 
-#define GP_MODULE "sonydscf55"
-
 
 struct ModelInfo {
 	SonyModel model_id;

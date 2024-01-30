@@ -37,8 +37,6 @@
 
 #include <gphoto2/gphoto2.h>
 
-#define GP_MODULE "jl2005c"
-
 #ifndef CLIP
 #define CLIP(x)        ((x)<0?0:((x)>255)?255:(x))
 #endif

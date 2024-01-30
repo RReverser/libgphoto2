@@ -36,8 +36,6 @@
 #include "library.h"
 
 
-#define GP_MODULE "sierra"
-
 
 /*
  * For some reason, round() does not get a prototype from math.h.

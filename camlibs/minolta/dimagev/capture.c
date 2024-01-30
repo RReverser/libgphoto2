@@ -25,8 +25,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 /* This function handles sending the camera command to take a new picture, and
    the Dimage V automatically stores it in the lowest number available, which
    is the current number of images plus one. Since gphoto2 assumes that images

@@ -39,8 +39,6 @@
 
 #include "mars.h"
 
-#define GP_MODULE "mars"
-
 #define INIT 		0xb5
 #define GET_DATA 	0x0f
 

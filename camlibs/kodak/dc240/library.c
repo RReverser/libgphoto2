@@ -42,8 +42,6 @@
 #include "library.h"
 
 
-#define GP_MODULE "dc240"
-
 /* do not sleep during fuzzing */
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
 # define usleep(x)

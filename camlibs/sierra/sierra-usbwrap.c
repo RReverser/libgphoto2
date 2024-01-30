@@ -52,10 +52,9 @@
 
 #include <stdint.h>
 
+#include <gphoto2/gphoto2-library.h>
 #include <gphoto2/gphoto2-result.h>
 #include <gphoto2/gphoto2-port-log.h>
-
-#define GP_MODULE "sierra"
 
 #define CR(result) {int r = (result); if (r < 0) return (r);}
 

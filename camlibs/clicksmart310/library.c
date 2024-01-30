@@ -45,8 +45,6 @@
 #endif
 
 #include "clicksmart.h"
-#define GP_MODULE "clicksmart310"
-
 static const struct {
    	char *name;
 	CameraDriverStatus status;

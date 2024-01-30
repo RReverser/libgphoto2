@@ -14,7 +14,7 @@ pccam600_la_SOURCES      += %reldir%/pccam600.h
 pccam600_la_SOURCES      += %reldir%/library.c
 
 pccam600_la_CFLAGS        = $(camlib_cflags)
-pccam600_la_CPPFLAGS      = $(camlib_cppflags)
+pccam600_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=pccam600
 pccam600_la_DEPENDENCIES  = $(camlib_dependencies)
 pccam600_la_LDFLAGS       = $(camlib_ldflags)
 pccam600_la_LIBADD        = $(camlib_libadd)

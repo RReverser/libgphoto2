@@ -33,8 +33,6 @@
 #include "stv0680.h"
 #include "library.h"
 
-#define GP_MODULE "stv0680"
-
 static const struct camera_to_usb {
 	  char *name;
 	  unsigned short idVendor;

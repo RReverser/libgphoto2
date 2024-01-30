@@ -51,8 +51,6 @@
 
 #include <gphoto2/gphoto2-port.h>
 
-#define GP_MODULE "iclick"
-
 static struct {
    	char *name;
 	CameraDriverStatus status;

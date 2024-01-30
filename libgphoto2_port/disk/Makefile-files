@@ -4,6 +4,5 @@ EXTRA_LTLIBRARIES += disk.la
 
 disk_la_LDFLAGS = $(iolib_ldflags)
 disk_la_CPPFLAGS = $(iolib_cppflags) $(LIBUSB_CFLAGS)
-disk_la_DEPENDENCIES = $(iolib_dependencies)
 disk_la_LIBADD = $(iolib_libadd)
 disk_la_SOURCES = disk/disk.c

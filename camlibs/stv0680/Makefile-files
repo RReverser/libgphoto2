@@ -24,7 +24,7 @@ stv0680_la_SOURCES      += %reldir%/demosaic_sharpen.h
 stv0680_la_SOURCES      += %reldir%/demosaic_sharpen.c
 
 stv0680_la_CFLAGS        = $(camlib_cflags)
-stv0680_la_CPPFLAGS      = $(camlib_cppflags)
+stv0680_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=stv0680
 stv0680_la_DEPENDENCIES  = $(camlib_dependencies)
 stv0680_la_LDFLAGS       = $(camlib_ldflags)
 stv0680_la_LIBADD        = $(camlib_libadd)

@@ -40,8 +40,6 @@
 #include "library.h"
 
 
-#define GP_MODULE "coolshot"
-
 #define	COOL_SLEEP	10000
 
 #define	RETRIES			10

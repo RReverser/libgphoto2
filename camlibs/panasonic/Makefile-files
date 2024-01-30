@@ -17,7 +17,7 @@ panasonic_dc1000_la_SOURCES      += %reldir%/dc.c
 panasonic_dc1000_la_SOURCES      += %reldir%/dc.h
 
 panasonic_dc1000_la_CFLAGS        = $(camlib_cflags)
-panasonic_dc1000_la_CPPFLAGS      = $(camlib_cppflags)
+panasonic_dc1000_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=panasonic_dc1000
 panasonic_dc1000_la_DEPENDENCIES  = $(camlib_dependencies)
 panasonic_dc1000_la_LDFLAGS       = $(camlib_ldflags)
 panasonic_dc1000_la_LIBADD        = $(camlib_libadd)
@@ -33,7 +33,7 @@ panasonic_dc1580_la_SOURCES      += %reldir%/dc.h
 panasonic_dc1580_la_SOURCES      += %reldir%/dc1000.h
 
 panasonic_dc1580_la_CFLAGS        = $(camlib_cflags)
-panasonic_dc1580_la_CPPFLAGS      = $(camlib_cppflags)
+panasonic_dc1580_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=panasonic_dc1580
 panasonic_dc1580_la_DEPENDENCIES  = $(camlib_dependencies)
 panasonic_dc1580_la_LDFLAGS       = $(camlib_ldflags)
 panasonic_dc1580_la_LIBADD        = $(camlib_libadd)

@@ -34,8 +34,6 @@
 #include "clicksmart.h"
 #include "spca50x-jpeg-header.h"
 
-#define GP_MODULE "clicksmart310"
-
 #define CS_INIT 	0x8000
 #define CS_INIT2 	0xd41
 #define CS_NUM_PICS 	0xd40

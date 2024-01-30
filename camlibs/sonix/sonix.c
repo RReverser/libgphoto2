@@ -35,8 +35,6 @@
 
 
 #include "sonix.h"
-#define GP_MODULE "sonix"
-
 
 /* Three often-used generic commands */
 

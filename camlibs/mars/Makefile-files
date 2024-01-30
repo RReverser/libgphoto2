@@ -15,7 +15,7 @@ mars_la_SOURCES      += %reldir%/mars.c
 mars_la_SOURCES      += %reldir%/mars.h
 
 mars_la_CFLAGS        = $(camlib_cflags)
-mars_la_CPPFLAGS      = $(camlib_cppflags)
+mars_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=mars
 mars_la_DEPENDENCIES  = $(camlib_dependencies)
 mars_la_LDFLAGS       = $(camlib_ldflags)
 mars_la_LIBADD        = $(camlib_libadd)

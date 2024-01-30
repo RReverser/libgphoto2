@@ -38,7 +38,6 @@
 #include <gphoto2/gphoto2-port-log.h>
 #include "libgphoto2/gphoto2-endian.h"
 
-#define GP_MODULE "spca50x"
 #include "spca50x.h"
 #include "spca50x-flash.h"
 

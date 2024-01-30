@@ -21,7 +21,7 @@ sierra_la_SOURCES      += %reldir%/olympus-desc.c
 sierra_la_SOURCES      += %reldir%/epson-desc.c
 
 sierra_la_CFLAGS        = $(camlib_cflags)
-sierra_la_CPPFLAGS      = $(camlib_cppflags)
+sierra_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=sierra
 sierra_la_DEPENDENCIES  = $(camlib_dependencies)
 sierra_la_LDFLAGS       = $(camlib_ldflags)
 sierra_la_LIBADD        = $(camlib_libadd)

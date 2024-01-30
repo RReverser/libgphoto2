@@ -26,7 +26,7 @@ mustek_la_SOURCES      += %reldir%/rs232.h
 mustek_la_SOURCES      += %reldir%/usb.h
 
 mustek_la_CFLAGS        = $(camlib_cflags)
-mustek_la_CPPFLAGS      = $(camlib_cppflags)
+mustek_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=mustek
 mustek_la_DEPENDENCIES  = $(camlib_dependencies)
 mustek_la_LDFLAGS       = $(camlib_ldflags)
 mustek_la_LIBADD        = $(camlib_libadd)

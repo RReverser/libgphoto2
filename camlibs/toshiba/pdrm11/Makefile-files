@@ -12,7 +12,7 @@ toshiba_pdrm11_la_SOURCES      += %reldir%/pdrm11.c
 toshiba_pdrm11_la_SOURCES      += %reldir%/pdrm11.h
 
 toshiba_pdrm11_la_CFLAGS        = $(camlib_cflags)
-toshiba_pdrm11_la_CPPFLAGS      = $(camlib_cppflags)
+toshiba_pdrm11_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=toshiba_pdrm11
 toshiba_pdrm11_la_DEPENDENCIES  = $(camlib_dependencies)
 toshiba_pdrm11_la_LDFLAGS       = $(camlib_ldflags)
 toshiba_pdrm11_la_LIBADD        = $(camlib_libadd)

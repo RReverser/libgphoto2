@@ -25,7 +25,7 @@ spca50x_la_SOURCES      += %reldir%/spca50x-registers.h
 spca50x_la_SOURCES      += %reldir%/spca50x-avi-header.h
 
 spca50x_la_CFLAGS        = $(camlib_cflags)
-spca50x_la_CPPFLAGS      = $(camlib_cppflags)
+spca50x_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=spca50x
 spca50x_la_DEPENDENCIES  = $(camlib_dependencies)
 spca50x_la_LDFLAGS       = $(camlib_ldflags)
 spca50x_la_LIBADD        = $(camlib_libadd)

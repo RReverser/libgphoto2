@@ -29,8 +29,6 @@
 #include <gphoto2/gphoto2-library.h>
 #include <gphoto2/gphoto2-port-log.h>
 
-#define GP_MODULE "dlink350f"
-
 #include "dlink350f.h"
 
 #define RED(p,x,y,w) *((p)+3*((y)*(w)+(x))  )

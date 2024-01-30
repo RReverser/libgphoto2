@@ -10,7 +10,6 @@ vusb_la_LDFLAGS = $(iolib_ldflags)
 vusb_la_CPPFLAGS = $(iolib_cppflags) \
 	-DVCAMERADIR=\"$(vcameradir)\" \
         $(LIBEXIF_CFLAGS)
-vusb_la_DEPENDENCIES = $(iolib_dependencies)
 vusb_la_LIBADD = $(iolib_libadd) $(LIBEXIF_LIBS)
 
 vusb_la_SOURCES = vusb/vusb.c vusb/vcamera.c vusb/vcamera.h

@@ -51,7 +51,6 @@
 
 #include "gsmart300.h"
 
-#define GP_MODULE "gsmart300"
 #define TIMEOUT	      5000
 
 

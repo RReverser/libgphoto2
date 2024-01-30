@@ -27,7 +27,7 @@ digigr8_la_SOURCES      += %reldir%/digigr8.h
 digigr8_la_SOURCES      += %reldir%/digi_postprocess.c
 
 digigr8_la_CFLAGS        = $(camlib_cflags)
-digigr8_la_CPPFLAGS      = $(camlib_cppflags)
+digigr8_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=digigr8
 digigr8_la_DEPENDENCIES  = $(camlib_dependencies)
 digigr8_la_LDFLAGS       = $(camlib_ldflags)
 digigr8_la_LIBADD        = $(camlib_libadd)

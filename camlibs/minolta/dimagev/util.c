@@ -25,8 +25,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 /* This function handles the ugliness of converting Y:Cb:Cr data to RGB. The
    return value is a pointer to an array of unsigned chars that has 14413)
    members. The additional thirteen bytes are the PPM "rawbits" header.

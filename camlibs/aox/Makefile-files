@@ -14,7 +14,7 @@ aox_la_SOURCES      += %reldir%/aox.c
 aox_la_SOURCES      += %reldir%/aox.h
 
 aox_la_CFLAGS        = $(camlib_cflags)
-aox_la_CPPFLAGS      = $(camlib_cppflags)
+aox_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=aox
 aox_la_DEPENDENCIES  = $(camlib_dependencies)
 aox_la_LDFLAGS       = $(camlib_ldflags)
 aox_la_LIBADD        = $(camlib_libadd)

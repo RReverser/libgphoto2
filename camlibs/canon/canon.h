@@ -736,8 +736,6 @@ const char *canon_int_filename2audioname (Camera *camera, const char *filename);
 int canon_int_extract_jpeg_thumb (unsigned char *data, const unsigned int datalen, unsigned char **retdata, unsigned int *retdatalen, GPContext *context);
 
 /* for the macros abbreviating gp_log* */
-#define GP_MODULE "canon"
-
 #endif /* !defined(CAMLIBS_CANON_CANON_H) */
 
 /*

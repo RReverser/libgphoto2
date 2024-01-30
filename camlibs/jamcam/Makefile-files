@@ -14,7 +14,7 @@ jamcam_la_SOURCES      += %reldir%/library.c
 jamcam_la_SOURCES      += %reldir%/library.h
 
 jamcam_la_CFLAGS        = $(camlib_cflags)
-jamcam_la_CPPFLAGS      = $(camlib_cppflags)
+jamcam_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=jamcam
 jamcam_la_DEPENDENCIES  = $(camlib_dependencies)
 jamcam_la_LDFLAGS       = $(camlib_ldflags)
 jamcam_la_LIBADD        = $(camlib_libadd)

@@ -43,8 +43,6 @@
 #include "lg_gsm.h"
 #include <gphoto2/gphoto2-port.h>
 
-#define GP_MODULE "lg_gsm"
-
 struct _CameraPrivateLibrary {
 	Model model;
 	Info info[40];

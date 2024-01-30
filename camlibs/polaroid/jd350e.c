@@ -32,8 +32,6 @@
 #include "jd350e_red.h"
 /*#include "jd350e_blue.h"*/
 
-#define GP_MODULE "jd350e"
-
 #define THRESHOLD 0xf8
 
 #define RED(p,x,y,w) *((p)+3*((y)*(w)+(x))  )

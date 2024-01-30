@@ -24,7 +24,7 @@ EXTRA_LTLIBRARIES        += ricoh_g3.la
 ricoh_g3_la_SOURCES       = %reldir%/g3.c
 
 ricoh_g3_la_CFLAGS        = $(camlib_cflags)
-ricoh_g3_la_CPPFLAGS      = $(camlib_cppflags)
+ricoh_g3_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=ricoh_g3
 ricoh_g3_la_DEPENDENCIES  = $(camlib_dependencies)
 ricoh_g3_la_LDFLAGS       = $(camlib_ldflags)
 ricoh_g3_la_LIBADD        = $(camlib_libadd)

@@ -28,8 +28,6 @@
 #include <gphoto2/gphoto2-port.h>
 #include "sq905.h"
 
-#define GP_MODULE "sq905"
-
 #define RED 0
 #define GREEN 1
 #define BLUE 2
@@ -248,5 +246,3 @@ int decode_panel (unsigned char *panel_out, unsigned char *panel,
 		return GP_OK;
 	}
 }
-
-

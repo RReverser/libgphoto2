@@ -14,7 +14,7 @@ panasonic_coolshot_la_SOURCES      += %reldir%/library.c
 panasonic_coolshot_la_SOURCES      += %reldir%/library.h
 
 panasonic_coolshot_la_CFLAGS        = $(camlib_cflags)
-panasonic_coolshot_la_CPPFLAGS      = $(camlib_cppflags)
+panasonic_coolshot_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=panasonic_coolshot
 panasonic_coolshot_la_DEPENDENCIES  = $(camlib_dependencies)
 panasonic_coolshot_la_LDFLAGS       = $(camlib_ldflags)
 panasonic_coolshot_la_LIBADD        = $(camlib_libadd)

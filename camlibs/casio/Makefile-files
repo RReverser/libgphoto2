@@ -18,7 +18,7 @@ casio_qv_la_SOURCES      += %reldir%/ycctoppm.c
 casio_qv_la_SOURCES      += %reldir%/ycctoppm.h
 
 casio_qv_la_CFLAGS        = $(camlib_cflags)
-casio_qv_la_CPPFLAGS      = $(camlib_cppflags)
+casio_qv_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=casio_qv
 casio_qv_la_DEPENDENCIES  = $(camlib_dependencies)
 casio_qv_la_LDFLAGS       = $(camlib_ldflags)
 casio_qv_la_LIBADD        = $(camlib_libadd)

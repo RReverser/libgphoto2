@@ -25,8 +25,6 @@
 
 #include "dimagev.h"
 
-#define GP_MODULE "dimagev"
-
 int dimagev_put_file(dimagev_t* dimagev, CameraFile *file) {
 	unsigned char total_packets= (unsigned char) 0, sent_packets= (unsigned char) 0;
 	int left_to_send=0;

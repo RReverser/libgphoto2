@@ -43,8 +43,6 @@
 #include "soundvision.h"
 
 
-#define GP_MODULE "soundvision"
-
 static const struct {
    char *name;
    unsigned short idVendor;
@@ -496,4 +494,3 @@ int camera_init(Camera *camera, GPContext *context) {
     /* Tell the CameraFilesystem where to get lists from */
     return gp_filesystem_set_funcs (camera->fs, &fsfuncs, camera);
 }
-

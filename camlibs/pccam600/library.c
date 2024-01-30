@@ -42,8 +42,6 @@
 #include "libgphoto2/i18n.h"
 
 
-#define GP_MODULE "pccam600"
-
 
 #define QUALITY_LO   0x56
 #define QUALITY_ME   0x58

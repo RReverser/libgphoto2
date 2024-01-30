@@ -18,7 +18,7 @@ EXTRA_LTLIBRARIES         += agfa_cl20.la
 agfa_cl20_la_SOURCES       = %reldir%/agfa_cl20.c
 
 agfa_cl20_la_CFLAGS        = $(camlib_cflags)
-agfa_cl20_la_CPPFLAGS      = $(camlib_cppflags)
+agfa_cl20_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=agfa_cl20
 agfa_cl20_la_DEPENDENCIES  = $(camlib_dependencies)
 agfa_cl20_la_LDFLAGS       = $(camlib_ldflags)
 agfa_cl20_la_LIBADD        = $(camlib_libadd)

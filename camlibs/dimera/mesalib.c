@@ -31,7 +31,6 @@
 #include <gphoto2/gphoto2.h>
 #include "libgphoto2/gphoto2-endian.h"
 
-#define GP_MODULE "dimera"
 #define debuglog(e) GP_DEBUG( "%s", (e))
 
 #ifdef CONVERT_PIXELS

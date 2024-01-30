@@ -37,8 +37,6 @@
 #include "library.h"
 
 
-#define GP_MODULE "sierra"
-
 static int get_jpeg_data(const char *data, int data_size, char **jpeg_data, int *jpeg_size);
 
 /* Useful markers */
@@ -2349,4 +2347,3 @@ camera_init (Camera *camera, GPContext *context)
 	GP_DEBUG ("****************** sierra initialization OK");
 	return (GP_OK);
 }
-

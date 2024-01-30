@@ -34,7 +34,7 @@ konica_la_SOURCES       += %reldir%/konica.h
 konica_la_SOURCES       += %reldir%/library.c
 
 konica_la_CFLAGS        = $(camlib_cflags)
-konica_la_CPPFLAGS      = $(camlib_cppflags)
+konica_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=konica
 konica_la_DEPENDENCIES  = $(camlib_dependencies)
 konica_la_LDFLAGS       = $(camlib_ldflags)
 konica_la_LIBADD        = $(camlib_libadd)
@@ -47,7 +47,7 @@ EXTRA_LTLIBRARIES            += konica_qm150.la
 konica_qm150_la_SOURCES       = %reldir%/qm150.c
 
 konica_qm150_la_CFLAGS        = $(camlib_cflags)
-konica_qm150_la_CPPFLAGS      = $(camlib_cppflags)
+konica_qm150_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=konica_qm150
 konica_qm150_la_DEPENDENCIES  = $(camlib_dependencies)
 konica_qm150_la_LDFLAGS       = $(camlib_ldflags)
 konica_qm150_la_LIBADD        = $(camlib_libadd)

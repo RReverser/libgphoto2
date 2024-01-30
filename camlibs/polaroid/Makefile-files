@@ -14,7 +14,7 @@ polaroid_pdc320_la_SOURCES      += %reldir%/pdc320.c
 polaroid_pdc320_la_SOURCES      += %reldir%/pdc320.h
 
 polaroid_pdc320_la_CFLAGS        = $(camlib_cflags)
-polaroid_pdc320_la_CPPFLAGS      = $(camlib_cppflags)
+polaroid_pdc320_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=polaroid_pdc320
 polaroid_pdc320_la_DEPENDENCIES  = $(camlib_dependencies)
 polaroid_pdc320_la_LDFLAGS       = $(camlib_ldflags)
 polaroid_pdc320_la_LIBADD        = $(camlib_libadd)
@@ -32,7 +32,7 @@ polaroid_pdc640_la_SOURCES      += %reldir%/dlink350f.c
 polaroid_pdc640_la_SOURCES      += %reldir%/dlink350f.h
 
 polaroid_pdc640_la_CFLAGS        = $(camlib_cflags)
-polaroid_pdc640_la_CPPFLAGS      = $(camlib_cppflags)
+polaroid_pdc640_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=polaroid_pdc640
 polaroid_pdc640_la_DEPENDENCIES  = $(camlib_dependencies)
 polaroid_pdc640_la_LDFLAGS       = $(camlib_ldflags)
 polaroid_pdc640_la_LIBADD        = $(camlib_libadd)
@@ -43,7 +43,7 @@ EXTRA_LTLIBRARIES               += polaroid_pdc700.la
 polaroid_pdc700_la_SOURCES       = %reldir%/pdc700.c
 
 polaroid_pdc700_la_CFLAGS        = $(camlib_cflags)
-polaroid_pdc700_la_CPPFLAGS      = $(camlib_cppflags)
+polaroid_pdc700_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=polaroid_pdc700
 polaroid_pdc700_la_DEPENDENCIES  = $(camlib_dependencies)
 polaroid_pdc700_la_LDFLAGS       = $(camlib_ldflags)
 polaroid_pdc700_la_LIBADD        = $(camlib_libadd)

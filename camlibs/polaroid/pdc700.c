@@ -33,8 +33,6 @@
 #include "libgphoto2/i18n.h"
 
 
-#define GP_MODULE "pdc700"
-
 #define PDC700_INIT	0x01
 #define PDC700_INFO	0x02
 #define PDC700_CONFIG   0x03

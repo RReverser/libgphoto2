@@ -29,7 +29,7 @@ pentax_la_SOURCES      += %reldir%/js0n.c
 pentax_la_SOURCES      += %reldir%/js0n.h
 
 pentax_la_CFLAGS        = $(camlib_cflags)
-pentax_la_CPPFLAGS      = $(camlib_cppflags)
+pentax_la_CPPFLAGS      = $(camlib_cppflags) -DLIBNAME=pentax
 pentax_la_DEPENDENCIES  = $(camlib_dependencies)
 pentax_la_LDFLAGS       = $(camlib_ldflags)
 pentax_la_LIBADD        = $(camlib_libadd)

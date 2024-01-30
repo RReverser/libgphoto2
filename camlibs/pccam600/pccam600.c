@@ -39,8 +39,6 @@
 #include "libgphoto2/i18n.h"
 
 
-#define GP_MODULE "pccam600"
-
 
 /*
  *waits until the status value is 0 or 8.

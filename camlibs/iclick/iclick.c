@@ -33,8 +33,6 @@
 #include <gphoto2/gphoto2-port.h>
 #include "iclick.h"
 
-#define GP_MODULE "iclick"
-
 #define SQWRITE gp_port_usb_msg_write
 #define SQREAD  gp_port_usb_msg_read
 
@@ -173,5 +171,3 @@ icl_read_picture_data (GPPort *port, unsigned char *data, int size )
 
     	return GP_OK;
 }
-
-
