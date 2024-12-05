@@ -241,10 +241,10 @@ foreach_func (const char *filename, lt_ptr data)
 	char *prefix = getenv(IOLIBDIR_PREFIX_ENV);
 
 	GP_LOG_D ("Called for filename '%s'.", filename );
-	if(prefix && !strstr(filename,prefix)) {
-		GP_LOG_D("Skipping filename '%s' not matching %s.",filename,prefix);
-		return (0);
-	}
+    if(prefix && !strstr(filename,prefix)) {
+        GP_LOG_D("Skipping filename '%s' not matching %s.",filename,prefix);
+        return (0);
+    }
 
 	lh = lt_dlopenext (filename);
 	if (!lh) {
@@ -322,9 +322,14 @@ gp_port_info_list_load (GPPortInfoList *list)
 
 	GP_LOG_D ("Using ltdl to load io-drivers from '%s'...", iolibs);
 	gpi_libltdl_lock();
+	LTDL_SET_PRELOADED_SYMBOLS();
 	lt_dlinit ();
+#ifdef __EMSCRIPTEN__
+	result = foreach_func("libusb1", list);
+#else
 	lt_dladdsearchdir (iolibs);
 	result = lt_dlforeachfile (iolibs, foreach_func, list);
+#endif
 	lt_dlexit ();
 	gpi_libltdl_unlock();
 	if (result < 0)
